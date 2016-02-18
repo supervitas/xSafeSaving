@@ -1,0 +1,24 @@
+.navbar-brand
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+}
+.glyphicon-camera, .glyphicon-pencil, .glyphicon-facetime-video, .glyphicon-picture {
+    font-size: 1.9em;
+}
+.dropdown-menu {
+    min-width: auto;
+    width:100%;
+}
+.sizer {
+    width: 300px;
+    height: 300px;
+}
+.imggal {
+    height: 370px;
+    max-width:100%;
+}
