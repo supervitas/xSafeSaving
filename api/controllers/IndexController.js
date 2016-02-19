@@ -18,5 +18,6 @@ module.exports = {
       return response.view('index');
     }
   }
+
 };
 

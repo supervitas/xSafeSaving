@@ -1,0 +1,41 @@
+/**
+ * FilesController
+ *
+ * @description :: Server-side logic for managing files
+ * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
+ */
+
+module.exports = {
+  upload: function  (req, res) {
+    req.file('media').upload({
+      maxBytes: 50000000,
+      dirname: sails.config.appPath + "/assets/uploads/"+ req.session.user.auth.username
+      //saveAs: function(file, cb) {
+      //  cb(null, file.filename);    // This is for taking filename from input
+      //}
+    },function (err, uploadedFiles) {
+      if (err) {
+        return res.negotiate(err);
+      }
+      if (uploadedFiles.length === 0){
+        return res.badRequest('No file was uploaded');
+      }
+      var fileDiscryptor = uploadedFiles[0]; // JSON from created file
+      var src = fileDiscryptor.fd.substring(fileDiscryptor.fd.indexOf("uploads") - 1); // getting src for DB
+      Files.create({  // create db object
+        link: src,
+        type: fileDiscryptor.type,
+        filename: fileDiscryptor.filename,
+        owner: req.session.user.auth.id
+      }).exec(function(err, file) {
+        if (err) {
+          return res.badRequest('Something wrong with file');
+        }
+        return res.redirect('/');
+      });
+
+    });
+  }
+
+};
+

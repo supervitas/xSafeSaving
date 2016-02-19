@@ -3,89 +3,36 @@
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="row">
-            {% for file in files %}
-              {{ file.link }}
-            {% endfor %}
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <video controls class="embed-responsive-item" src="/images/test.webm"></video>
-                </div>
-                <h3><a href="/images/test.webm">Link</a></h3>
+          {% if user %}
+            {% if files.length %}
+              {% for file in files %}
+                {{ file.type }}
+              {% endfor %}
+            {% else %}
+            <div class="col-xs-6 col-md-offset-3">
+              <h3><i>
+                <br><br>
+                You got nothing uploaded yet!
+                Start uploading
+                <button href="#uploadModal"  class="glyphicon glyphicon-open btn btn-lg btn-info"
+                        data-toggle="modal" data-target="#uploadModal"></button>
+              </i></h3>
             </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <video controls class="embed-responsive-item" src="/images/siski.webm"></video>
-                </div>
-                <h3>Testing</h3>
-            </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <video controls class="embed-responsive-item" src="/images/test.webm"></video>
-                </div>
-                <h3>Testing</h3>
-            </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <video controls class="embed-responsive-item" src="/images/siski.webm"></video>
-                </div>
-                <h3>Testing</h3>
-            </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                <img class="thumbnail img-responsive imggal" src="/images/1.jpg">
-                </div>
-                <h3>Testing</h3>
-                </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <img class="thumbnail img-responsive imggal" src="/images/2.jpg">
-                </div>
-                <h3>Testing</h3>
-            </div>
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <img class="thumbnail img-responsive imggal" src="/images/1.jpg">
-                </div>
-                <h3>Testing</h3>
-            </div>
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <video controls class="embed-responsive-item" src="/images/siski.webm"></video>
-                </div>
-                <h3>Testing</h3>
-            </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <img class="thumbnail img-responsive imggal" src="/images/1.jpg">
-                </div>
-                <h3>Testing</h3>
-            </div>
-
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <img class="thumbnail img-responsive imggal" src="/images/2.jpg">
-                </div>
-                <h3>Testing</h3>
-            </div>
-            <div class="col-xs-6 col-lg-4">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <img class="thumbnail img-responsive imggal" src="/images/1.jpg">
-                </div>
-                <h3>Testing</h3>
-            </div>
-
-
-
-
+          {% endif %}
+          {% else %}
+          <div class="col-xs-6 col-md-offset-4">
+           <h3><i>
+             <br><br>
+             xSafeSaving allows you to save your files, and browse them anytime.
+             Start using it
+             <a href="#registerModal" data-toggle="modal" data-target="#registerModal">now</a>
+             <br><br>
+             Already a member? <a href="#loginModal" data-toggle="modal" data-target="#loginModal">Log in</a>
+           </i></h3>
+          </div>
+          {% endif %}
         </div>
     </div>
 </div>
 
-{{ currentDate }}
 {% endblock %}

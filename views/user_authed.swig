@@ -22,7 +22,7 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a  href="#myModal" data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-open"> Upload</a></li>
+            <li><a  href="#uploadModal" data-toggle="modal" data-target="#uploadModal" class="glyphicon glyphicon-open"> Upload</a></li>
             <li><a class="glyphicon glyphicon-user" href="#"> {{ user }}</a></li>
             <li><a class="glyphicon glyphicon-log-out" href="/auth/logout"> Logout</a></li>
 
@@ -31,28 +31,26 @@
 
 </nav>
 
-<div class="modal fade" id="myModal">
+<div class="modal fade" id="uploadModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Log-in</h4>
+        <h4 class="modal-title">Upload File</h4>
       </div>
-      <div class="modal-body">
+      <form method="POST" id="upload-form"  enctype="multipart/form-data" class="modal-body" action="/upload">
+        <div id="register-messages"></div>
         <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input class="form-control" id="exampleInputEmail1" placeholder="Enter email" type="email">
+          <input type='hidden' name='_csrf' value='{{ _csrf }}'>
+          <label for="media">Choose your file</label>
+          <input id="media"  type="file" name="media" class="file">
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input class="form-control" id="exampleInputPassword1" placeholder="Password" type="password">
+        <div class="modal-footer">
+          <a href="#" data-dismiss="modal" class="btn">Close</a>
+          <button type="submit"  class="btn btn-primary">Upload</button>
         </div>
-        <p class="text-right"><a href="#">Forgot password?</a></p>
-      </div>
-      <div class="modal-footer">
-        <a href="#" data-dismiss="modal" class="btn">Close</a>
-        <a href="#" class="btn btn-primary">Log-in</a>
-      </div>
+      </form>
     </div>
   </div>
 </div>
+

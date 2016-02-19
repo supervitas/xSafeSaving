@@ -33,19 +33,19 @@ module.exports = require('waterlock').waterlocked({
           if (err)
             return res.badRequest(err);
           delete user.password;
-          var fs = require('fs'); // create directory for user
-          var basedir = './uploads/';
-          var dir = './uploads/'+user.auth.username;
-          if (!fs.existsSync(basedir)){
-            fs.mkdirSync(basedir);
-          }
-          try {
-            if (!fs.existsSync(dir)) {
-              fs.mkdirSync(dir);
-            }
-          } catch (err){
-            return res.badRequest('Some error with your data');
-          }
+          //var fs = require('fs'); // create directory for user (*fix skipper do it himself)
+          //var basedir = './assets/uploads/';
+          //var dir = './assets/uploads/'+user.auth.username;
+          //if (!fs.existsSync(basedir)){
+          //  fs.mkdirSync(basedir);
+          //}
+          //try {
+          //  if (!fs.existsSync(dir)) {
+          //    fs.mkdirSync(dir);
+          //  }
+          //} catch (err){
+          //  return res.badRequest('Some error with your data');
+          //}
 
           return res.ok(user); // return 200 - OK
         });
