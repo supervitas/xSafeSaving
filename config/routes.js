@@ -33,7 +33,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/':  'IndexController.index',
-  '/upload': 'FilesController.upload'
+  '/upload': 'FilesController.upload',
+  '/uploadlink':'FilesController.uploadLink'
 
 
 

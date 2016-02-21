@@ -22,7 +22,8 @@ module.exports.policies = {
   '*': true,
   FilesController: {
     '*':false,
-    upload: ['sessionAuth']
+    upload: ['sessionAuth'],
+    uploadLink: ['sessionAuth']
   },
   UserController: {
     '*': false

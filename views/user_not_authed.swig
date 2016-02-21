@@ -28,7 +28,7 @@
             <div class="btn-group">
                 <a href="#loginModal" data-toggle="modal" data-target="#loginModal" type="button" class="btn btn-link" >
                     <i class="glyphicon glyphicon-log-in"></i>
-                    Log in
+                    Login
                 </a>
                 <a href="#registerModal" data-toggle="modal" data-target="#registerModal" type="button" class="btn btn-link">
                     <i class="glyphicon glyphicon-plus"></i> Register
@@ -43,7 +43,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Log in</h4>
+        <h4 class="modal-title">Login</h4>
       </div>
       <form method="POST" id="login-form"  class="modal-body">
         <div id="messages"></div>
@@ -59,7 +59,7 @@
       <div class="modal-footer">
         <a href="#" data-dismiss="modal" class="btn">Close</a>
         <input type='hidden' name='_csrf' value='{{ _csrf }}'>
-        <button type="submit"  class="btn btn-primary">Log in</button>
+        <button type="submit"  class="btn btn-primary">Login</button>
       </div>
       </form>
     </div>

@@ -39,11 +39,22 @@
         <h4 class="modal-title">Upload File</h4>
       </div>
       <form method="POST" id="upload-form"  enctype="multipart/form-data" class="modal-body" action="/upload">
-        <div id="register-messages"></div>
         <div class="form-group">
           <input type='hidden' name='_csrf' value='{{ _csrf }}'>
           <label for="media">Choose your file</label>
           <input id="media"  type="file" name="media" class="file">
+        </div>
+        <div class="modal-footer">
+          <button type="submit"  class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+      <form method="POST" id="upload-url-form"  enctype="multipart/form-data" class="modal-body" action="/uploadLink">
+        Or save from URL
+        <div class="form-group">
+          <div id="messages"></div>
+          <input type='hidden' name='_csrf' value='{{ _csrf }}'>
+          <label for="url">Paste link here</label>
+          <input id="url"  type="text" name="url">
         </div>
         <div class="modal-footer">
           <a href="#" data-dismiss="modal" class="btn">Close</a>

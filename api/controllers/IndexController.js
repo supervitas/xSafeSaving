@@ -8,10 +8,11 @@
 module.exports = {
   index: function (request, response) {
     if (request.session.authenticated) {
-      User.find({id:request.session.user.auth.id}).populate('files').exec(function(err, files) { // Find  user files
+      User.find({id:request.session.user.auth.id}).populate('files',{sort: 'createdAt DESC'}).exec(function(err, files) { // Find  user files
         response.view('index',{
           user: request.session.user.auth.username,
           files: files[0].files
+
         })
       });
     } else {
