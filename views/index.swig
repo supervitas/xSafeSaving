@@ -8,19 +8,23 @@
               {% for file in files %}
                 {% if file.type.split('/')[0] == 'image'  %}
                   <div class="col-xs-6 col-lg-4">
-                      <img  class="imggal" src="{{ file.link }}">
+                      <img  class="imggal img-responsive"  src="{{ file.link }}">
+                    <div class="col-xs-12">
                     <h3><a href="{{ file.link }}">{{ file.filename }}</a></h3>
-                  </div>
+                    </div>
+
                 {% elseif file.type.split('/')[0] == 'video'  %}
                   <div class="col-xs-6 col-lg-4">
                     <div class="embed-responsive embed-responsive-4by3">
                       <video controls class="embed-responsive-item" src="{{ file.link }}"></video>
                     </div>
+                    <div hidden>{{ file.id }}</div>
                     <h3><a href="{{ file.link }}">{{ file.filename }}</a></h3>
                   </div>
-                {% else   %}
+                {% else  %}
                   <div class="col-xs-6 col-lg-4">
                       <img height="250px" width="250px" src="/images/file.png">
+                    <div hidden>{{ file.id }}</div>
                     <h3><a href="{{ file.link }}">{{ file.filename }}</a></h3>
                   </div>
           {% endif %}
@@ -50,7 +54,27 @@
           {% endif %}
         </div>
     </div>
+  <nav class="text-center">
+    <ul class="pagination">
+      {% for page in pagination %}
+      {% if page.number == page.active %}
+      <li class="active"><a href="#">{{ page.number }}</a></li>
+      {% else %}
+      <li><a href="?page={{ page.number }}">{{ page.number }}</a></li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
 </div>
+
+<script>
+
+  function deletefile(id){
+
+  }
+
+</script>
+
 
 {% endblock %}
 

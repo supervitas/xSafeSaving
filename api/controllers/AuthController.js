@@ -33,7 +33,7 @@ module.exports = require('waterlock').waterlocked({
           if (err)
             return res.badRequest(err);
           delete user.password;
-          var fs = require('fs'); // create directory for user (*fix skipper do it himself)
+          var fs = require('fs'); // create directory for user
           var basedir = './assets/uploads/';
           var dir = './assets/uploads/'+user.auth.username;
           if (!fs.existsSync(basedir)){

@@ -68,8 +68,11 @@ module.exports = {
         }
       });
     });
-  }
+  },
 
+  deleteFile: function  (req, response) {
+
+  }
 
 };
 

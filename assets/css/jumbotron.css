@@ -20,6 +20,10 @@
 }
 .imggal {
     height: 250px;
-    width:320px;
     max-width:100%;
+}
+.deletebutton{
+  position: relative;
+  margin-left: 90%;
+
 }
