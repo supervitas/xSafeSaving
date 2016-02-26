@@ -48,7 +48,7 @@ module.exports = {
       if (error) {
         return response.badRequest(error);
       }
-      if (res.headers['content-length'] > 30000000) {
+      if (res.headers['content-length'] > 130000000) {
         return response.badRequest('File is too big');
       }
       var src = sails.config.appPath + "/assets/uploads/" + req.session.user.auth.username + '/'
