@@ -9,23 +9,22 @@
                 {% if file.type.split('/')[0] == 'image'  %}
                   <div class="col-xs-6 col-lg-4">
                       <img  class="imggal img-responsive"  src="{{ file.link }}">
-                    <div class="col-xs-12">
-                    <h3><a href="{{ file.link }}">{{ file.filename }}</a></h3>
+                    <h5><a href="{{ file.link }}">{{ file.filename }}</a></h5>
                     </div>
 
                 {% elseif file.type.split('/')[0] == 'video'  %}
                   <div class="col-xs-6 col-lg-4">
                     <div class="embed-responsive embed-responsive-4by3">
-                      <video controls class="embed-responsive-item" src="{{ file.link }}"></video>
+                      <video  preload="metadata" controls class="embed-responsive-item" src="{{ file.link }}"></video>
                     </div>
                     <div hidden>{{ file.id }}</div>
-                    <h3><a href="{{ file.link }}">{{ file.filename }}</a></h3>
+                    <h5><a href="{{ file.link }}">{{ file.filename }}</a></h5>
                   </div>
                 {% else  %}
                   <div class="col-xs-6 col-lg-4">
                       <img height="250px" width="250px" src="/images/file.png">
                     <div hidden>{{ file.id }}</div>
-                    <h3><a href="{{ file.link }}">{{ file.filename }}</a></h3>
+                    <h5><a href="{{ file.link }}">{{ file.filename }}</a></h5>
                   </div>
           {% endif %}
               {% endfor %}
