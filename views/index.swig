@@ -7,13 +7,13 @@
             {% if files.length %}
               {% for file in files %}
                 {% if file.type.split('/')[0] == 'image'  %}
-                  <div class="col-xs-6 col-lg-4">
+                  <div class="col-xs-12 col-sm-6 col-md-4">
                       <img  class="imggal img-responsive"  src="{{ file.link }}">
                     <h5><a href="{{ file.link }}">{{ file.filename }}</a></h5>
                     </div>
 
                 {% elseif file.type.split('/')[0] == 'video'  %}
-                  <div class="col-xs-6 col-lg-4">
+                  <div class="col-xs-12 col-sm-6 col-md-4">
                     <div class="embed-responsive embed-responsive-4by3">
                       <video  preload="metadata" controls class="embed-responsive-item" src="{{ file.link }}"></video>
                     </div>
@@ -21,15 +21,15 @@
                     <h5><a href="{{ file.link }}">{{ file.filename }}</a></h5>
                   </div>
                 {% else  %}
-                  <div class="col-xs-6 col-lg-4">
-                      <img height="250px" width="250px" src="/images/file.png">
+                  <div class="col-xs-12 col-sm-6 col-md-4">
+                      <img class="imggal img-responsive"  src="/images/file.png">
                     <div hidden>{{ file.id }}</div>
                     <h5><a href="{{ file.link }}">{{ file.filename }}</a></h5>
                   </div>
-          {% endif %}
+                {% endif %}
               {% endfor %}
             {% else %}
-            <div class="col-xs-6 col-md-offset-3">
+            <div class="col-md-6 col-md-offset-3">
               <h3><i>
                 <br><br>
                 You got nothing uploaded yet!
@@ -40,7 +40,7 @@
             </div>
           {% endif %}
           {% else %}
-          <div class="col-xs-6 col-md-offset-4">
+          <div class="col-md-6 col-md-offset-4">
            <h3><i>
              <br><br>
              xSafeSaving allows you to save your files, and browse them anytime.

@@ -12,7 +12,7 @@
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAAAAAAEAEAAAAAAAEAABAAAAAAEAAAAQAAAAEAAAAAEAAAEREAABERAAAAAQAAEAAAAAABAAAQAAAAAAEAABAAAAAAAQAAEAAAAAABAAAQAAAAAAERERAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP5/AAD9vwAA+98AAPfvAADv9wAAw8MAAPvfAAD73wAA+98AAPvfAAD73wAA+B8AAP//AAD//wAA" rel="icon" type="image/x-icon" />
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/jumbotron.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script src="/js/jquery.min.js"></script>
 
 </head>

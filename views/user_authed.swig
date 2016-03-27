@@ -25,8 +25,7 @@
             <li><a  href="#uploadModal" data-toggle="modal" data-target="#uploadModal" class="glyphicon glyphicon-open"> Upload</a></li>
             <li><a class="glyphicon glyphicon-user" href="#"> {{ user }}</a></li>
             <li><a class="glyphicon glyphicon-log-out" href="/auth/logout"> Logout</a></li>
-
-            </ul>
+        </ul>
     </div><!-- /.navbar-collapse -->
 
 </nav>
