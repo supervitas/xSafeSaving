@@ -99,6 +99,7 @@
   function createModal ($source) {
     var media_object = $source.find('.object')[0];
     media_object.classList.remove('imggal');
+    media_object.classList.add('img-responsive');
     var media_name = $source.find('.media-name')[0].innerHTML;
     var file_id = parseInt($source.find('.id_info')[0].innerHTML);
 
