@@ -10,9 +10,7 @@ module.exports = {
       req.file('media').upload({
         maxBytes: 50000000,
         dirname: sails.config.appPath + "/assets/uploads/" + req.session.user.auth.username
-        //saveAs: function(file, cb) {
-        //  cb(null, file.filename);    // This is for taking filename from input
-        //}
+
       }, function (err, uploadedFiles) {
         if (err) {
           return res.negotiate(err);
@@ -31,9 +29,7 @@ module.exports = {
           if (err) {
             return res.badRequest('Something wrong with file');
           }
-          setTimeout(function(){
             return res.redirect('/');
-          },500)
         });
 
       });
@@ -71,7 +67,27 @@ module.exports = {
   },
 
   deleteFile: function  (req, response) {
+    var file_id = req.param('del_file');
+    Files.findOne({id:file_id})
+      .exec(function (err, result) {
+      if (err || !result) {
+        return response.badRequest('File allready deleted')
+      }
+      if (result.owner != req.session.user.auth.id){
+        return response.forbidden('Its not your file');
+      } else {
+        var fs = require('fs');
+        var base = process.env.PWD;
+        fs.unlink(base + '/assets' + result.link);
+        Files.destroy({id: file_id}).exec(function (err){
+          if (err) {
+            return response.negotiate(err);
+          }
+          return response.ok();
+        });
 
+      }
+    });
   }
 
 };

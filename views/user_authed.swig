@@ -26,8 +26,7 @@
             <li><a class="glyphicon glyphicon-user" href="#"> {{ user }}</a></li>
             <li><a class="glyphicon glyphicon-log-out" href="/auth/logout"> Logout</a></li>
         </ul>
-    </div><!-- /.navbar-collapse -->
-
+    </div>
 </nav>
 
 <div class="modal fade" id="uploadModal">
@@ -37,16 +36,15 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 class="modal-title">Upload File</h4>
       </div>
+
       <form method="POST" id="upload-form"  enctype="multipart/form-data" class="modal-body" action="/upload">
         <div class="form-group">
           <input type='hidden' name='_csrf' value='{{ _csrf }}'>
           <label for="media">Choose your file</label>
           <input id="media"  type="file" name="media" class="file">
         </div>
-        <div class="modal-footer">
-          <button type="submit"  class="btn btn-primary">Upload</button>
-        </div>
       </form>
+
       <form method="POST" id="upload-url-form"  enctype="multipart/form-data" class="modal-body" action="/uploadLink">
         Or save from URL
         <div class="form-group">
@@ -57,10 +55,20 @@
         </div>
         <div class="modal-footer">
           <a href="#" data-dismiss="modal" class="btn">Close</a>
-          <button type="submit"  class="btn btn-primary">Upload</button>
+          <input type="button" onclick="upload()"  class="btn btn-primary" value="Upload">
         </div>
       </form>
     </div>
   </div>
 </div>
 
+<script>
+  function upload(event) {
+    if (document.getElementById("media").files.length != 0 ) {
+      document.getElementById("upload-form").submit();
+    }
+    if (document.getElementById("url").value.length != 0){
+      document.getElementById("upload-url-form").submit();
+    }
+  }
+</script>

@@ -25,12 +25,18 @@
     min-width: auto;
     width:100%;
 }
-.sizer {
-    width: 300px;
-    height: 300px;
-}
 .imggal {
     height: 250px;
     max-width:100%;
 }
-
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:  flex;
+  flex-wrap: wrap;
+}
+.row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
