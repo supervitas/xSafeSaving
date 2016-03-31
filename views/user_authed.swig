@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
         </button>
     </div>
-    <a class="navbar-brand glyphicon glyphicon-cloud-upload" href="/"> xSafeSaving</a>
+    <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-cloud-upload"></i> xSafeSaving</a>
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
         <ul class="nav navbar-nav navbar-left">
             <li class="dropdown">
@@ -22,9 +22,9 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a  href="#uploadModal" data-toggle="modal" data-target="#uploadModal" class="glyphicon glyphicon-open"> Upload</a></li>
-            <li><a class="glyphicon glyphicon-user" href="#"> {{ user }}</a></li>
-            <li><a class="glyphicon glyphicon-log-out" href="/auth/logout"> Logout</a></li>
+            <li><a  href="#uploadModal" data-toggle="modal" data-target="#uploadModal"><i class="glyphicon glyphicon-open"></i> Upload</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-user"></i> {{ user }}</a></li>
+            <li><a href="/auth/logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
         </ul>
     </div>
 </nav>

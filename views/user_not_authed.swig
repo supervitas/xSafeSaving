@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
         </button>
     </div>
-    <a class="navbar-brand glyphicon glyphicon-cloud-upload" href="/"> xSafeSaving</a>
+   <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-cloud-upload"></i> xSafeSaving</a>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
 

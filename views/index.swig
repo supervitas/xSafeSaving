@@ -30,7 +30,7 @@
                 {% endif %}
               {% endfor %}
             {% else %}
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-8 col-md-offset-3">
               <h3><i>
                 <br><br>
                 You got nothing uploaded yet!
