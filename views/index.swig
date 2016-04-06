@@ -7,14 +7,14 @@
             {% if files.length %}
               {% for file in files %}
                 {% if file.type.split('/')[0] == 'image'  %}
-                  <div onclick="showModal(this)" class="col-xs-12 col-sm-6 col-md-6">
+                  <div onclick="showModal(this)" class="col-xs-12 col-sm-6 col-md-4">
                       <img class="imggal img-responsive object" src="{{ file.link }}">
                     <div class="id_info" hidden>{{ file.id }}</div>
                     <h5><a class='media-name' onclick="event.stopPropagation()" href="{{ file.link }}">{{ file.filename }}</a></h5>
                     </div>
 
                 {% elseif file.type.split('/')[0] == 'video'  %}
-                  <div onclick="showModal(this)" class="col-xs-12 col-sm-6 col-md-6">
+                  <div onclick="showModal(this)" class="col-xs-12 col-sm-6 col-md-4">
                     <div class="embed-responsive embed-responsive-4by3">
                       <video  preload="metadata" controls class="embed-responsive-item object"  src="{{ file.link }}"></video>
                     </div>
@@ -22,7 +22,7 @@
                     <h5><a class='media-name' onclick="event.stopPropagation()" href="{{ file.link }}">{{ file.filename }}</a></h5>
                   </div>
                 {% else %}
-                  <div onclick="showModal(this)" class="col-xs-12 col-sm-6 col-md-6">
+                  <div onclick="showModal(this)" class="col-xs-12 col-sm-6 col-md-4">
                       <img class="imggal img-responsive object" width="250px" src="/images/file.png">
                     <div class="id_info" hidden>{{ file.id }}</div>
                     <h5><a class='media-name' onclick="event.stopPropagation()" href="{{ file.link }}">{{ file.filename }}</a></h5>
