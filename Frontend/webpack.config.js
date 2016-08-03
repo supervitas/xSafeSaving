@@ -3,10 +3,12 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: ['./src/js/app.js', './src/scss/main.scss'],
+    entry: ['./src/js/app.js', './src/scss/main.scss',
+        'webpack-dev-server/client?http://0.0.0.0:3000', 'webpack/hot/only-dev-server'],
     output: {
-        path: path.join(__dirname,'dist'),
-        filename: 'bundle.js'
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/dist/'
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
@@ -27,12 +29,20 @@ module.exports = {
                 query: {
                     presets: ['es2015', 'react']
                 }
+            },
+            {
+                test: /.jsx?$/,
+                loaders: ['react-hot', 'babel'],
+                include: path.join(__dirname, 'src')
             }
-           
-        ]
+
+
+        ],
+
     },
     plugins: [
-        new ExtractTextPlugin('build.css')
+        new ExtractTextPlugin('build.css'),
+        new webpack.HotModuleReplacementPlugin()
     ],
     watch: true
 };
