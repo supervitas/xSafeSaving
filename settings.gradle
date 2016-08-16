@@ -1,0 +1,5 @@
+rootProject.name = 'xsafesaving'
+include 'backend'
+findProject(':backend')?.name = 'Backend'
+include 'Backend'
+
