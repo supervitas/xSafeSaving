@@ -29,7 +29,10 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "com.sparkjava:spark-core:2.5"
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.21'
+    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
+    compile 'com.github.salomonbrys.kotson:kotson:2.3.0'
+
 }
 sourceSets {
     main.kotlin.srcDirs += 'src/main/'
