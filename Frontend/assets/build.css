@@ -1,0 +1,7 @@
+@font-face {
+  font-family: ProximaNova; /* Имя шрифта */
+  src: url(./fonts/ProximaNovaRegular.otf); /* Путь к файлу со шрифтом */
+}
+* {
+  font-family: ProximaNova, Helvetica, sans-serif;
+}
