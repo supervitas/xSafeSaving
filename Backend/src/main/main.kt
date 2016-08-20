@@ -5,8 +5,9 @@ import  spark.Spark.*
 
 
 fun main(args: Array<String>) {
-    port(8081)
 
+    exception(Exception::class.java) { e, req, res -> e.printStackTrace() }
+    port(8081)
     post("/register") { req, res -> registerUser(req, res) }
 
 }

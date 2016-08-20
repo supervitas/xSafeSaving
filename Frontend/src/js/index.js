@@ -1,17 +1,21 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import App from './containers/App'
-import './styles/app.css'
-import configureStore from './store/configureStore'
+import React from "react";
+import ReactDOM from "react-dom";
+import {Provider} from "react-redux";
+import {Router, Route} from "react-router";
+import App from "./containers/App";
+import {RegisterForm} from "./components/Regiser";
+import configureStore from "./store/configureStore";
 
-const store = configureStore()
+const store = configureStore();
 
-render(
-  <Provider store={store}>
-    <div className='app'>
-      <App />
-    </div>
-  </Provider>,
-  document.getElementById('root')
-)
+ReactDOM.render(
+    <Provider store={ store }>
+        <Router history={ browserHistoryr }>
+            <Route path='/' component={ App }>
+            </Route>
+            <Route path='/register' component={ RegisterForm }>
+            </Route>
+        </Router>
+    </Provider>,
+    document.getElementById('app')
+);
