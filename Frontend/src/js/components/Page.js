@@ -6,7 +6,7 @@ export default class Page extends Component {
   }
   render() {
     const { year, photos, fetching } = this.props
-    return <div className='ib page'>
+    return <div className=''>
       <p>
         <button className='btn' onClick={this.onYearBtnClick.bind(this)}>2016</button>
         <button className='btn' onClick={this.onYearBtnClick.bind(this)}>2015</button>
@@ -21,10 +21,4 @@ export default class Page extends Component {
       }
     </div>
   }
-}
-
-Page.propTypes = {
-  year: PropTypes.number.isRequired,
-  photos: PropTypes.array.isRequired,
-  getPhotos: PropTypes.func.isRequired
 }
