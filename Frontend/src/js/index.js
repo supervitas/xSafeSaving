@@ -5,6 +5,8 @@ import {Router, Route, browserHistory} from "react-router";
 import App from "./containers/App";
 import {RegisterForm} from "./components/Regiser";
 import configureStore from "./store/configureStore";
+import "semantic-ui/dist/semantic";
+import "semantic-ui/dist/semantic.css";
 
 const store = configureStore();
 

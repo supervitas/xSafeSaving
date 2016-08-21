@@ -6,6 +6,7 @@ import Page from "../components/Page";
 import * as pageActions from "../actions/PageActions";
 import {Link} from "react-router";
 
+
 class App extends Component {
   render() {
     const { user, page } = this.props

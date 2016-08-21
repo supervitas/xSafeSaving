@@ -28,15 +28,27 @@ module.exports = {
                 loaders: ['react-hot', 'babel'],
                 include: path.join(__dirname, 'src')
             },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader'
+            },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader?limit=100000'
+            }
 
         ],
 
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        })
     ],
 
-    watch: true
 };
 if (process.env.NODE_ENV === 'production') {
     config.plugins.push(

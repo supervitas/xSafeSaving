@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 var RegisterForm = React.createClass({
     getInitialState: function() {
@@ -17,7 +17,7 @@ var RegisterForm = React.createClass({
         if (!text || !author) {
             return;
         }
-        console.log(author, text);
+
         this.setState({author: '', text: ''});
     },
    render: function () {
