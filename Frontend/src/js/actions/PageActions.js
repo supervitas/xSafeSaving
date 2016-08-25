@@ -1,19 +1,14 @@
-import {
-  GET_PHOTOS_REQUEST,
-  GET_PHOTOS_SUCCESS
-} from '../constants/Page'
-
-export function getPhotos(year) {
+export function getFiles() {
 
   return (dispatch) => {
     dispatch({
-      type: GET_PHOTOS_REQUEST,
-      payload: year
-    })
+      type: "GET_PHOTOS_REQUEST",
+      payload: 1234
+    });
 
     setTimeout(() => {
       dispatch({
-        type: GET_PHOTOS_SUCCESS,
+        type: "GET_PHOTOS_SUCCESS",
         payload: [1,2,3,4,5]
       })
     }, 1000)

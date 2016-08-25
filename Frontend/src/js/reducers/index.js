@@ -1,8 +1,8 @@
 import {combineReducers} from "redux";
-import page from "./page";
+import files from "./userFiles";
 import user from "./user";
 
 export default combineReducers({
-  page,
+  files,
   user,
 })
