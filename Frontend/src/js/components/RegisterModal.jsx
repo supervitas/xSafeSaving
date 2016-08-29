@@ -11,8 +11,8 @@ var RegisterModal = React.createClass({
         this.setState({password: e.target.value.substr(0, 12)});
     },
     checkProps: function () {
-        var that = this;
-        var $form = $('.ui.form');
+        let that = this;
+        let $form = $('.ui.form');
         const validationRules = {
             fields: {
                 username: {
@@ -40,19 +40,15 @@ var RegisterModal = React.createClass({
             },
             onSuccess: function (evt, fields) {
                 evt.preventDefault();
-                $form.addClass('loading');
-                that.props.register("login", fields);
-                // setTimeout(() => {
-                //     $form.removeClass('loading');
-                //     $form.addClass('error');
-                //     $('.ui.error.message').append("Error");
-                // }, 1000)
+                that.props.register('login', fields);
             }
         };
-        $form.form(validationRules)
+       $form.form(validationRules)
     },
     render: function () {
+        let $form = $('.ui.form');
         this.checkProps();
+        this.props.fetching ? $form.addClass('loading'): $form.removeClass('loading');
         return (
             <div className="ui small modal">
                 <div className="header">New User</div>

@@ -12,7 +12,7 @@ fun registerUser(req: Request, res: Response): JsonObject {
         val list1 = gson.fromJson<Map<String, String>>(req.body())
         res.status(200)
         obj = jsonObject(
-                "property" to list1["login"]
+                "login" to list1["username"]
         )
 
     } catch (e: com.google.gson.JsonSyntaxException) {

@@ -11,11 +11,12 @@ import * as authActions from "../actions/AuthActions";
 var App = React.createClass({
   render() {
     const { user, assets } = this.props;
+
     const { getFiles } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
     return <div>
       <Header handleClick={ () => $('.ui.modal').modal({blurring: true}).modal('show') }/>
-      <RegisterModal register={authAction}/>
+      <RegisterModal register={authAction} fetching={user.fetching}/>
       <Layout/>
     </div>
   }

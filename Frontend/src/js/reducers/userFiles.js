@@ -17,7 +17,7 @@ export default function userFiles(state = initialState, action) {
             return { ...state, files: action.payload, fetching: false, error: '' };
 
         case 'GET_PHOTOS_FAIL':
-            return { ...state, error: action.payload.message, fetching: false }
+            return { ...state, error: action.payload.message, fetching: false };
 
         default:
             return state;

@@ -8,6 +8,6 @@ fun main(args: Array<String>) {
 
     exception(Exception::class.java) { e, req, res -> e.printStackTrace() }
     port(8081)
-    post("/register") { req, res -> registerUser(req, res) }
+    post("api/register") { req, res -> registerUser(req, res) }
 
 }
