@@ -3,7 +3,7 @@ export function getFiles() {
   return (dispatch) => {
     dispatch({
       type: "GET_PHOTOS_REQUEST",
-      payload: 1234
+      payload: 2016
     });
 
     setTimeout(() => {
