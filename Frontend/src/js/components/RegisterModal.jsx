@@ -10,11 +10,9 @@ var RegisterModal = React.createClass({
     handlePasswordChange: function(e) {
         this.setState({password: e.target.value.substr(0, 12)});
     },
-    handleSubmitForm: function (e) {
-        e.preventDefault();
-        console.log(123);
-    },
     checkProps: function () {
+        var that = this;
+        var $form = $('.ui.form');
         const validationRules = {
             fields: {
                 username: {
@@ -39,9 +37,19 @@ var RegisterModal = React.createClass({
                         }
                     ]
                 },
+            },
+            onSuccess: function (evt, fields) {
+                evt.preventDefault();
+                $form.addClass('loading');
+                that.props.register("login", fields);
+                // setTimeout(() => {
+                //     $form.removeClass('loading');
+                //     $form.addClass('error');
+                //     $('.ui.error.message').append("Error");
+                // }, 1000)
             }
         };
-        $('.ui.form').form(validationRules,this.handleSubmitForm);
+        $form.form(validationRules)
     },
     render: function () {
         this.checkProps();
@@ -55,7 +63,7 @@ var RegisterModal = React.createClass({
                                     type="text"
                                     placeholder="Username"
                                     name="username"
-                                    value={ this.state.username }
+                                    value={this.state.username}
                                     onChange={this.handleUsernameChange}
                                 />
                             </div>
@@ -64,7 +72,7 @@ var RegisterModal = React.createClass({
                                     type="password"
                                     name="password"
                                     placeholder="Password"
-                                    value={ this.state.password }
+                                    value={this.state.password }
                                     onChange={this.handlePasswordChange}
                                 />
                             </div>
