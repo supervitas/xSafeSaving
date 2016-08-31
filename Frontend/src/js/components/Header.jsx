@@ -4,7 +4,7 @@ var Header = React.createClass({
         var Header = <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
         handleLoginClick={this.props.handleLoginClick}/>;
         if (this.props.user) {
-           Header = <LogedHeader user={this.props.user}/>;
+           Header = <LogedHeader authActions={this.props.authActions} user={this.props.user}/>;
         }
         return( Header )
     },
@@ -26,6 +26,9 @@ var LogedOutHeader = React.createClass({
     }
 });
 var LogedHeader = React.createClass({
+    logout: function () {
+      this.props.authActions('LOGOUT')
+    },
     render: function () {
         return (
             <div className="ui borderless menu">
@@ -36,7 +39,7 @@ var LogedHeader = React.createClass({
                         <i className="cloud upload icon"></i>Upload</a>
                     <a className="item">
                         <i className="user icon"></i>{this.props.user}</a>
-                    <a className="item">
+                    <a className="item" onClick={this.logout}>
                         <i className="sign out icon "></i>Logout</a>
                 </div>
             </div>

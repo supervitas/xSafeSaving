@@ -16,6 +16,8 @@ fun AuthUser(req: Request, res: Response): JsonObject {
     obj = jsonObject (
             "status" to "OK"
     )
+
+
     try {
         list = gson.fromJson<Map<String, String>>( req.body() )
     } catch (e: com.google.gson.JsonSyntaxException) {
@@ -49,20 +51,17 @@ fun AuthUser(req: Request, res: Response): JsonObject {
             in "POST" -> {
                 val result = loginUser(username, password)
                 if (result == "OK") {
+                    req.session(true).attribute(username, req.session().id())
                     obj = jsonObject(
                             "status" to result,
                             "username" to username
                     )
-                    req.session(true).attribute(username, req.session().id())
                 } else {
                     res.status(403)
                     obj = jsonObject(
                             "status" to result
                     )
                 }
-            }
-            in "DELETE" -> {
-                req.session().removeAttribute("user")
             }
         }
     } else {
@@ -72,5 +71,14 @@ fun AuthUser(req: Request, res: Response): JsonObject {
         )
     }
 
+    return obj
+}
+fun logout(req: Request, res: Response): JsonObject {
+    val obj: JsonObject
+    res.status(200)
+    obj = jsonObject (
+            "status" to "OK"
+    )
+    req.session().removeAttribute("user")
     return obj
 }

@@ -16,15 +16,12 @@ var App = React.createClass({
 
     return <div>
       <Header handleRegisterClick={ () => $('#register').modal({blurring: true})
-          .modal({
-            onHide: function () {
-              authAction('REMOVE_ERROR')
-            }}).modal('show')}
-              handleLoginClick={ () => $('#login').modal({blurring: true}).modal({onHide: function() {
-                  authAction('REMOVE_ERROR')
-                  }}).modal('show') }
-
-              user={user.login}/>
+          .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show')}
+              handleLoginClick={ () => $('#login').modal({blurring: true})
+                  .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show')}
+              authActions={authAction}
+              user={user.login}
+              />
 
       <AuthModal headerName={"New User"}
                  modalId={"register"}

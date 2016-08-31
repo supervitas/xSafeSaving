@@ -58,17 +58,17 @@ export function authAction(type, data) {
             }
         }
         case 'LOGOUT': {
-            $.ajax({
-                type: 'POST',
-                url: 'api/auth',
-                data: JSON.stringify(data),
-                contentType: 'application/json'
-            }).always(function (resData) {
-                dispatch({
-                    type: 'LOGOUT',
-                    payload: JSON.parse(resData)
+            return (dispatch) => {
+                $.ajax({
+                    type: 'DELETE',
+                    url: 'api/auth',
+                    contentType: 'application/json'
+                }).always(function (resData) {
+                    dispatch({
+                        type: 'LOGOUT'
+                    })
                 })
-            })
+            }
         }
 
     }
