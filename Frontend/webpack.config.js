@@ -48,7 +48,7 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "window.jQuery": "jquery"
-        })
+        }),
     ],
 
 };
@@ -58,6 +58,11 @@ if (process.env.NODE_ENV === 'production') {
             compressor: {
                 warnings: false
             }
+        },
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            children: true,
+            async: true,
         })
-    )
+    ))
 }

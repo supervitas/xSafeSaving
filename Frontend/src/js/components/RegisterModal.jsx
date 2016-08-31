@@ -45,10 +45,20 @@ var RegisterModal = React.createClass({
         };
        $form.form(validationRules)
     },
+    addError: function (err) {
+        let $formError = $('.ui.error.message');
+        let $form = $('.ui.form');
+        $form.addClass('error');
+        $formError.html(err.status);
+    },
     render: function () {
         let $form = $('.ui.form');
         this.checkProps();
+        this.props.error ? this.addError(this.props.error): $form.removeClass('error');
         this.props.fetching ? $form.addClass('loading'): $form.removeClass('loading');
+        if (this.props.user){
+            $('.ui.modal').modal('hide');
+        }
         return (
             <div className="ui small modal">
                 <div className="header">New User</div>

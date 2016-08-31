@@ -5,7 +5,7 @@ import $ from "jquery";
 export function authAction(type, data) {
     return (dispatch) => {
         dispatch({
-            type: 'LOGIN_REQUEST'
+            type: 'REGISTER_REQUEST'
         });
         $.ajax({
             type: 'POST',
@@ -14,10 +14,14 @@ export function authAction(type, data) {
             contentType: 'application/json'
         }).done(function (resData) {
             dispatch({
-                type: 'LOGIN_SUCCESS',
+                type: 'REGISTER_SUCCESS',
                 payload: JSON.parse(resData)
-            });
+            })
+        }).fail(function(resData) {
+            dispatch({
+                type: 'REGISTER_FAIL',
+                payload: JSON.parse(resData.responseText)
+            })
         });
-
     }
 }

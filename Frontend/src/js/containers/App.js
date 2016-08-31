@@ -16,7 +16,7 @@ var App = React.createClass({
     const  { authAction }  = this.props.authActions;
     return <div>
       <Header handleClick={ () => $('.ui.modal').modal({blurring: true}).modal('show') }/>
-      <RegisterModal register={authAction} fetching={user.fetching}/>
+      <RegisterModal register={authAction} fetching={user.fetching} error={user.error} user={user.login}/>
       <Layout/>
     </div>
   }

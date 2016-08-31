@@ -1,3 +1,8 @@
+package Controllers
+
+/**
+ * Created by nikolaev on 30.08.16.
+ */
 import DB.Database.registerUser
 import com.github.salomonbrys.kotson.fromJson
 import com.github.salomonbrys.kotson.jsonObject
@@ -6,7 +11,7 @@ import com.google.gson.JsonObject
 import spark.Request
 import spark.Response
 
-fun registerUser(req: Request, res: Response): JsonObject {
+fun LoginUser(req: Request, res: Response): JsonObject {
     val gson = Gson()
     val obj: JsonObject
     val list: Map<String, String>
@@ -16,8 +21,8 @@ fun registerUser(req: Request, res: Response): JsonObject {
         list = gson.fromJson<Map<String, String>>( req.body() )
     } catch (e: com.google.gson.JsonSyntaxException) {
         res.status(400)
-         obj = jsonObject(
-            "error" to "Bad JSON"
+        obj = jsonObject(
+                "error" to "Bad JSON"
         )
         return obj
     }
@@ -29,20 +34,19 @@ fun registerUser(req: Request, res: Response): JsonObject {
 
         if (result == "OK") {
             obj = jsonObject(
-                "status" to result,
-                "username" to username
+                    "status" to result
             )
         } else {
             res.status(403)
             obj = jsonObject(
-                "status" to result
+                    "status" to result
             )
         }
 
     } else {
         res.status(400)
         obj = jsonObject(
-            "error" to "Bad JSON"
+                "error" to "Bad JSON"
         )
     }
 
