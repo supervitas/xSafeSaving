@@ -7,13 +7,13 @@ const initialState = {
 export default function user(state = initialState, action) {
   switch(action.type) {
     case "LOGIN_REQUEST":
-      return { ...state, login: '', error: '', fetching: true };
+      return { ...state, fetching: true };
 
     case "LOGIN_SUCCESS":
-      return { ...state, login: action.payload.login, error: '', fetching: false };
+      return { ...state, login: action.payload.username, error: '', fetching: false };
 
     case "LOGIN_FAIL":
-      return { ...state, error: action.payload.message };
+      return { ...state, fetching: false, error: action.payload };
 
     case "REGISTER_REQUEST":
       return { ...state, fetching: true };
@@ -24,7 +24,11 @@ export default function user(state = initialState, action) {
     case "REGISTER_FAIL":
       return { ...state, error: action.payload, fetching: false };
 
+    case "LOGOUT":
+      return { ...state, login:'', fetching: false };
 
+    case "REMOVE_ERROR":
+      return { ...state, error:'' };
 
     default:
       return state

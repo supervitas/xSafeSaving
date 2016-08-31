@@ -5,6 +5,7 @@ package DB
  */
 
 import com.mongodb.MongoClient
+import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.bson.Document
 
@@ -20,6 +21,15 @@ object Database {
             val doc = Document("username", username).append("password", password)
             collection.insertOne(doc)
             return "OK"
+        }
+    }
+    fun loginUser(username: String, password: String): String {
+        val collection = db.getCollection("users")
+        val getUser = collection.find(and(eq("username", username),eq("password", password))).first()
+        if (getUser != null) {
+            return "OK"
+        } else {
+            return "Wrong login or password"
         }
     }
 

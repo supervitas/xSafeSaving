@@ -1,6 +1,6 @@
 import React from "react";
 
-var RegisterModal = React.createClass({
+var AuthModal = React.createClass({
     getInitialState: function() {
         return {username: '', password: ''};
     },
@@ -40,7 +40,7 @@ var RegisterModal = React.createClass({
             },
             onSuccess: function (evt, fields) {
                 evt.preventDefault();
-                that.props.register('login', fields);
+                that.props.authAction(that.props.action, fields);
             }
         };
        $form.form(validationRules)
@@ -53,15 +53,17 @@ var RegisterModal = React.createClass({
     },
     render: function () {
         let $form = $('.ui.form');
+        let $modal = $('.ui.modal');
+
         this.checkProps();
         this.props.error ? this.addError(this.props.error): $form.removeClass('error');
         this.props.fetching ? $form.addClass('loading'): $form.removeClass('loading');
-        if (this.props.user){
-            $('.ui.modal').modal('hide');
+        if (this.props.user) {
+            $modal.modal('hide');
         }
         return (
-            <div className="ui small modal">
-                <div className="header">New User</div>
+            <div className="ui small modal" id={this.props.modalId}>
+                <div className="header">{this.props.headerName}</div>
                 <div className="content">
                         <form className="ui form">
                             <div className="field">
@@ -90,7 +92,7 @@ var RegisterModal = React.createClass({
                         </form>
                 </div>
             </div>
-        )
+        );
     }
 });
-export default RegisterModal
+export default AuthModal

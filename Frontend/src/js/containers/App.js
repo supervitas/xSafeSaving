@@ -2,7 +2,7 @@ import React from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import Header from "../components/Header";
-import RegisterModal from "../components/RegisterModal";
+import AuthModal from "../components/AuthModal";
 import Layout from "../components/Layout";
 import * as pageActions from "../actions/PageActions";
 import * as authActions from "../actions/AuthActions";
@@ -11,12 +11,36 @@ import * as authActions from "../actions/AuthActions";
 var App = React.createClass({
   render() {
     const { user, assets } = this.props;
-
     const { getFiles } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
+
     return <div>
-      <Header handleClick={ () => $('.ui.modal').modal({blurring: true}).modal('show') }/>
-      <RegisterModal register={authAction} fetching={user.fetching} error={user.error} user={user.login}/>
+      <Header handleRegisterClick={ () => $('#register').modal({blurring: true})
+          .modal({
+            onHide: function () {
+              authAction('REMOVE_ERROR')
+            }}).modal('show')}
+              handleLoginClick={ () => $('#login').modal({blurring: true}).modal({onHide: function() {
+                  authAction('REMOVE_ERROR')
+                  }}).modal('show') }
+
+              user={user.login}/>
+
+      <AuthModal headerName={"New User"}
+                 modalId={"register"}
+                 authAction={authAction}
+                 fetching={user.fetching}
+                 error={user.error}
+                 action={"REGISTER"}
+                 user={user.login}/>
+
+      <AuthModal headerName={"Sign-in"}
+                 modalId={"login"}
+                 authAction={authAction}
+                 action={"LOGIN"}
+                 fetching={user.fetching}
+                 error={user.error}
+                 user={user.login}/>
       <Layout/>
     </div>
   }
