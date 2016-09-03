@@ -54,12 +54,13 @@ var AuthModal = React.createClass({
     render: function () {
         let $form = $('.ui.form');
         let $modal = $('.ui.modal');
-
         this.checkProps();
         this.props.error ? this.addError(this.props.error): $form.removeClass('error');
         this.props.fetching ? $form.addClass('loading'): $form.removeClass('loading');
         if (this.props.user) {
             $modal.modal('hide');
+            this.state.username = '';
+            this.state.password = '';
         }
         return (
             <div className="ui small modal" id={this.props.modalId}>
@@ -67,22 +68,28 @@ var AuthModal = React.createClass({
                 <div className="content">
                         <form className="ui form">
                             <div className="field">
-                                <input
-                                    type="text"
-                                    placeholder="Username"
-                                    name="username"
-                                    value={this.state.username}
-                                    onChange={this.handleUsernameChange}
-                                />
+                                <div className="ui left icon input">
+                                    <input
+                                        type="text"
+                                        placeholder="Username"
+                                        name="username"
+                                        value={this.state.username}
+                                        onChange={this.handleUsernameChange}
+                                    />
+                                    <i className="user icon"></i>
+                                </div>
                             </div>
                             <div className="field">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={this.state.password }
-                                    onChange={this.handlePasswordChange}
-                                />
+                                <div className="ui left icon input">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        placeholder="Password"
+                                        value={this.state.password }
+                                        onChange={this.handlePasswordChange}
+                                    />
+                                    <i className="lock icon"></i>
+                                </div>
                             </div>
                             <div className="ui error message"></div>
                             <div className="actions">

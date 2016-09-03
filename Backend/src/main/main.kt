@@ -8,8 +8,8 @@ import  spark.Spark.*
 fun main(args: Array<String>) {
     port(8081)
     before { request, response ->
-        val authenticated: Boolean
-//        print(request.session().attributes())
+        val username : String? = request.session().attribute("user")
+        print(username)
     }
     get("api/auth") { req, res -> checkUserLoginStatus(req, res) }
     put("api/auth") { req, res -> AuthUser(req, res) }

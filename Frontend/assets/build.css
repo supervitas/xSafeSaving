@@ -5,3 +5,6 @@
 * {
   font-family: ProximaNova, Helvetica, sans-serif;
 }
+.ui.error.message {
+  font-family: Helvetica, sans-serif;
+}

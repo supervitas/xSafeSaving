@@ -6,10 +6,10 @@ var Header = React.createClass({
         if (this.props.user) {
            Header = <LogedHeader authActions={this.props.authActions}
                                  user={this.props.user}
-                                 uploadFile={this.props.uploadFile}/>;
+                                 uploadFile={this.props.handleUploadClick}/>
         } else {
             Header = <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
-                                     handleLoginClick={this.props.handleLoginClick}/>;
+                                     handleLoginClick={this.props.handleLoginClick}/>
         }
         return( Header )
     },
@@ -34,19 +34,13 @@ var LogedHeader = React.createClass({
     logout: function () {
       this.props.authActions('LOGOUT')
     },
-    uploadFile: function () {
-        var data = {
-            smth: "123"
-        };
-        this.props.uploadFile(data)
-    },
     render: function () {
         return (
             <div className="ui borderless menu">
                 <a className="item">
                     <i className="blue cloud icon"></i> xSafeSaving</a>
                 <div className="right menu">
-                    <a className="item" onClick={this.uploadFile}>
+                    <a className="item" onClick={this.props.uploadFile}>
                         <i className="cloud upload icon"></i>Upload</a>
                     <a className="item">
                         <i className="user icon"></i>{this.props.user}</a>

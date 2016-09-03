@@ -32,14 +32,34 @@ fun uploadUserFiles(req: Request, res: Response): JsonObject {
     val list: Map<String, String>
     res.status(200)
 
+    val location = "image"          // the directory location where files will be stored
+    val maxFileSize: Long = 50000000       // 50 mb for file
+    val maxRequestSize: Long = 20000000    // 200 mb for all files
+    val fileSizeThreshold = 1024
+
     obj = jsonObject (
             "status" to "OK"
     )
+    val multipartConfigElement = MultipartConfigElement(
+            location, maxFileSize, maxRequestSize, fileSizeThreshold)
+    req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
+            multipartConfigElement)
 
-    req.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement("/temp"))
-    req.raw().getPart("uploaded_file").inputStream.use({ `is` ->
-        print(`is`)
-    })
+    val parts = req.raw().parts
+    for (part in parts) {
+        System.out.println("Name: " + part.getName())
+        System.out.println("Size: " + part.getSize())
+        System.out.println("Filename: " + part.getSubmittedFileName())
+
+        print("__________")
+    }
+
+
+//    req.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement("/temp"))
+//    req.raw()
+//    req.raw().getPart("file-0").inputStream.use({ `is` ->
+//        print(`is`)
+//    })
 
     return obj
 }

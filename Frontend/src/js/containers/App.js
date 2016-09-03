@@ -3,6 +3,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import Header from "../components/Header";
 import AuthModal from "../components/AuthModal";
+import UploadModal from "../components/UploadModal";
 import Layout from "../components/Layout";
 import * as pageActions from "../actions/PageActions";
 import * as authActions from "../actions/AuthActions";
@@ -10,7 +11,7 @@ import * as authActions from "../actions/AuthActions";
 
 var App = React.createClass({
   componentWillMount: function () {
-    const  { authAction }  = this.props.authActions;
+    let  { authAction }  = this.props.authActions;
     authAction("AUTHCHECK")
   },
   render() {
@@ -19,15 +20,18 @@ var App = React.createClass({
     const  { authAction }  = this.props.authActions;
 
     return <div>
-      <Header handleRegisterClick={ () => $('#register').modal({blurring: true})
-          .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show')}
+      <Header
+            handleRegisterClick={ () => $('#register').modal({blurring: true})
+            .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
               handleLoginClick={ () => $('#login').modal({blurring: true})
-                  .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show')}
+                  .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
+
+            handleUploadClick={ () => $('#upload').modal({blurring: true})
+                .modal({onHidden: function () { } }).modal('show') }
 
               authActions={authAction}
               user={user.login}
-              uploadFile={uploadFile}
               />
 
       <AuthModal headerName={"New User"}
@@ -45,7 +49,14 @@ var App = React.createClass({
                  fetching={user.fetching}
                  error={user.error}
                  user={user.login}/>
-      <Layout/>
+
+      <UploadModal headerName={"Upload Files"}
+                   modalId={"upload"}
+                   error={assets.error}
+                   uploadFile={uploadFile} />
+
+      <Layout fetching={assets.fetching}
+              files={assets.files} />
     </div>
   }
 });

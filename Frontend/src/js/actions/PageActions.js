@@ -24,16 +24,17 @@ export function getFiles(data) {
   }
 }
 export function uploadFile(data) {
+
   return (dispatch) => {
     dispatch({
       type: "UPLOAD_FILE_REQUEST"
     });
-
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: 'api/files',
       data: data,
-      contentType: 'application/json'
+      contentType: false,
+      processData: false,
     }).done(function (resData) {
       dispatch({
         type: 'UPLOAD_FILE_SUCCESS',
