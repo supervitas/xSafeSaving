@@ -1,10 +1,15 @@
 import React from "react";
 var Header = React.createClass({
     render: function () {
-        var Header = <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
-        handleLoginClick={this.props.handleLoginClick}/>;
+        var Header;
+
         if (this.props.user) {
-           Header = <LogedHeader authActions={this.props.authActions} user={this.props.user}/>;
+           Header = <LogedHeader authActions={this.props.authActions}
+                                 user={this.props.user}
+                                 uploadFile={this.props.uploadFile}/>;
+        } else {
+            Header = <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
+                                     handleLoginClick={this.props.handleLoginClick}/>;
         }
         return( Header )
     },
@@ -29,13 +34,19 @@ var LogedHeader = React.createClass({
     logout: function () {
       this.props.authActions('LOGOUT')
     },
+    uploadFile: function () {
+        var data = {
+            smth: "123"
+        };
+        this.props.uploadFile(data)
+    },
     render: function () {
         return (
             <div className="ui borderless menu">
                 <a className="item">
                     <i className="blue cloud icon"></i> xSafeSaving</a>
                 <div className="right menu">
-                    <a className="item">
+                    <a className="item" onClick={this.uploadFile}>
                         <i className="cloud upload icon"></i>Upload</a>
                     <a className="item">
                         <i className="user icon"></i>{this.props.user}</a>

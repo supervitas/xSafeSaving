@@ -4,6 +4,23 @@
 import $ from "jquery";
 export function authAction(type, data) {
     switch (type) {
+        case 'AUTHCHECK': {
+            return (dispatch) => {
+                dispatch({
+                    type: 'AUTHCHECK_REQUEST'
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: 'api/auth',
+                    contentType: 'application/json'
+                }).done(function (resData) {
+                    dispatch({
+                        type: 'AUTHCHECK_FINISHED',
+                        payload: JSON.parse(resData)
+                    })
+                });
+            }
+        }
         case 'REGISTER': {
             return (dispatch) => {
                 dispatch({

@@ -9,18 +9,25 @@ import * as authActions from "../actions/AuthActions";
 
 
 var App = React.createClass({
+  componentWillMount: function () {
+    const  { authAction }  = this.props.authActions;
+    authAction("AUTHCHECK")
+  },
   render() {
     const { user, assets } = this.props;
-    const { getFiles } = this.props.pageActions;
+    const { getFiles, uploadFile } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
 
     return <div>
       <Header handleRegisterClick={ () => $('#register').modal({blurring: true})
           .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show')}
+
               handleLoginClick={ () => $('#login').modal({blurring: true})
                   .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show')}
+
               authActions={authAction}
               user={user.login}
+              uploadFile={uploadFile}
               />
 
       <AuthModal headerName={"New User"}

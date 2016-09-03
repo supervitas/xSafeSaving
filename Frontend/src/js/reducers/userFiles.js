@@ -10,14 +10,23 @@ const initialState = {
 export default function userFiles(state = initialState, action) {
 
     switch (action.type) {
-        case 'GET_PHOTOS_REQUEST':
-           return {...state, year: action.payload, fetching: true, error: ''};
+        case 'GET_FILES_REQUEST':
+           return {...state, fetching: true, error: ''};
 
-        case 'GET_PHOTOS_SUCCESS':
+        case 'FILES_FETCHED':
             return { ...state, files: action.payload, fetching: false, error: '' };
 
-        case 'GET_PHOTOS_FAIL':
+        case 'FILES_NOT_FETCHED':
             return { ...state, error: action.payload.message, fetching: false };
+
+        case 'UPLOAD_FILE_REQUEST':
+            return { ...state, fetching: true };
+
+        case 'UPLOAD_FILE_SUCCESS':
+            return { ...state, files: state.files.push('123'),fetching: false};
+
+        case 'UPLOAD_FILE_FAIL':
+            return { ...state, error: action.payload.message, fetching: true };
 
         default:
             return state;

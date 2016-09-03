@@ -49,6 +49,11 @@ module.exports = {
             jQuery: "jquery",
             "window.jQuery": "jquery"
         }),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            children: true,
+            async: true,
+        })
     ],
 
 };
@@ -58,11 +63,6 @@ if (process.env.NODE_ENV === 'production') {
             compressor: {
                 warnings: false
             }
-        },
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.CommonsChunkPlugin({
-            children: true,
-            async: true,
-        })
+        }
     ))
 }

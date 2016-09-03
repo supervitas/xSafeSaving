@@ -1,3 +1,5 @@
+package Controllers
+
 import DB.Database.loginUser
 import DB.Database.registerUser
 import com.github.salomonbrys.kotson.fromJson
@@ -16,8 +18,6 @@ fun AuthUser(req: Request, res: Response): JsonObject {
     obj = jsonObject (
             "status" to "OK"
     )
-
-
     try {
         list = gson.fromJson<Map<String, String>>( req.body() )
     } catch (e: com.google.gson.JsonSyntaxException) {
@@ -36,7 +36,7 @@ fun AuthUser(req: Request, res: Response): JsonObject {
                 val result = registerUser(username, password)
 
                 if (result == "OK") {
-                    req.session(true).attribute("user", req.session().id())
+                    req.session().attribute("user", username)
                     obj = jsonObject(
                             "status" to result,
                             "username" to username
@@ -51,7 +51,7 @@ fun AuthUser(req: Request, res: Response): JsonObject {
             in "POST" -> {
                 val result = loginUser(username, password)
                 if (result == "OK") {
-                    req.session(true).attribute(username, req.session().id())
+                    req.session().attribute("user", username)
                     obj = jsonObject(
                             "status" to result,
                             "username" to username
@@ -80,5 +80,22 @@ fun logout(req: Request, res: Response): JsonObject {
             "status" to "OK"
     )
     req.session().removeAttribute("user")
+    return obj
+}
+
+fun checkUserLoginStatus(req: Request, res: Response): JsonObject {
+    val obj: JsonObject
+    res.status(200)
+    val username : String? = req.session().attribute("user")
+    if(username is String) {
+        obj = jsonObject (
+                "username" to username
+        )
+    } else {
+        obj = jsonObject (
+                "username" to ""
+        )
+    }
+
     return obj
 }
