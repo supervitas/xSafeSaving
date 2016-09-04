@@ -3,6 +3,7 @@
  */
 import Controllers.*
 import  spark.Spark.*
+import java.io.File
 
 
 fun main(args: Array<String>) {
@@ -11,6 +12,9 @@ fun main(args: Array<String>) {
         val username : String? = request.session().attribute("user")
         print(username)
     }
+    val uploadDir = File("upload")
+    uploadDir.mkdir()
+
     get("api/auth") { req, res -> checkUserLoginStatus(req, res) }
     put("api/auth") { req, res -> AuthUser(req, res) }
     post("api/auth") { req, res -> AuthUser(req, res) }
