@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     port(8081)
     before { request, response ->
         val username : String? = request.session().attribute("user")
-        print(username)
+//        print(username)
     }
     val uploadDir = File("upload")
     uploadDir.mkdir()
@@ -22,6 +22,7 @@ fun main(args: Array<String>) {
 
     get("api/files") { req, res -> getUserFiles(req, res) }
     post("api/files") { req, res -> uploadUserFiles(req, res) }
+
 
 
     exception(Exception::class.java) { e, req, res -> e.printStackTrace() }

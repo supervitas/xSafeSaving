@@ -25,25 +25,31 @@ var UploadModal = React.createClass({
                 if (fields.media == '' && fields.url == '') {
                     that.addError('Enter valid file, or url')
                 } else {
-                    var file = $('#media')[0].files[0];
-                    var data = new FormData();
-                    jQuery.each(jQuery('#media')[0].files, function(i, file) {
-                        data.append('file-'+i, file);
-                    });
-                    that.props.uploadFile(data);
+                    if (fields.media != '') {
+                        var file = $('#media')[0].files[0];
+                        var data = new FormData();
+                        jQuery.each(jQuery('#media')[0].files, function (i, file) {
+                            data.append('file-' + i, file);
+                        });
+                        that.props.uploadFile('UPLOAD_FILES',data);
+                    } else {
+                        that.props.uploadFile('UPLOAD_FROM_LINK', {url: fields.url});
+                    }
                 }
             }
         };
         $form.form(validationRules)
     },
     addError: function (errText) {
+        let that = this;
         let $formError = $('.ui.error.message');
-        let $form = $('.ui.form');
+        let $form = $('#'+that.props.modalId).find(".ui.form");
         $form.addClass('error');
         $formError.html(errText);
     },
     render: function () {
-        let $form = $('.ui.form');
+        let that = this;
+        let $form = $('#'+that.props.modalId).find(".ui.form");
         let $modal = $('.ui.modal');
         this.checkProps();
         this.props.error ? this.addError(this.props.error): $form.removeClass('error');

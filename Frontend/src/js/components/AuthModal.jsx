@@ -46,16 +46,19 @@ var AuthModal = React.createClass({
        $form.form(validationRules)
     },
     addError: function (err) {
+        let that = this;
         let $formError = $('.ui.error.message');
-        let $form = $('.ui.form');
+        let $form = $('#'+that.props.modalId).find(".ui.form");
         $form.addClass('error');
-        $formError.html(err.status);
+        $formError.html(err);
     },
     render: function () {
-        let $form = $('.ui.form');
+        let that = this;
+        let $form = $('#'+that.props.modalId).find(".ui.form");
         let $modal = $('.ui.modal');
         this.checkProps();
-        this.props.error ? this.addError(this.props.error): $form.removeClass('error');
+
+        this.props.error ? this.addError(this.props.error.status): $form.removeClass('error');
         this.props.fetching ? $form.addClass('loading'): $form.removeClass('loading');
         if (this.props.user) {
             $modal.modal('hide');

@@ -18,6 +18,7 @@ var App = React.createClass({
     const { user, assets } = this.props;
     const { getFiles, uploadFile } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
+    window.$ = $;
 
     return <div>
       <Header

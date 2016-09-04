@@ -23,28 +23,49 @@ export function getFiles(data) {
     });
   }
 }
-export function uploadFile(data) {
+export function uploadFile(uploadType, data) {
 
   return (dispatch) => {
     dispatch({
       type: "UPLOAD_FILE_REQUEST"
     });
-    $.ajax({
-      type: 'POST',
-      url: 'api/files',
-      data: data,
-      contentType: false,
-      processData: false,
-    }).done(function (resData) {
-      dispatch({
-        type: 'UPLOAD_FILE_SUCCESS',
-        payload: JSON.parse(resData)
-      })
-    }).fail(function (resData) {
-      dispatch({
-        type: 'UPLOAD_FILE_FAIL',
-        payload: JSON.parse(resData.responseText)
-      })
-    });
+      if (uploadType === 'UPLOAD_FILES') {
+        $.ajax({
+          type: 'POST',
+          url: 'api/files',
+          data: data,
+          contentType: false,
+          processData: false,
+        }).done(function (resData) {
+          dispatch({
+            type: 'UPLOAD_FILE_SUCCESS',
+            payload: JSON.parse(resData)
+          })
+        }).fail(function (resData) {
+          dispatch({
+            type: 'UPLOAD_FILE_FAIL',
+            payload: JSON.parse(resData.responseText)
+          })
+        });
+      }
+      if (uploadType === 'UPLOAD_FROM_LINK') {
+        $.ajax({
+          type: 'POST',
+          url: 'api/files',
+          data: JSON.stringify(data),
+          contentType: 'application/json'
+        }).done(function (resData) {
+          dispatch({
+            type: 'UPLOAD_FILE_SUCCESS',
+            payload: JSON.parse(resData)
+          })
+        }).fail(function (resData) {
+          dispatch({
+            type: 'UPLOAD_FILE_FAIL',
+            payload: JSON.parse(resData.responseText)
+          })
+        });
+
+      }
   }
 }
