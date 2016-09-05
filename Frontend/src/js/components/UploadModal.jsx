@@ -26,9 +26,8 @@ var UploadModal = React.createClass({
                     that.addError('Enter valid file, or url')
                 } else {
                     if (fields.media != '') {
-                        var file = $('#media')[0].files[0];
                         var data = new FormData();
-                        jQuery.each(jQuery('#media')[0].files, function (i, file) {
+                        $.each($('#media')[0].files, function (i, file) {
                             data.append('file-' + i, file);
                         });
                         that.props.uploadFile('UPLOAD_FILES',data);

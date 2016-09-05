@@ -15,10 +15,10 @@ var App = React.createClass({
     authAction("AUTHCHECK")
   },
   render() {
-    const { user, assets } = this.props;
+    const { user, files } = this.props;
     const { getFiles, uploadFile } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
-    window.$ = $;
+    window.$ = $; //for debug
 
     return <div>
       <Header
@@ -53,11 +53,14 @@ var App = React.createClass({
 
       <UploadModal headerName={"Upload Files"}
                    modalId={"upload"}
-                   error={assets.error}
+                   error={files.error}
+                   fetching={files.fetching}
                    uploadFile={uploadFile} />
 
-      <Layout fetching={assets.fetching}
-              files={assets.files} />
+      <Layout fetching={files.fetching}
+              files={files.files}
+              getFiles={getFiles}
+              user={user.login}/>
     </div>
   }
 });
@@ -66,7 +69,7 @@ var App = React.createClass({
 function mapStateToProps(state) {
   return {
     user: state.user,
-    assets: state.files
+    files: state.files
   }
 }
 

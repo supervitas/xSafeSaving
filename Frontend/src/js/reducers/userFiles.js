@@ -23,7 +23,7 @@ export default function userFiles(state = initialState, action) {
             return { ...state, fetching: true };
 
         case 'UPLOAD_FILE_SUCCESS':
-            return { ...state, files: state.files.concat([123]), fetching: false};
+            return { ...state, files: [...state.files, 123], fetching: false};
 
         case 'UPLOAD_FILE_FAIL':
             return { ...state, error: action.payload.message, fetching: true };

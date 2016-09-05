@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import spark.Request
 import spark.Response
-import java.io.File
 
 fun AuthUser(req: Request, res: Response): JsonObject {
     val gson = Gson()
@@ -38,8 +37,6 @@ fun AuthUser(req: Request, res: Response): JsonObject {
 
                 if (result == "OK") {
                     req.session().attribute("user", username)
-                    val userDir = File("upload/" +  username)
-                    userDir.mkdir()
                     obj = jsonObject(
                             "status" to result,
                             "username" to username
