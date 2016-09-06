@@ -19,7 +19,10 @@ module.exports = {
             {
                 test: /.jsx?$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/,
+                exclude: [
+                    /node_modules/,
+                    path.resolve(__dirname, 'assets/semantic.min.js'),
+                ],
                 query: {
                     presets: ['es2015', 'react']
                 }

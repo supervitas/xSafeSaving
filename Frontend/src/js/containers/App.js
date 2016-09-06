@@ -12,7 +12,7 @@ import * as authActions from "../actions/AuthActions";
 var App = React.createClass({
   componentWillMount: function () {
     let  { authAction }  = this.props.authActions;
-    authAction("AUTHCHECK")
+    authAction("AUTH_CHECK")
   },
   render() {
     const { user, files } = this.props;
@@ -25,11 +25,11 @@ var App = React.createClass({
             handleRegisterClick={ () => $('#register').modal({blurring: true})
             .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
-              handleLoginClick={ () => $('#login').modal({blurring: true})
-                  .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
+            handleLoginClick={ () => $('#login').modal({blurring: true})
+            .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
             handleUploadClick={ () => $('#upload').modal({blurring: true})
-                .modal({onHidden: function () { } }).modal('show') }
+            .modal({onHidden: function () { } }).modal('show') }
 
               authActions={authAction}
               user={user.login}

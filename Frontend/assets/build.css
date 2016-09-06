@@ -5,6 +5,13 @@
 * {
   font-family: ProximaNova, Helvetica, sans-serif;
 }
+h1,h2,h3 {
+  font-family: ProximaNova, Helvetica, sans-serif;
+}
+
+.not-authed_layout{
+  margin-top: 150px;
+}
 .ui.error.message {
   font-family: Helvetica, sans-serif;
 }

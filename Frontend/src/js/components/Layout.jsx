@@ -14,9 +14,14 @@ var NotAuthedLayout = React.createClass({
 
     render: function () {
         return(
-            <div>
-                Not Authed
-            </div>
+                <div className="container not-authed_layout">
+                <div className="ui text container">
+                    <h1 className="ui header">
+                        xSafeSaving
+                    </h1>
+                    <h2>Store your files and watch it anywhere, anytime.</h2>
+                </div>
+                </div>
         )
     }
 });

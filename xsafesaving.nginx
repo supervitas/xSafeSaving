@@ -4,23 +4,28 @@ server {
 	client_max_body_size 32m;
 	server_name bomberman.tk;
 
+	location ^~ /upload  {
+		alias /Users/nikolaev/Projects/Web/xsafesaving/upload;
+	}
+
 	location ~* \.(js|jpg|png|css|ttf|gif)$ {
-        root /Users/nikolaev/Projects/Web/xsafesaving/Frontend;
+		root /Users/nikolaev/Projects/Web/xsafesaving/Frontend;
 	}
 	location / {
-	root   /Users/nikolaev/Projects/Web/xsafesaving/Frontend;
-	   index  index.html;
-	   try_files $uri $uri/ /index.html;
-    }
+		root   /Users/nikolaev/Projects/Web/xsafesaving/Frontend;
+		index  index.html;
+		try_files $uri $uri/ /index.html;
+	}
 
 	location /api {
-	    proxy_pass http://localhost:8081;
-	    proxy_pass_header Server;
-            proxy_set_header Host $http_host;
-            proxy_redirect off;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Scheme $scheme;
-            proxy_connect_timeout 10;
-            proxy_read_timeout 10;
+		proxy_pass http://localhost:8081;
+		proxy_pass_header Server;
+		proxy_set_header Host $http_host;
+		proxy_redirect off;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Scheme $scheme;
+		proxy_connect_timeout 10;
+		proxy_read_timeout 10;
 	}
+
 }

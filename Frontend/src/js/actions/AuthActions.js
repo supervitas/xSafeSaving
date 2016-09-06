@@ -4,10 +4,10 @@
 import $ from "jquery";
 export function authAction(type, data) {
     switch (type) {
-        case 'AUTHCHECK': {
+        case 'AUTH_CHECK': {
             return (dispatch) => {
                 dispatch({
-                    type: 'AUTHCHECK_REQUEST'
+                    type: 'AUTH_CHECK_REQUEST'
                 });
                 $.ajax({
                     type: 'GET',
@@ -15,7 +15,7 @@ export function authAction(type, data) {
                     contentType: 'application/json'
                 }).done(function (resData) {
                     dispatch({
-                        type: 'AUTHCHECK_FINISHED',
+                        type: 'AUTH_CHECK_FINISHED',
                         payload: JSON.parse(resData)
                     })
                 });

@@ -14,6 +14,10 @@ new WebpackDevServer(webpack(config), {
         '/api/*': {
             target: 'http://localhost:8081',
             secure: false,
+        },
+        '/upload/*': {
+            target: 'http://localhost',
+            secure: false,
         }
     }
 }).listen(3000, 'localhost', function (err, result) {

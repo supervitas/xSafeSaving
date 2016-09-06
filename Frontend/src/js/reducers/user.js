@@ -6,10 +6,10 @@ const initialState = {
 
 export default function user(state = initialState, action) {
   switch(action.type) {
-    case "AUTHCHECK_REQUEST":
+    case "AUTH_CHECK_REQUEST":
       return { ...state, fetching: true };
 
-    case "AUTHCHECK_FINISHED":
+    case "AUTH_CHECK_FINISHED":
       return { ...state, fetching: false, login: action.payload.username };
 
     case "LOGIN_REQUEST":

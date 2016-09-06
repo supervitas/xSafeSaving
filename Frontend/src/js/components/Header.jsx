@@ -31,6 +31,9 @@ var LogedOutHeader = React.createClass({
     }
 });
 var LogedHeader = React.createClass({
+    componentDidMount: function () {
+        $('.ui.dropdown.item').dropdown();
+    },
     logout: function () {
       this.props.authActions('LOGOUT')
     },
@@ -42,10 +45,16 @@ var LogedHeader = React.createClass({
                 <div className="right menu">
                     <a className="item" onClick={this.props.uploadFile}>
                         <i className="cloud upload icon"></i>Upload</a>
-                    <a className="item">
-                        <i className="user icon"></i>{this.props.user}</a>
-                    <a className="item" onClick={this.logout}>
-                        <i className="sign out icon "></i>Logout</a>
+
+                    <div className="ui dropdown item">
+                        <i className="user icon"></i>
+                        {this.props.user}
+                        <i className="dropdown icon"></i>
+                        <div className="menu">
+                            <a className="item" onClick={this.logout}>
+                                <i className="sign out icon "></i>Logout</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
