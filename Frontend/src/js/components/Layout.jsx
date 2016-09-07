@@ -2,7 +2,7 @@ import React from "react";
 var Layout = React.createClass({
     render: function () {
         var layout;
-        this.props.user ? layout = <AuthedLayout getFiles={this.props.getFiles}/> :  layout = <NotAuthedLayout/>;
+        this.props.user ? layout = <AuthedLayout files={this.props.files} getFiles={this.props.getFiles}/> :  layout = <NotAuthedLayout/>;
         return(
             <div>
                 {layout}
@@ -31,7 +31,7 @@ var AuthedLayout = React.createClass({
         this.props.getFiles()
     },
    render: function () {
-       return(
+       return (
            <div className="ui three column doubling stackable grid container">
                Authed
            </div>

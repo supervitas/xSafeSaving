@@ -4,11 +4,12 @@ package DB
  * Created by nikolaev on 29.08.16.
  */
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.mongodb.MongoClient
 import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.bson.Document
-import java.util.*
 
 object Database {
     var db = MongoClient("localhost").getDatabase("xsafesaving")
@@ -35,28 +36,39 @@ object Database {
         }
     }
 
-    fun createFile(username: String, path: String, filename: String) {
+    fun createFile(username: String, path: String, filename: String, contentType: String) {
         val collection = db.getCollection("files")
-        val doc = Document("username", username).append("path", path).append("filename", filename)
+        val doc = Document("username", username)
+                .append("path", path)
+                .append("filename", filename)
+                .append("content-type",contentType)
         collection.insertOne(doc)
 
     }
 
-    fun getUserFiles(username: String): HashMap<String, String> {
-        val files = HashMap <String, String>()
+    fun getUserFiles(username: String): String {
+        val gson = Gson()
+        val jsonObject = JsonObject()
+
         val collection = db.getCollection("files")
         val getUserFilesCursor = collection.find(eq("username", username)).iterator()
         try {
             while (getUserFilesCursor.hasNext()) {
+                val innerObject = JsonObject()
                 val next = getUserFilesCursor.next()
                 val path = next["path"].toString()
                 val name = next["filename"].toString()
-                files.put(name, path)
+                val contentType = next["content-type"].toString()
+
+                innerObject.addProperty("path", path)
+                innerObject.addProperty("content-type",contentType)
+
+                jsonObject.add(name, innerObject)
             }
         } finally {
             getUserFilesCursor.close()
         }
-        return files
+        return gson.toJson(jsonObject)
     }
 
 }

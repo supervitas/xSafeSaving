@@ -6,7 +6,6 @@ package Controllers
 import DB.Database.createFile
 import DB.Database.getUserFiles
 import com.github.salomonbrys.kotson.fromJson
-import com.github.salomonbrys.kotson.jsonObject
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import spark.Request
@@ -38,24 +37,28 @@ fun getUserFiles(req: Request, res: Response): String {
     }
 
     val result = getUserFiles(username)
-    obj = gson.toJson(result)
 
-    return obj
+    return result
 }
 
-fun uploadUserFiles(req: Request, res: Response): JsonObject {
-    val obj: JsonObject
+fun uploadUserFiles(req: Request, res: Response): String {
+    var obj: String
     val gson = Gson()
 
     res.status(200)
     val username : String? = req.session().attribute("user")
     val list: Map<String, String>
 
+    var json = {}
+    obj = gson.toJson(json)
+
     if (username == null) {
         res.status(401)
-        obj = jsonObject (
-                "status" to "You need auth to do this"
-        )
+         json = {
+            val status = "You need auth to do this"
+            val key = "status"
+        }
+        obj = gson.toJson(json)
         return obj
     }
     if (req.contentType() == "application/json") {
@@ -63,16 +66,22 @@ fun uploadUserFiles(req: Request, res: Response): JsonObject {
             list = gson.fromJson<Map<String, String>>( req.body() )
         } catch (e: com.google.gson.JsonSyntaxException) {
             res.status(400)
-            obj = jsonObject(
-                    "error" to "Bad JSON"
-            )
+            json = {
+                val status = "Bad Json"
+                val key = "error"
+            }
+            obj = gson.toJson(json)
             return obj
         }
+
         val url : String? = list["url"]
         if (url != null) {
             print(url)
         }
+
     } else {
+
+        val jsonObject = JsonObject()
         val location = "files"          // the directory location where files will be stored (not used)
         val maxFileSize: Long = 50000000       // 50 mb for file
         val maxRequestSize: Long = 20000000    // 200 mb for all files
@@ -83,13 +92,14 @@ fun uploadUserFiles(req: Request, res: Response): JsonObject {
         req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
                 multipartConfigElement)
 
+
         val parts = req.raw().parts
 
         val date: Date = Date() // your date
         val cal = Calendar.getInstance()
         cal.setTime(date)
         val year = cal.get(Calendar.YEAR)
-        val month = cal.getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.ENGLISH)
+        val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
         val userDir = File("upload/$username/$year/$month/$day")
@@ -99,14 +109,18 @@ fun uploadUserFiles(req: Request, res: Response): JsonObject {
             part.inputStream.use({ `in` ->
                 Files.copy(`in`, Paths.get("upload/$username/$year/$month/$day/" + part.submittedFileName),
                         StandardCopyOption.REPLACE_EXISTING)
-                createFile(username, "upload/$username/$year/$month/$day/" + part.submittedFileName, part.submittedFileName)
             })
-        }
+            createFile(username, "upload/$username/$year/$month/$day/" + part.submittedFileName, part.submittedFileName,
+                    part.contentType)
+            val innerObject = JsonObject()
+            innerObject.addProperty("path", "upload/$username/$year/$month/$day/" + part.submittedFileName)
+            innerObject.addProperty("content-type", part.contentType)
 
+            jsonObject.add(part.submittedFileName, innerObject)
+
+        }
+        obj = gson.toJson(jsonObject)
     }
-    obj = jsonObject(
-            "status" to "OK"
-    )
 
     return obj
 }
