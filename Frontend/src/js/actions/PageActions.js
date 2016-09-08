@@ -43,6 +43,7 @@ export function uploadFile(uploadType, data) {
           var array = $.map(JSON.parse(resData), function(value, index) {
             return [value];
           });
+
           dispatch({
             type: 'UPLOAD_FILE_SUCCESS',
             payload: array
@@ -61,9 +62,12 @@ export function uploadFile(uploadType, data) {
           data: JSON.stringify(data),
           contentType: 'application/json'
         }).done(function (resData) {
+          var array = $.map(JSON.parse(resData), function(value, index) {
+            return [value];
+          });
           dispatch({
             type: 'UPLOAD_FILE_SUCCESS',
-            payload: JSON.parse(resData)
+            payload: array
           })
         }).fail(function (resData) {
           dispatch({

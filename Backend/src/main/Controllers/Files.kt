@@ -11,6 +11,10 @@ import com.google.gson.JsonObject
 import spark.Request
 import spark.Response
 import java.io.File
+import java.io.FileOutputStream
+import java.net.MalformedURLException
+import java.net.URL
+import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
@@ -74,7 +78,49 @@ fun uploadUserFiles(req: Request, res: Response): String {
 
         val url : String? = list["url"]
         if (url != null) {
-            print(url)
+            val size: Long
+            val contentType: String
+            val url = URL(url)
+            try {
+                val conn = url.openConnection()
+                size = conn.contentLengthLong
+                contentType = conn.contentType
+                conn.inputStream.close()
+                if (size / (1024 * 1024) > 70) {
+                    val json = JsonObject()
+                    json.addProperty("message", "File to big")
+                    obj = gson.toJson(json)
+                    return obj
+                }
+                val pathString = getDataAndCreateFolder(username)
+
+                val rbc = Channels.newChannel(url.openStream())
+                val randomFileName = UUID.randomUUID().toString().substring(0,6) + "." +
+                        contentType.substring(contentType.lastIndexOf("/") + 1)
+                val path = pathString + randomFileName
+                val fos = FileOutputStream(path)
+                fos.channel.transferFrom(rbc, 0, java.lang.Long.MAX_VALUE)
+                createFile(username, path, randomFileName, contentType)
+
+                val jsonObject = JsonObject()
+                val innerObject = JsonObject()
+
+                innerObject.addProperty("path", path)
+                innerObject.addProperty("content-type", contentType)
+                innerObject.addProperty("filename", randomFileName)
+
+                jsonObject.add(UUID.randomUUID().toString().substring(0,6), innerObject)
+                obj = gson.toJson(jsonObject)
+                return obj
+
+            } catch (e: MalformedURLException) {
+                res.status(400)
+                val json = JsonObject()
+                json.addProperty("message", "Invalid URL")
+                obj = gson.toJson(json)
+                return obj
+            }
+
         }
 
     } else { //upload from multipart-form-data
@@ -93,35 +139,38 @@ fun uploadUserFiles(req: Request, res: Response): String {
 
         val parts = req.raw().parts
 
-        val date: Date = Date() // your date
-        val cal = Calendar.getInstance()
-        cal.setTime(date)
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
-        val day = cal.get(Calendar.DAY_OF_MONTH)
-
-        val userDir = File("upload/$username/$year/$month/$day")
-        userDir.mkdirs()
+        val pathString = getDataAndCreateFolder(username)
 
         for (part in parts) {
             part.inputStream.use({ `in` ->
-                Files.copy(`in`, Paths.get("upload/$username/$year/$month/$day/" + part.submittedFileName),
+                Files.copy(`in`, Paths.get(pathString + part.submittedFileName),
                         StandardCopyOption.REPLACE_EXISTING)
             })
-            createFile(username, "upload/$username/$year/$month/$day/" + part.submittedFileName, part.submittedFileName,
+            createFile(username, pathString + part.submittedFileName, part.submittedFileName,
                     part.contentType)
             val innerObject = JsonObject()
-            innerObject.addProperty("path", "upload/$username/$year/$month/$day/" + part.submittedFileName)
+            innerObject.addProperty("path", pathString + part.submittedFileName)
             innerObject.addProperty("content-type", part.contentType)
             innerObject.addProperty("filename", part.submittedFileName)
 
-            val uuid = UUID.randomUUID().toString().substring(0,6)
 
-            jsonObject.add(uuid, innerObject)
+            jsonObject.add(UUID.randomUUID().toString().substring(0, 6), innerObject)
 
         }
         obj = gson.toJson(jsonObject)
     }
 
     return obj
+}
+fun getDataAndCreateFolder(username:String):String {
+    val date: Date = Date() // your date
+    val cal = Calendar.getInstance()
+    cal.setTime(date)
+    val year = cal.get(Calendar.YEAR)
+    val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
+    val day = cal.get(Calendar.DAY_OF_MONTH)
+
+    val userDir = File("upload/$username/$year/$month/$day")
+    userDir.mkdirs()
+    return "upload/$username/$year/$month/$day/"
 }

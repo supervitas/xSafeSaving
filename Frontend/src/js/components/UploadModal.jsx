@@ -31,10 +31,13 @@ var UploadModal = React.createClass({
                             data.append('file-' + i, file);
                         });
                         that.props.uploadFile('UPLOAD_FILES',data);
+                        document.getElementById("media").value = "";
                     } else {
                         that.props.uploadFile('UPLOAD_FROM_LINK', {url: fields.url});
+
                     }
                 }
+
             }
         };
         $form.form(validationRules)
@@ -80,6 +83,7 @@ var UploadModal = React.createClass({
                                 <input type="text"
                                        placeholder="Enter URL"
                                        name="url"
+                                       id="urldownload"
                                        value={this.state.url}
                                        onChange={this.handleUrlChange}/>
                             </div>
