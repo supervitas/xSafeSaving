@@ -54,10 +54,8 @@ fun uploadUserFiles(req: Request, res: Response): String {
 
     if (username == null) {
         res.status(401)
-         json = {
-            val status = "You need auth to do this"
-            val key = "status"
-        }
+        val json = JsonObject()
+        json.addProperty("message", "You need auth to do this")
         obj = gson.toJson(json)
         return obj
     }
@@ -79,11 +77,11 @@ fun uploadUserFiles(req: Request, res: Response): String {
             print(url)
         }
 
-    } else {
+    } else { //upload from multipart-form-data
 
         val jsonObject = JsonObject()
         val location = "files"          // the directory location where files will be stored (not used)
-        val maxFileSize: Long = 50000000       // 50 mb for file
+        val maxFileSize: Long = 100000000       // 100 mb for file
         val maxRequestSize: Long = 20000000    // 200 mb for all files
         val fileSizeThreshold = 1024
 
@@ -115,8 +113,11 @@ fun uploadUserFiles(req: Request, res: Response): String {
             val innerObject = JsonObject()
             innerObject.addProperty("path", "upload/$username/$year/$month/$day/" + part.submittedFileName)
             innerObject.addProperty("content-type", part.contentType)
+            innerObject.addProperty("filename", part.submittedFileName)
 
-            jsonObject.add(part.submittedFileName, innerObject)
+            val uuid = UUID.randomUUID().toString().substring(0,6)
+
+            jsonObject.add(uuid, innerObject)
 
         }
         obj = gson.toJson(jsonObject)

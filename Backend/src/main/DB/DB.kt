@@ -10,6 +10,7 @@ import com.mongodb.MongoClient
 import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.bson.Document
+import java.util.*
 
 object Database {
     var db = MongoClient("localhost").getDatabase("xsafesaving")
@@ -38,12 +39,14 @@ object Database {
 
     fun createFile(username: String, path: String, filename: String, contentType: String) {
         val collection = db.getCollection("files")
-        val doc = Document("username", username)
-                .append("path", path)
-                .append("filename", filename)
-                .append("content-type",contentType)
-        collection.insertOne(doc)
-
+        val file = collection.find(and(eq("filename", filename),eq("path", path))).first()
+        if (file == null) {
+            val doc = Document("username", username)
+                    .append("path", path)
+                    .append("filename", filename)
+                    .append("content-type", contentType)
+            collection.insertOne(doc)
+        }
     }
 
     fun getUserFiles(username: String): String {
@@ -62,8 +65,11 @@ object Database {
 
                 innerObject.addProperty("path", path)
                 innerObject.addProperty("content-type",contentType)
+                innerObject.addProperty("filename", name)
 
-                jsonObject.add(name, innerObject)
+                val uuid = UUID.randomUUID().toString().substring(0,6)
+
+                jsonObject.add(uuid, innerObject)
             }
         } finally {
             getUserFilesCursor.close()
