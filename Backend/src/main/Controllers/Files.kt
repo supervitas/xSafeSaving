@@ -80,8 +80,8 @@ fun uploadUserFiles(req: Request, res: Response): String {
         if (url != null) {
             val size: Long
             val contentType: String
-            val url = URL(url)
             try {
+                val url = URL(url)
                 val conn = url.openConnection()
                 size = conn.contentLengthLong
                 contentType = conn.contentType
