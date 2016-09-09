@@ -34,7 +34,7 @@ var UploadModal = React.createClass({
                         document.getElementById("media").value = "";
                     } else {
                         that.props.uploadFile('UPLOAD_FROM_LINK', {url: fields.url});
-                        this.state.url = ''
+                        that.setState({url: ''});
                     }
                 }
 

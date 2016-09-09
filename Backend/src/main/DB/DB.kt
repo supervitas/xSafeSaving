@@ -54,7 +54,8 @@ object Database {
         val jsonObject = JsonObject()
 
         val collection = db.getCollection("files")
-        val getUserFilesCursor = collection.find(eq("username", username)).iterator()
+        val natural = "${'$'}natural"
+        val getUserFilesCursor = collection.find(eq("username", username)).sort(Document("$natural", -1)).iterator()
         try {
             while (getUserFilesCursor.hasNext()) {
                 val innerObject = JsonObject()
