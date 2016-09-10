@@ -19,7 +19,7 @@ var LogedOutHeader = React.createClass({
         return (
             <div className="ui secondary borderless menu">
                 <a className="item">
-                    <i className="blue cloud icon"></i> xSafeSaving</a>
+                    <i className="blue cloud icon"></i>xSafeSaving</a>
                 <div className="right menu">
                     <a className="item" onClick={this.props.handleRegisterClick}>
                         <i className="add user icon"></i>Sign-up</a>
