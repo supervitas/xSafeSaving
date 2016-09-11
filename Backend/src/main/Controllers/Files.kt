@@ -155,36 +155,42 @@ fun uploadUserFiles(req: Request, res: Response): String {
         val jsonArray = JsonArray()
         val location = "files"          // the directory location where files will be stored (not used)
         val maxFileSize: Long = 100000000       // 100 mb for file
-        val maxRequestSize: Long = 20000000    // 200 mb for all files
+        val maxRequestSize: Long = 200000000    // 200 mb for all files
         val fileSizeThreshold = 1024
+
 
         val multipartConfigElement = MultipartConfigElement(
                 location, maxFileSize, maxRequestSize, fileSizeThreshold)
         req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
                 multipartConfigElement)
 
+        try {
+             val parts = req.raw().parts
+             val pathString = getDateAndCreateFolder(username)
 
-        val parts = req.raw().parts
+            for (part in parts) {
+                part.inputStream.use({ `in` ->
+                    Files.copy(`in`, Paths.get(pathString + part.submittedFileName),
+                            StandardCopyOption.REPLACE_EXISTING)
+                })
+                createFile(username, pathString + part.submittedFileName, part.submittedFileName,
+                        part.contentType)
+                val innerObject = JsonObject()
+                innerObject.addProperty("path", pathString + part.submittedFileName)
+                innerObject.addProperty("content-type", part.contentType)
+                innerObject.addProperty("filename", part.submittedFileName)
 
-        val pathString = getDateAndCreateFolder(username)
+                jsonArray.add(innerObject)
 
-        for (part in parts) {
-            part.inputStream.use({ `in` ->
-                Files.copy(`in`, Paths.get(pathString + part.submittedFileName),
-                        StandardCopyOption.REPLACE_EXISTING)
-            })
-            createFile(username, pathString + part.submittedFileName, part.submittedFileName,
-                    part.contentType)
-            val innerObject = JsonObject()
-            innerObject.addProperty("path", pathString + part.submittedFileName)
-            innerObject.addProperty("content-type", part.contentType)
-            innerObject.addProperty("filename", part.submittedFileName)
-
-
-            jsonArray.add(innerObject)
-
+            }
+            obj = gson.toJson(jsonArray)
+        } catch (e: java.lang.IllegalStateException){
+            val json = JsonObject()
+            json.addProperty("message", "Files to big")
+            obj = gson.toJson(json)
+            return obj
         }
-        obj = gson.toJson(jsonArray)
+
     }
 
     return obj
@@ -197,7 +203,7 @@ fun getDateAndCreateFolder(username:String):String {
     val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
     val day = cal.get(Calendar.DAY_OF_MONTH)
 
-    val userDir = File("upload/$username/$year/$month/$day")
+    val userDir = File("../upload/$username/$year/$month/$day")
     userDir.mkdirs()
-    return "upload/$username/$year/$month/$day/"
+    return "../upload/$username/$year/$month/$day/"
 }

@@ -131,7 +131,7 @@ var Pagination = React.createClass({
                    {arr.map(function(result, index) {
                        return <a className={result.isActive? "item active": "item"}
                                  onClick={()=>that.getNewFiles(index)}
-                                 key={index}> {result.page}</a>;
+                                 key={index}> {result.page}</a>
                    })}
                </div>
            </div>
