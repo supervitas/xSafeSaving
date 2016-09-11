@@ -56,16 +56,12 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             children: true,
             async: true,
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: false,
+            mangle: false
         })
     ],
 
 };
-if (process.env.NODE_ENV === 'production') {
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        }
-    ))
-}
+

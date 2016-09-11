@@ -57,7 +57,6 @@ var UploadModal = React.createClass({
         this.props.error ? this.addError(this.props.error): $form.removeClass('error');
         this.props.fetching ? $form.addClass('loading'): ($form.removeClass('loading'));
 
-
         return (
             <div className="ui small modal" id={this.props.modalId}>
                 <div className="header">{this.props.headerName}</div>
