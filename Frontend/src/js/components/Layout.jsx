@@ -78,7 +78,7 @@ var Video = React.createClass({
     render: function () {
         return(
             <div className="column center aligned">
-                <video className="ui fluid image" controls src={this.props.src}></video>
+                <video className="ui fluid image"  preload="metadata"  controls src={this.props.src}></video>
                 <MediaInfo name={this.props.name} src={this.props.src} />
             </div>
         )

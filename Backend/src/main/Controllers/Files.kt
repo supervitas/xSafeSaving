@@ -118,13 +118,21 @@ fun uploadUserFiles(req: Request, res: Response): String {
                 obj = gson.toJson(json)
                 return obj
             }
-            val conn = downloadURL.openConnection()
-            size = conn.contentLengthLong
-            contentType = conn.contentType
-            conn.inputStream.close()
-            if (size / (1024 * 1024) > 70) {
+            try {
+                val conn = downloadURL.openConnection()
+                size = conn.contentLengthLong
+                contentType = conn.contentType
+                conn.inputStream.close()
+                if (size / (1024 * 1024) > 70) {
+                    val json = JsonObject()
+                    json.addProperty("message", "File to big")
+                    obj = gson.toJson(json)
+                    return obj
+                }
+            } catch (e: java.io.FileNotFoundException){
+                res.status(400)
                 val json = JsonObject()
-                json.addProperty("message", "File to big")
+                json.addProperty("message", "File from that url not found")
                 obj = gson.toJson(json)
                 return obj
             }
@@ -158,39 +166,33 @@ fun uploadUserFiles(req: Request, res: Response): String {
         val maxRequestSize: Long = 200000000    // 200 mb for all files
         val fileSizeThreshold = 1024
 
-
         val multipartConfigElement = MultipartConfigElement(
                 location, maxFileSize, maxRequestSize, fileSizeThreshold)
         req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
                 multipartConfigElement)
 
-        try {
-             val parts = req.raw().parts
-             val pathString = getDateAndCreateFolder(username)
 
-            for (part in parts) {
-                part.inputStream.use({ `in` ->
-                    Files.copy(`in`, Paths.get(pathString + part.submittedFileName),
-                            StandardCopyOption.REPLACE_EXISTING)
-                })
-                createFile(username, pathString + part.submittedFileName, part.submittedFileName,
-                        part.contentType)
-                val innerObject = JsonObject()
-                innerObject.addProperty("path", pathString + part.submittedFileName)
-                innerObject.addProperty("content-type", part.contentType)
-                innerObject.addProperty("filename", part.submittedFileName)
+        val parts = req.raw().parts
 
-                jsonArray.add(innerObject)
+        val pathString = getDateAndCreateFolder(username)
 
-            }
-            obj = gson.toJson(jsonArray)
-        } catch (e: java.lang.IllegalStateException){
-            val json = JsonObject()
-            json.addProperty("message", "Files to big")
-            obj = gson.toJson(json)
-            return obj
+        for (part in parts) {
+            part.inputStream.use({ `in` ->
+                Files.copy(`in`, Paths.get(pathString + part.submittedFileName),
+                        StandardCopyOption.REPLACE_EXISTING)
+            })
+            createFile(username, pathString + part.submittedFileName, part.submittedFileName,
+                    part.contentType)
+            val innerObject = JsonObject()
+            innerObject.addProperty("path", pathString + part.submittedFileName)
+            innerObject.addProperty("content-type", part.contentType)
+            innerObject.addProperty("filename", part.submittedFileName)
+
+
+            jsonArray.add(innerObject)
+
         }
-
+        obj = gson.toJson(jsonArray)
     }
 
     return obj

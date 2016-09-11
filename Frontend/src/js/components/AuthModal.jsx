@@ -54,8 +54,8 @@ var AuthModal = React.createClass({
     },
     render: function () {
         let that = this;
-        let $form = $('#'+that.props.modalId).find(".ui.form");
-        let $modal = $('.ui.modal');
+        let $modal = $('#' + that.props.modalId);
+        let $form = $modal.find(".ui.form");
         this.checkProps();
 
         this.props.error ? this.addError(this.props.error.status): $form.removeClass('error');

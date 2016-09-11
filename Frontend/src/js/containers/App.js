@@ -58,6 +58,7 @@ var App = React.createClass({
 
       <Layout fetching={files.fetching}
               files={files.files}
+              error={files.error}
               getFiles={getFiles}
               user={user.login}
               filesCount={files.filesCount}/>

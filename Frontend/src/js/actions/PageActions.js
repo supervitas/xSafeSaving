@@ -48,6 +48,8 @@ export function uploadFile(uploadType, data) {
           contentType: false,
           processData: false,
         }).done(function (resData) {
+          var $modal = $('#upload');
+          $modal.modal('hide');
           dispatch({
             type: 'UPLOAD_FILE_SUCCESS',
             payload: JSON.parse(resData)
@@ -66,12 +68,11 @@ export function uploadFile(uploadType, data) {
           data: JSON.stringify(data),
           contentType: 'application/json'
         }).done(function (resData) {
-          var array = $.map(JSON.parse(resData), function(value, index) {
-            return [value];
-          });
+          var $modal = $('#upload');
+          $modal.modal('hide');
           dispatch({
             type: 'UPLOAD_FILE_SUCCESS',
-            payload: array
+            payload: JSON.parse(resData)
           })
         }).fail(function (resData) {
           dispatch({

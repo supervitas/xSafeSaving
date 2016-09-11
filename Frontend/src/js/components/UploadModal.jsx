@@ -51,11 +51,12 @@ var UploadModal = React.createClass({
     },
     render: function () {
         let that = this;
-        let $form = $('#'+that.props.modalId).find(".ui.form");
-        let $modal = $('.ui.modal');
+        let $modal = $('#' + that.props.modalId);
+        let $form = $modal.find(".ui.form");
         this.checkProps();
         this.props.error ? this.addError(this.props.error): $form.removeClass('error');
-        this.props.fetching ? $form.addClass('loading'): $form.removeClass('loading');
+        this.props.fetching ? $form.addClass('loading'): ($form.removeClass('loading'));
+
 
         return (
             <div className="ui small modal" id={this.props.modalId}>
