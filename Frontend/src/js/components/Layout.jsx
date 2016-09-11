@@ -2,7 +2,14 @@ import React from "react";
 var Layout = React.createClass({
     render: function () {
         var layout;
-        this.props.user ? layout = <AuthedLayout files={this.props.files} getFiles={this.props.getFiles}/> :  layout = <NotAuthedLayout/>;
+        if(this.props.user) {
+            layout = <AuthedLayout
+                files={this.props.files}
+                getFiles={this.props.getFiles}
+                filesCount={this.props.filesCount}/>
+        } else {
+            layout = <NotAuthedLayout/>;
+        }
         return(
             <div>
                 {layout}
@@ -27,7 +34,7 @@ var NotAuthedLayout = React.createClass({
 
 var AuthedLayout = React.createClass({
     componentWillMount: function () {
-        this.props.getFiles()
+        this.props.getFiles({skip:0})
     },
    render: function () {
        var content = [];
@@ -45,8 +52,11 @@ var AuthedLayout = React.createClass({
        });
 
        return (
-           <div className="ui two column doubling stackable grid container">
-               {content}
+           <div>
+               <div className="ui two column doubling stackable grid container">
+                   {content}
+               </div>
+               {content.length > 0 ? <Pagination filesCount={this.props.filesCount} getFiles={this.props.getFiles}/> : false}
            </div>
        )
    }
@@ -99,5 +109,35 @@ var MediaInfo = React.createClass({
         )
     }
 });
+
+var Pagination = React.createClass({
+    getInitialState: function () {
+        return {currentPage: 1}
+    },
+    getNewFiles: function (pageNumber) {
+        this.setState({currentPage:pageNumber + 1});
+      this.props.getFiles({skip: pageNumber * 20})
+    },
+   render: function () {
+       var pageCount = Math.floor(this.props.filesCount / 20) + 1;
+       var arr = [];
+       var that = this;
+       for (var i = 0; i < pageCount; i++){
+           arr.push({page:i + 1,isActive: i + 1 === that.state.currentPage})
+       }
+       return(
+           <div className="ui center aligned container">
+               <div className="ui pagination menu">
+                   {arr.map(function(result, index) {
+                       return <a className={result.isActive? "item active": "item"}
+                                 onClick={()=>that.getNewFiles(index)}
+                                 key={index}> {result.page}</a>;
+                   })}
+               </div>
+           </div>
+       )
+   } 
+});
+
 
 export default Layout

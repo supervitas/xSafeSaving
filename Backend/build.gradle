@@ -21,6 +21,12 @@ apply plugin: 'application'
 mainClassName = 'Main'
 
 jar {
+    manifest {
+        attributes 'Main-Class': 'Main.Kt'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
     baseName = 'xsafesaving'
     version = '0.0.1-SNAPSHOT'
 }

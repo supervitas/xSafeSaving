@@ -49,13 +49,14 @@ object Database {
         }
     }
 
-    fun getUserFiles(username: String): String {
+    fun getUserFiles(username: String, skip: Int ): String {
         val gson = Gson()
         val jsonArray = JsonArray()
 
         val collection = db.getCollection("files")
         val natural = "${'$'}natural"
-        val getUserFilesCursor = collection.find(eq("username", username)).sort(Document("$natural", -1)).iterator()
+        val getUserFilesCursor = collection.find(eq("username", username))
+                .sort(Document("$natural", -1)).skip(skip).limit(20).iterator()
         try {
             while (getUserFilesCursor.hasNext()) {
                 val innerObject = JsonObject()
@@ -74,6 +75,15 @@ object Database {
             getUserFilesCursor.close()
         }
         return gson.toJson(jsonArray)
+    }
+
+    fun getCountOfFiles(username: String) : String {
+        val gson = Gson()
+        val jsonObject = JsonObject()
+        val collection = db.getCollection("files")
+        val getCount = collection.find(eq("username", username)).count()
+        jsonObject.addProperty("count", getCount)
+        return gson.toJson(jsonObject)
     }
 
 }

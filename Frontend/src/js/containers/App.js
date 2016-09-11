@@ -59,7 +59,8 @@ var App = React.createClass({
       <Layout fetching={files.fetching}
               files={files.files}
               getFiles={getFiles}
-              user={user.login}/>
+              user={user.login}
+              filesCount={files.filesCount}/>
     </div>
   }
 });

@@ -4,7 +4,8 @@
 const initialState = {
     files: [],
     fetching: false,
-    error: ''
+    error: '',
+    filesCount: 0,
 };
 
 export default function userFiles(state = initialState, action) {
@@ -15,6 +16,9 @@ export default function userFiles(state = initialState, action) {
 
         case 'FILES_FETCHED':
             return { ...state, files: action.payload, fetching: false, error: '' };
+
+        case 'FILES_COUNT_FETCHED':
+            return { ...state, filesCount: action.payload.count };
 
         case 'FILES_NOT_FETCHED':
             return { ...state, error: action.payload.message, fetching: false };

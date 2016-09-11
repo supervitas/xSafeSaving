@@ -14,6 +14,15 @@ export function getFiles(data) {
       dispatch({
         type: 'FILES_FETCHED',
         payload: JSON.parse(resData)
+      });
+      $.ajax({
+        type: 'GET',
+        url: 'api/files/pagination',
+      }).done(function (resData) {
+        dispatch({
+          type: 'FILES_COUNT_FETCHED',
+          payload: JSON.parse(resData)
+        })
       })
     }).fail(function (resData) {
       dispatch({
@@ -21,8 +30,10 @@ export function getFiles(data) {
         payload: JSON.parse(resData.responseText)
       })
     });
+
   }
 }
+
 export function uploadFile(uploadType, data) {
 
   return (dispatch) => {

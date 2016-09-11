@@ -4,6 +4,7 @@ package Controllers
  * Created by nikolaev on 03.09.16.
  */
 import DB.Database.createFile
+import DB.Database.getCountOfFiles
 import DB.Database.getUserFiles
 import com.github.salomonbrys.kotson.fromJson
 import com.github.salomonbrys.kotson.jsonObject
@@ -27,9 +28,9 @@ fun getUserFiles(req: Request, res: Response): String {
 
     val gson = Gson()
     val obj: String
-    val list: Map<String, String>
     res.status(200)
 
+    val skip = req.queryParams("skip")
 
     val username : String? = req.session().attribute("user")
     if (username == null) {
@@ -42,10 +43,34 @@ fun getUserFiles(req: Request, res: Response): String {
         return obj
     }
 
-    val result = getUserFiles(username)
+    val result = getUserFiles(username, skip.toInt())
 
     return result
 }
+
+fun getPagination(req: Request, res: Response): String {
+    val gson = Gson()
+    val obj: String
+    res.status(200)
+
+    val skip = req.queryParams("skip")
+
+    val username : String? = req.session().attribute("user")
+    if (username == null) {
+        res.status(401)
+        val json = {
+            val status = "You need auth to do this"
+            val key = "status"
+        }
+        obj = gson.toJson(json)
+        return obj
+    }
+
+    val result = getCountOfFiles(username)
+
+    return result
+}
+
 
 fun uploadUserFiles(req: Request, res: Response): String {
     var obj: String
@@ -103,7 +128,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
                 obj = gson.toJson(json)
                 return obj
             }
-            val pathString = getDataAndCreateFolder(username)
+            val pathString = getDateAndCreateFolder(username)
 
             val rbc = Channels.newChannel(downloadURL.openStream())
             val randomFileName = UUID.randomUUID().toString().substring(0,6) + "." +
@@ -141,7 +166,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
 
         val parts = req.raw().parts
 
-        val pathString = getDataAndCreateFolder(username)
+        val pathString = getDateAndCreateFolder(username)
 
         for (part in parts) {
             part.inputStream.use({ `in` ->
@@ -164,7 +189,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
 
     return obj
 }
-fun getDataAndCreateFolder(username:String):String {
+fun getDateAndCreateFolder(username:String):String {
     val date: Date = Date() // your date
     val cal = Calendar.getInstance()
     cal.setTime(date)

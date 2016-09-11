@@ -21,6 +21,7 @@ public class Main {
 
             get("api/files") { req, res -> getUserFiles(req, res) }
             post("api/files") { req, res -> uploadUserFiles(req, res) }
+            get("api/files/pagination") { req, res -> getPagination(req, res) }
 
 
 

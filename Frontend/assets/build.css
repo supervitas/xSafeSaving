@@ -21,3 +21,7 @@ h1,h2,h3 {
 .file-image{
   width: 60%;
 }
+.ui.pagination.menu{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
