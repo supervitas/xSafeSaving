@@ -39,7 +39,7 @@ var LogedHeader = React.createClass({
     },
     render: function () {
         return (
-            <div className="ui secondary fixed  borderless menu">
+            <div className="ui secondary borderless menu">
                 <a className="item">
                     <i className="blue cloud icon"></i> xSafeSaving</a>
                 <div className="right menu">

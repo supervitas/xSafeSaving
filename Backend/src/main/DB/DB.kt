@@ -5,12 +5,12 @@ package DB
  */
 
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.mongodb.MongoClient
 import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.bson.Document
-import java.util.*
 
 object Database {
     var db = MongoClient("localhost").getDatabase("xsafesaving")
@@ -51,7 +51,7 @@ object Database {
 
     fun getUserFiles(username: String): String {
         val gson = Gson()
-        val jsonObject = JsonObject()
+        val jsonArray = JsonArray()
 
         val collection = db.getCollection("files")
         val natural = "${'$'}natural"
@@ -68,14 +68,12 @@ object Database {
                 innerObject.addProperty("content-type",contentType)
                 innerObject.addProperty("filename", name)
 
-                val uuid = UUID.randomUUID().toString().substring(0,6)
-
-                jsonObject.add(uuid, innerObject)
+                jsonArray.add(innerObject)
             }
         } finally {
             getUserFilesCursor.close()
         }
-        return gson.toJson(jsonObject)
+        return gson.toJson(jsonArray)
     }
 
 }

@@ -15,3 +15,6 @@ h1,h2,h3 {
 .ui.error.message {
   font-family: Helvetica, sans-serif;
 }
+.media-info{
+  margin-top: 10px;
+}

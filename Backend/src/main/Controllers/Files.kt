@@ -6,7 +6,9 @@ package Controllers
 import DB.Database.createFile
 import DB.Database.getUserFiles
 import com.github.salomonbrys.kotson.fromJson
+import com.github.salomonbrys.kotson.jsonObject
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import spark.Request
 import spark.Response
@@ -80,38 +82,9 @@ fun uploadUserFiles(req: Request, res: Response): String {
         if (url != null) {
             val size: Long
             val contentType: String
+            val downloadURL: URL
             try {
-                val url = URL(url)
-                val conn = url.openConnection()
-                size = conn.contentLengthLong
-                contentType = conn.contentType
-                conn.inputStream.close()
-                if (size / (1024 * 1024) > 70) {
-                    val json = JsonObject()
-                    json.addProperty("message", "File to big")
-                    obj = gson.toJson(json)
-                    return obj
-                }
-                val pathString = getDataAndCreateFolder(username)
-
-                val rbc = Channels.newChannel(url.openStream())
-                val randomFileName = UUID.randomUUID().toString().substring(0,6) + "." +
-                        contentType.substring(contentType.lastIndexOf("/") + 1)
-                val path = pathString + randomFileName
-                val fos = FileOutputStream(path)
-                fos.channel.transferFrom(rbc, 0, java.lang.Long.MAX_VALUE)
-                createFile(username, path, randomFileName, contentType)
-
-                val jsonObject = JsonObject()
-                val innerObject = JsonObject()
-
-                innerObject.addProperty("path", path)
-                innerObject.addProperty("content-type", contentType)
-                innerObject.addProperty("filename", randomFileName)
-
-                jsonObject.add(UUID.randomUUID().toString().substring(0,6), innerObject)
-                obj = gson.toJson(jsonObject)
-                return obj
+                downloadURL = URL(url)
 
             } catch (e: MalformedURLException) {
                 res.status(400)
@@ -120,12 +93,41 @@ fun uploadUserFiles(req: Request, res: Response): String {
                 obj = gson.toJson(json)
                 return obj
             }
+            val conn = downloadURL.openConnection()
+            size = conn.contentLengthLong
+            contentType = conn.contentType
+            conn.inputStream.close()
+            if (size / (1024 * 1024) > 70) {
+                val json = JsonObject()
+                json.addProperty("message", "File to big")
+                obj = gson.toJson(json)
+                return obj
+            }
+            val pathString = getDataAndCreateFolder(username)
 
+            val rbc = Channels.newChannel(downloadURL.openStream())
+            val randomFileName = UUID.randomUUID().toString().substring(0,6) + "." +
+                    contentType.substring(contentType.lastIndexOf("/") + 1)
+            val path = pathString + randomFileName
+            val fos = FileOutputStream(path)
+            fos.channel.transferFrom(rbc, 0, java.lang.Long.MAX_VALUE)
+            createFile(username, path, randomFileName, contentType)
+
+            val jsonArray = JsonArray()
+            val innerObject = jsonObject()
+
+            innerObject.addProperty("path", path)
+            innerObject.addProperty("content-type", contentType)
+            innerObject.addProperty("filename", randomFileName)
+
+            jsonArray.add(innerObject)
+            obj = gson.toJson(jsonArray)
+            return obj
         }
 
     } else { //upload from multipart-form-data
 
-        val jsonObject = JsonObject()
+        val jsonArray = JsonArray()
         val location = "files"          // the directory location where files will be stored (not used)
         val maxFileSize: Long = 100000000       // 100 mb for file
         val maxRequestSize: Long = 20000000    // 200 mb for all files
@@ -154,10 +156,10 @@ fun uploadUserFiles(req: Request, res: Response): String {
             innerObject.addProperty("filename", part.submittedFileName)
 
 
-            jsonObject.add(UUID.randomUUID().toString().substring(0, 6), innerObject)
+            jsonArray.add(innerObject)
 
         }
-        obj = gson.toJson(jsonObject)
+        obj = gson.toJson(jsonArray)
     }
 
     return obj

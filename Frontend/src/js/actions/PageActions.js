@@ -11,12 +11,9 @@ export function getFiles(data) {
       data: data,
       contentType: 'application/json'
     }).done(function (resData) {
-      var array = $.map(JSON.parse(resData), function(value, index) {
-        return [value];
-      });
       dispatch({
         type: 'FILES_FETCHED',
-        payload: array
+        payload: JSON.parse(resData)
       })
     }).fail(function (resData) {
       dispatch({
@@ -40,13 +37,9 @@ export function uploadFile(uploadType, data) {
           contentType: false,
           processData: false,
         }).done(function (resData) {
-          var array = $.map(JSON.parse(resData), function(value, index) {
-            return [value];
-          });
-
           dispatch({
             type: 'UPLOAD_FILE_SUCCESS',
-            payload: array
+            payload: JSON.parse(resData)
           })
         }).fail(function (resData) {
           dispatch({

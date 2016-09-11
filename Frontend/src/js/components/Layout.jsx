@@ -11,7 +11,6 @@ var Layout = React.createClass({
     },
 });
 var NotAuthedLayout = React.createClass({
-
     render: function () {
         return(
                 <div className="container not-authed_layout">
@@ -31,23 +30,72 @@ var AuthedLayout = React.createClass({
         this.props.getFiles()
     },
    render: function () {
+       var content = [];
+       this.props.files.forEach(function(result, number) {
+           var contentType = result['content-type'];
+           var type = contentType.substring(0, contentType.lastIndexOf('/'));
+           if (type === 'image') {
+               content.push(<Image key={number} name={result.filename} src={result.path}/>)
+           } else if (type === 'video') {
+            content.push(<Video key={number} name={result.filename} src={result.path}/>)
+           } else {
+               content.push(<MediaObject key={number} name={result.filename} src={result.path}/>)
+           }
+
+       });
+
        return (
-           <div className="ui three column doubling stackable grid container">
-               Authed
+           <div className="ui two column doubling stackable grid container">
+               {content}
            </div>
        )
    }
 });
 
-var Images = React.createClass({
+
+var Image = React.createClass({
    render: function () {
        return(
-           <div className="column">
+           <div className="column center aligned">
                <img className="ui fluid image" src={this.props.src}></img>
+               <MediaInfo name={this.props.name} src={this.props.src} />
            </div>
        )
    }
 });
 
+var Video = React.createClass({
+    render: function () {
+        return(
+            <div className="column center aligned">
+                <video className="ui fluid image" controls src={this.props.src}></video>
+                <MediaInfo name={this.props.name} src={this.props.src} />
+            </div>
+        )
+    }
+});
+
+var MediaObject = React.createClass({
+   render: function () {
+       return(
+       <div className="column center aligned">
+           <img className="ui image" src='/upload/file.png'></img>
+           <MediaInfo name={this.props.name} src={this.props.src}/>
+       </div>
+       )
+   }
+});
+
+var MediaInfo = React.createClass({
+    render: function () {
+        return(
+            <div className="media-info">
+                <a href={this.props.src}>
+                    {this.props.name}
+                </a>
+            </div>
+        )
+    }
+});
 
 export default Layout
