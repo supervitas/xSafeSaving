@@ -32,6 +32,7 @@
     "react-router": "^2.5.1",
     "redux": "^3.5.2",
     "semantic-ui": "^2.2.2",
-    "jquery": "latest"
+    "jquery": "latest",
+    "url-loader": "^0.5.7"
   }
 }

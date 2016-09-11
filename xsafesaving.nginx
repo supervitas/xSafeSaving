@@ -2,7 +2,7 @@ server {
 	listen   80;
 	access_log off;
 	client_max_body_size 32m;
-	server_name bomberman.tk;
+	server_name xsafesaving.tk;
 
 	location ^~ /upload  {
 		alias /Users/nikolaev/Projects/Web/xsafesaving/upload;
