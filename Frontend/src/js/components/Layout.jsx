@@ -79,8 +79,10 @@ var MediaObject = React.createClass({
    render: function () {
        return(
        <div className="column center aligned">
-           <img className="ui image" src='/upload/file.png'></img>
-           <MediaInfo name={this.props.name} src={this.props.src}/>
+           <div className="ui">
+            <img className="file-image" src='/upload/file.png'></img>
+            <MediaInfo name={this.props.name} src={this.props.src}/>
+           </div>
        </div>
        )
    }
