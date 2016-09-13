@@ -116,7 +116,8 @@ var Pagination = React.createClass({
     },
     getNewFiles: function (pageNumber) {
         this.setState({currentPage:pageNumber + 1});
-      this.props.getFiles({skip: pageNumber * 20})
+        this.props.getFiles({skip: pageNumber * 20});
+        $("html, body").animate({ scrollTop: 0 }, "slow");
     },
    render: function () {
        var pageCount = Math.floor(this.props.filesCount / 20) + 1;

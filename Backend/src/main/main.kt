@@ -11,6 +11,9 @@ public class Main {
         @JvmStatic public fun main(args: Array<String>) {
             port(8081)
 
+            val maxThreads = Runtime.getRuntime().availableProcessors()
+            threadPool(maxThreads)
+
             val uploadDir = File("upload")
             uploadDir.mkdir()
 
