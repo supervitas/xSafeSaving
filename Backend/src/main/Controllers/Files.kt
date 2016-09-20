@@ -104,13 +104,13 @@ fun uploadUserFiles(req: Request, res: Response): String {
         }
 
         val url : String? = list["url"]
-        if (url != null) {
+        if (url != null && !url.toLowerCase().contains("file://") ) {
+
             val size: Long
             val contentType: String
             val downloadURL: URL
             try {
                 downloadURL = URL(url)
-
             } catch (e: MalformedURLException) {
                 res.status(400)
                 val json = JsonObject()
@@ -156,6 +156,12 @@ fun uploadUserFiles(req: Request, res: Response): String {
             jsonArray.add(innerObject)
             obj = gson.toJson(jsonArray)
             return obj
+        } else {
+            res.status(403)
+            val json = JsonObject()
+            json.addProperty("message", "Invalid URL")
+            obj = gson.toJson(json)
+            return obj
         }
 
     } else { //upload from multipart-form-data
@@ -198,7 +204,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
     return obj
 }
 fun getDateAndCreateFolder(username:String):String {
-    val date: Date = Date() // your date
+    val date: Date = Date()
     val cal = Calendar.getInstance()
     cal.setTime(date)
     val year = cal.get(Calendar.YEAR)

@@ -12,7 +12,9 @@ public class Main {
             port(8081)
 
             val maxThreads = Runtime.getRuntime().availableProcessors()
-            threadPool(maxThreads)
+            val minThreads = 2
+            val timeOutMillis = 30000
+            threadPool(maxThreads, minThreads, timeOutMillis)
 
             val uploadDir = File("upload")
             uploadDir.mkdir()
