@@ -1,6 +1,6 @@
 @font-face {
-  font-family: ProximaNova; /* Имя шрифта */
-  src: url(./fonts/ProximaNovaRegular.otf); /* Путь к файлу со шрифтом */
+  font-family: ProximaNova;
+  src: url(./fonts/ProximaNovaRegular.otf);
 }
 * {
   font-family: ProximaNova, Helvetica, sans-serif;
@@ -15,13 +15,20 @@ h1,h2,h3 {
 .ui.error.message {
   font-family: Helvetica, sans-serif;
 }
-.media-info{
+.media-info {
   margin-top: 10px;
 }
-.file-image{
+.file-image {
   width: 60%;
 }
-.ui.pagination.menu{
+.ui.pagination.menu {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.delete_file {
+  position: relative;
+  left: 10px;
+}
+.file__name{
+  display: none;
 }

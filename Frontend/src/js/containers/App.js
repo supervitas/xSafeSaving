@@ -16,7 +16,7 @@ var App = React.createClass({
   },
   render() {
     const { user, files } = this.props;
-    const { getFiles, uploadFile } = this.props.pageActions;
+    const { getFiles, uploadFile, deleteFile } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
 
     return <div>
@@ -61,6 +61,7 @@ var App = React.createClass({
               error={files.error}
               getFiles={getFiles}
               user={user.login}
+              deleteFile={deleteFile}
               filesCount={files.filesCount}/>
     </div>
   }

@@ -18,6 +18,11 @@ export function authAction(type, data) {
                         type: 'AUTH_CHECK_FINISHED',
                         payload: JSON.parse(resData)
                     })
+                }).error(function (err) {
+                    dispatch({
+                        type: 'AUTH_CHECK_FINISHED',
+                        payload: ''
+                    })
                 });
             }
         }

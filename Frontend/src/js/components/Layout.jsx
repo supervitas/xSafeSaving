@@ -1,4 +1,5 @@
 import React from "react";
+
 var Layout = React.createClass({
     render: function () {
         var layout;
@@ -6,6 +7,7 @@ var Layout = React.createClass({
             layout = <AuthedLayout
                 files={this.props.files}
                 getFiles={this.props.getFiles}
+                deleteFile={this.props.deleteFile}
                 filesCount={this.props.filesCount}/>
         } else {
             layout = <NotAuthedLayout/>;
@@ -36,7 +38,7 @@ var AuthedLayout = React.createClass({
     componentWillMount: function () {
         this.props.getFiles({skip:0})
     },
-   render: function () {
+    render: function () {
        var content = [];
        this.props.files.forEach(function(result, number) {
            var contentType = result['content-type'];
@@ -57,11 +59,11 @@ var AuthedLayout = React.createClass({
                    {content}
                </div>
                {content.length > 0 ? <Pagination filesCount={this.props.filesCount} getFiles={this.props.getFiles}/> : false}
+               <DeleteModal deleteFile={this.props.deleteFile}/>
            </div>
        )
    }
 });
-
 
 var Image = React.createClass({
    render: function () {
@@ -100,11 +102,18 @@ var MediaObject = React.createClass({
 
 var MediaInfo = React.createClass({
     render: function () {
-        return(
+        return (
             <div className="media-info">
                 <a href={this.props.src}>
                     {this.props.name}
                 </a>
+                <i onClick={() => {
+                    $('.file__name').html(this.props.name);
+                    $('.delete_fileName').html('Delete ' + this.props.name + ' ?');
+                    $('#deleteModal').modal('show')}}
+
+                   className="remove link icon delete_file">
+                </i>
             </div>
         )
     }
@@ -123,8 +132,8 @@ var Pagination = React.createClass({
        var pageCount = Math.floor(this.props.filesCount / 20) + 1;
        var arr = [];
        var that = this;
-       for (var i = 0; i < pageCount; i++){
-           arr.push({page:i + 1,isActive: i + 1 === that.state.currentPage})
+       for (var i = 0; i < pageCount; i++) {
+           arr.push({page:i + 1, isActive: i + 1 === that.state.currentPage})
        }
        return(
            <div className="ui center aligned container">
@@ -140,5 +149,36 @@ var Pagination = React.createClass({
    } 
 });
 
+var DeleteModal = React.createClass({
+    render: function () {
+        return (
+            <div className="ui small modal" id="deleteModal">
+                    <i className="close icon"></i>
+                    <div className="header">
+                        Delete File
+                    </div>
+                    <div className="image content">
+                        <div className="image">
+                            <i className="file icon"></i>
+                        </div>
+
+                        <div className="description">
+                            <div className="file__name"></div>
+                            <p className="delete_fileName"></p>
+                        </div>
+                    </div>
+                    <div className="actions">
+                        <div className="two fluid ui inverted buttons">
+                            <button className="ui cancel button">Cancel</button>
+                            <div className="or"></div>
+                            <button onClick={()=>{
+                                this.props.deleteFile($('.file__name')[0].innerText)
+                            }} className="ui negative button">Delete</button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+});
 
 export default Layout

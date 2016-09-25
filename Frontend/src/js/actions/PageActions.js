@@ -84,3 +84,30 @@ export function uploadFile(uploadType, data) {
       }
   }
 }
+export function deleteFile(data) {
+  return (dispatch) => {
+    dispatch({
+      type: "DELETE_FILE_REQUEST"
+    });
+    console.log(data);
+      // $.ajax({
+      //   type: 'POST',
+      //   url: 'api/files',
+      //   data: JSON.stringify(data),
+      //   contentType: 'application/json'
+      // }).done(function (resData) {
+      //   var $modal = $('#upload');
+      //   $modal.modal('hide');
+      //   dispatch({
+      //     type: 'UPLOAD_FILE_SUCCESS',
+      //     payload: JSON.parse(resData)
+      //   })
+      // }).fail(function (resData) {
+      //   dispatch({
+      //     type: 'UPLOAD_FILE_FAIL',
+      //     payload: JSON.parse(resData.responseText)
+      //   })
+      // });
+
+    }
+}
