@@ -108,7 +108,7 @@ var MediaInfo = React.createClass({
                     {this.props.name}
                 </a>
                 <i onClick={() => {
-                    $('.file__name').html(this.props.name);
+                    $('.file__path').html(this.props.src);
                     $('.delete_fileName').html('Delete ' + this.props.name + ' ?');
                     $('#deleteModal').modal('show')}}
 
@@ -163,7 +163,7 @@ var DeleteModal = React.createClass({
                         </div>
 
                         <div className="description">
-                            <div className="file__name"></div>
+                            <div className="file__path"></div>
                             <p className="delete_fileName"></p>
                         </div>
                     </div>
@@ -172,7 +172,7 @@ var DeleteModal = React.createClass({
                             <button className="ui cancel button">Cancel</button>
                             <div className="or"></div>
                             <button onClick={()=>{
-                                this.props.deleteFile($('.file__name')[0].innerText)
+                                this.props.deleteFile({path: $('.file__path')[0].innerText})
                             }} className="ui negative button">Delete</button>
                     </div>
                 </div>

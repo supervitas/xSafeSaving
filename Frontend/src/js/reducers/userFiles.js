@@ -32,6 +32,9 @@ export default function userFiles(state = initialState, action) {
         case 'UPLOAD_FILE_FAIL':
             return { ...state, error: action.payload.message, fetching: false };
 
+        case 'DELETE_FILE_SUCCESS':
+            return { ...state, files: state.files.filter(function(el){return el.path !== action.payload;}) };
+
         default:
             return state;
     }

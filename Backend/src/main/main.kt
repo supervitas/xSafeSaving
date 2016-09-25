@@ -11,11 +11,6 @@ public class Main {
         @JvmStatic public fun main(args: Array<String>) {
             port(8081)
 
-            val maxThreads = Runtime.getRuntime().availableProcessors()
-            val minThreads = 2
-            val timeOutMillis = 30000
-            threadPool(maxThreads, minThreads, timeOutMillis)
-
             val uploadDir = File("upload")
             uploadDir.mkdir()
 
@@ -26,6 +21,8 @@ public class Main {
 
             get("api/files") { req, res -> getUserFiles(req, res) }
             post("api/files") { req, res -> uploadUserFiles(req, res) }
+            delete("api/files"){ req, res -> deleteFile(req, res) }
+
             get("api/files/pagination") { req, res -> getPagination(req, res) }
 
 

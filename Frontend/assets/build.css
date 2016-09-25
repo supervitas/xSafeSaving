@@ -29,6 +29,6 @@ h1,h2,h3 {
   position: relative;
   left: 10px;
 }
-.file__name{
+.file__path{
   display: none;
 }

@@ -11,6 +11,7 @@ import com.mongodb.MongoClient
 import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.bson.Document
+import java.io.File
 
 object Database {
     var db = MongoClient("localhost").getDatabase("xsafesaving")
@@ -48,6 +49,14 @@ object Database {
             collection.insertOne(doc)
         }
     }
+
+    fun deleteFile(username: String, path: String) {
+        val collection = db.getCollection("files")
+        collection.findOneAndDelete(and(eq("username", username), eq("path", path)))
+        val file = File(path)
+        file.delete()
+    }
+
 
     fun getUserFiles(username: String, skip: Int ): String {
         val gson = Gson()

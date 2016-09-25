@@ -4,6 +4,7 @@ package Controllers
  * Created by nikolaev on 03.09.16.
  */
 import DB.Database.createFile
+import DB.Database.deleteFile
 import DB.Database.getCountOfFiles
 import DB.Database.getUserFiles
 import com.github.salomonbrys.kotson.fromJson
@@ -69,6 +70,47 @@ fun getPagination(req: Request, res: Response): String {
     val result = getCountOfFiles(username)
 
     return result
+}
+
+fun deleteFile(req: Request, res: Response): String {
+    var obj: String
+    val gson = Gson()
+
+    res.status(200)
+    val username : String? = req.session().attribute("user")
+    val list: Map<String, String>
+
+    var json = JsonObject()
+    obj = gson.toJson(json)
+
+    if (username == null) {
+        res.status(401)
+        val json = JsonObject()
+        json.addProperty("message", "You need auth to do this")
+        obj = gson.toJson(json)
+        return obj
+    }
+    try {
+        list = gson.fromJson<Map<String, String>>( req.body() )
+    } catch (e: com.google.gson.JsonSyntaxException) {
+        res.status(400)
+        json.addProperty("message", "Bad JSON")
+        obj = gson.toJson(json)
+        return obj
+    }
+    val path : String? = list["path"]
+    if (path != null) {
+        val result = deleteFile(username, path)
+        res.status(200)
+        json.addProperty("message", "OK")
+        obj = gson.toJson(json)
+        return obj
+
+    }
+    res.status(403)
+    json.addProperty("message", "Some Error")
+    obj = gson.toJson(json)
+    return obj
 }
 
 

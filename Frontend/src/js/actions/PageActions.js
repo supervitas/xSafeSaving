@@ -89,25 +89,23 @@ export function deleteFile(data) {
     dispatch({
       type: "DELETE_FILE_REQUEST"
     });
-    console.log(data);
-      // $.ajax({
-      //   type: 'POST',
-      //   url: 'api/files',
-      //   data: JSON.stringify(data),
-      //   contentType: 'application/json'
-      // }).done(function (resData) {
-      //   var $modal = $('#upload');
-      //   $modal.modal('hide');
-      //   dispatch({
-      //     type: 'UPLOAD_FILE_SUCCESS',
-      //     payload: JSON.parse(resData)
-      //   })
-      // }).fail(function (resData) {
-      //   dispatch({
-      //     type: 'UPLOAD_FILE_FAIL',
-      //     payload: JSON.parse(resData.responseText)
-      //   })
-      // });
-
+      $.ajax({
+        type: 'DELETE',
+        url: 'api/files',
+        data: JSON.stringify(data),
+        contentType: 'application/json'
+      }).done(function (resData) {
+        var $modal = $('#deleteModal');
+        $modal.modal('hide');
+        dispatch({
+          type: 'DELETE_FILE_SUCCESS',
+          payload: data.path
+        })
+      }).fail(function (resData) {
+        dispatch({
+          type: 'DELETE_FILE_FAIL',
+          payload: JSON.parse(resData.responseText)
+        })
+      });
     }
 }
