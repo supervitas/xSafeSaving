@@ -52,9 +52,11 @@ object Database {
 
     fun deleteFile(username: String, path: String) {
         val collection = db.getCollection("files")
-        collection.findOneAndDelete(and(eq("username", username), eq("path", path)))
-        val file = File(path)
-        file.delete()
+        val fileFromDB = collection.findOneAndDelete(and(eq("username", username), eq("path", path)))
+        if (fileFromDB != null) {
+            val file = File(path)
+            file.delete()
+        }
     }
 
 
