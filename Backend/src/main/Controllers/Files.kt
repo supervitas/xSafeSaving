@@ -36,14 +36,9 @@ fun getUserFiles(req: Request, res: Response): String {
     val username : String? = req.session().attribute("user")
     if (username == null) {
         res.status(401)
-        val json = {
-            val status = "You need auth to do this"
-            val key = "status"
-        }
-        obj = gson.toJson(json)
+        obj = JSONResponse.badJson()
         return obj
     }
-
     val result = getUserFiles(username, skip.toInt())
 
     return result
@@ -59,11 +54,7 @@ fun getPagination(req: Request, res: Response): String {
     val username : String? = req.session().attribute("user")
     if (username == null) {
         res.status(401)
-        val json = {
-            val status = "You need auth to do this"
-            val key = "status"
-        }
-        obj = gson.toJson(json)
+        obj = JSONResponse.authNeed()
         return obj
     }
 
@@ -73,7 +64,7 @@ fun getPagination(req: Request, res: Response): String {
 }
 
 fun deleteFile(req: Request, res: Response): String {
-    var obj: String
+    val obj: String
     val gson = Gson()
 
     res.status(200)
@@ -81,21 +72,17 @@ fun deleteFile(req: Request, res: Response): String {
     val list: Map<String, String>
 
     var json = JsonObject()
-    obj = gson.toJson(json)
-
     if (username == null) {
         res.status(401)
-        val json = JsonObject()
-        json.addProperty("message", "You need auth to do this")
-        obj = gson.toJson(json)
+
+        obj = JSONResponse.authNeed()
         return obj
     }
     try {
-        list = gson.fromJson<Map<String, String>>( req.body() )
+        list = gson.fromJson<Map<String, String>>(req.body())
     } catch (e: com.google.gson.JsonSyntaxException) {
         res.status(400)
-        json.addProperty("message", "Bad JSON")
-        obj = gson.toJson(json)
+        obj = JSONResponse.badJson()
         return obj
     }
     val path : String? = list["path"]
@@ -105,8 +92,8 @@ fun deleteFile(req: Request, res: Response): String {
         json.addProperty("message", "OK")
         obj = gson.toJson(json)
         return obj
-
     }
+
     res.status(403)
     json.addProperty("message", "Some Error")
     obj = gson.toJson(json)
@@ -127,9 +114,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
 
     if (username == null) {
         res.status(401)
-        val json = JsonObject()
-        json.addProperty("message", "You need auth to do this")
-        obj = gson.toJson(json)
+        obj = JSONResponse.authNeed()
         return obj
     }
     if (req.contentType() == "application/json") {
@@ -137,11 +122,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
             list = gson.fromJson<Map<String, String>>( req.body() )
         } catch (e: com.google.gson.JsonSyntaxException) {
             res.status(400)
-            json = {
-                val status = "Bad Json"
-                val key = "error"
-            }
-            obj = gson.toJson(json)
+            obj = JSONResponse.badJson()
             return obj
         }
 
@@ -236,15 +217,14 @@ fun uploadUserFiles(req: Request, res: Response): String {
             innerObject.addProperty("content-type", part.contentType)
             innerObject.addProperty("filename", part.submittedFileName)
 
-
             jsonArray.add(innerObject)
 
         }
         obj = gson.toJson(jsonArray)
     }
-
     return obj
 }
+
 fun getDateAndCreateFolder(username:String):String {
     val date: Date = Date()
     val cal = Calendar.getInstance()

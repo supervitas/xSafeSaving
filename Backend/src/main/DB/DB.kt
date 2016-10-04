@@ -18,7 +18,7 @@ object Database {
 
     fun registerUser(username: String, password: String): String {
         val collection = db.getCollection("users")
-        val getUser = collection.find(eq("username",username)).first()
+        val getUser = collection.find(eq("username", username)).first()
         if (getUser != null) {
             return "User already exists"
         } else {
@@ -30,7 +30,7 @@ object Database {
 
     fun loginUser(username: String, password: String): String {
         val collection = db.getCollection("users")
-        val getUser = collection.find(and(eq("username", username),eq("password", password))).first()
+        val getUser = collection.find(and(eq("username", username), eq("password", password))).first()
         if (getUser != null) {
             return "OK"
         } else {
