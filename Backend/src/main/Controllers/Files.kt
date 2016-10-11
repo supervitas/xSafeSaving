@@ -27,7 +27,6 @@ import javax.servlet.MultipartConfigElement
 
 fun getUserFiles(req: Request, res: Response): String {
 
-    val gson = Gson()
     val obj: String
     res.status(200)
 
