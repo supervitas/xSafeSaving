@@ -6,14 +6,14 @@ server {
 
 
 	location ^~ /upload  {
-		alias /Users/nikolaev/Projects/Web/xsafesaving/upload;
+		alias /Users/nikolaev/Projects/Web/xSafeSaving/upload;
 	}
 
 	location ~* \.(js|jpg|png|css|ttf|gif)$ {
-		root /Users/nikolaev/Projects/Web/xsafesaving/Frontend;
+		root /Users/nikolaev/Projects/Web/xSafeSaving/Frontend;
 	}
 	location / {
-		root   /Users/nikolaev/Projects/Web/xsafesaving/Frontend;
+		root   /Users/nikolaev/Projects/Web/xSafeSaving/Frontend;
 		index  index.html;
 		try_files $uri $uri/ /index.html;
 	}

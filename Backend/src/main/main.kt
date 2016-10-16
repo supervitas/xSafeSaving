@@ -15,16 +15,16 @@ public class Main {
             val uploadDir = File("upload")
             uploadDir.mkdir()
 
-            get("api/auth") { req, res -> checkUserLoginStatus(req, res) }
-            put("api/auth") { req, res -> AuthUser(req, res) }
-            post("api/auth") { req, res -> AuthUser(req, res) }
-            delete("api/auth") { req, res -> logout(req, res) }
+            get("api/auth", ::checkUserLoginStatus)
+            put("api/auth", ::AuthUser)
+            post("api/auth", ::AuthUser)
+            delete("api/auth", ::logout)
 
-            get("api/files") { req, res -> getUserFiles(req, res) }
-            post("api/files") { req, res -> uploadUserFiles(req, res) }
-            delete("api/files"){ req, res -> deleteFile(req, res) }
+            get("api/files", ::getUserFiles)
+            post("api/files", ::uploadUserFiles)
+            delete("api/files", ::deleteFile)
 
-            get("api/files/pagination") { req, res -> getPagination(req, res) }
+            get("api/files/pagination", ::getPagination)
 
 
 
