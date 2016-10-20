@@ -30,7 +30,7 @@ var UploadModal = React.createClass({
                         $.each($('#media')[0].files, function (i, file) {
                             data.append('file-' + i, file);
                         });
-                        that.props.uploadFile('UPLOAD_FILES',data);
+                        that.props.uploadFile('UPLOAD_FILES', data);
                         document.getElementById("media").value = "";
                     } else {
                         that.props.uploadFile('UPLOAD_FROM_LINK', {url: fields.url});

@@ -1,6 +1,7 @@
 /**
  * Created by nikolaev on 29.08.16.
  */
+import {fetchRequest, dispatchFromFetch} from "./utils";
 export function authAction(type, data) {
     switch (type) {
         case 'AUTH_CHECK': {
@@ -8,20 +9,9 @@ export function authAction(type, data) {
                 dispatch({
                     type: 'AUTH_CHECK_REQUEST'
                 });
-                fetch('api/auth',{
-                    method: 'GET',
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    credentials: 'include'
-                })
-                .then(response => response.json())
-                .then(json => {
-                dispatch({
-                    type: 'AUTH_CHECK_FINISHED',
-                    payload: json
-                    })
-                });
+
+                fetchRequest('api/auth', 'GET')
+                    .then(response => dispatchFromFetch(response,  dispatch, 'AUTH_CHECK_FINISHED'));
             }
         }
         case 'REGISTER': {
@@ -29,32 +19,8 @@ export function authAction(type, data) {
                 dispatch({
                     type: 'REGISTER_REQUEST'
                 });
-                fetch('api/auth',{
-                    method: 'PUT',
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(data),
-                })
-                .then(response => {
-                    let json = response.json();
-                    if (!response.ok) {
-                        json.then(err => {
-                            dispatch({
-                                type: 'REGISTER_FAIL',
-                                payload: err
-                            });
-                        });
-                        return
-                    }
-                    json.then(data => {
-                        dispatch({
-                            type: 'REGISTER_SUCCESS',
-                            payload: data
-                        })
-                    })
-                })
+                fetchRequest('api/auth', 'PUT', JSON.stringify(data))
+                    .then(response => dispatchFromFetch(response,  dispatch, 'REGISTER_SUCCESS', 'REGISTER_FAIL'))
             }
         }
         case 'LOGIN': {
@@ -62,22 +28,9 @@ export function authAction(type, data) {
                 dispatch({
                     type: 'LOGIN_REQUEST'
                 });
-                $.ajax({
-                    type: 'POST',
-                    url: 'api/auth',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json'
-                }).done(function (resData) {
-                    dispatch({
-                        type: 'LOGIN_SUCCESS',
-                        payload: JSON.parse(resData)
-                    })
-                }).fail(function (resData) {
-                    dispatch({
-                        type: 'LOGIN_FAIL',
-                        payload: JSON.parse(resData.responseText)
-                    })
-                });
+                fetchRequest('api/auth', 'POST', JSON.stringify(data))
+                    .then(response => dispatchFromFetch(response,  dispatch, 'LOGIN_SUCCESS', 'LOGIN_FAIL'));
+
             }
         }
         case 'REMOVE_ERROR': {
@@ -89,15 +42,8 @@ export function authAction(type, data) {
         }
         case 'LOGOUT': {
             return (dispatch) => {
-                $.ajax({
-                    type: 'DELETE',
-                    url: 'api/auth',
-                    contentType: 'application/json'
-                }).always(function (resData) {
-                    dispatch({
-                        type: 'LOGOUT'
-                    })
-                })
+                fetchRequest('api/auth', 'DELETE')
+                    .then(response => dispatchFromFetch(response,  dispatch, 'LOGOUT'));
             }
         }
 

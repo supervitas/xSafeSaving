@@ -1,111 +1,61 @@
+import {fetchRequest, dispatchFromFetch} from "./utils";
 export function getFiles(data) {
 
   return (dispatch) => {
     dispatch({
-      type: "GET_FILES_REQUEST"
+      type: 'GET_FILES_REQUEST'
     });
 
-    $.ajax({
-      type: 'GET',
-      url: 'api/files',
-      data: data,
-      contentType: 'application/json'
-    }).done(function (resData) {
-      dispatch({
-        type: 'FILES_FETCHED',
-        payload: JSON.parse(resData)
-      });
-      $.ajax({
-        type: 'GET',
-        url: 'api/files/pagination',
-      }).done(function (resData) {
-        dispatch({
-          type: 'FILES_COUNT_FETCHED',
-          payload: JSON.parse(resData)
-        })
-      })
-    }).fail(function (resData) {
-      dispatch({
-        type: 'FILES_NOT_FETCHED',
-        payload: JSON.parse(resData.responseText)
-      })
-    });
+    let params = Object.keys(data)
+        .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&')
+        .replace(/%20/g, '+');
 
+    fetchRequest('api/files?' + params, 'GET')
+        .then(response => dispatchFromFetch(response, dispatch, 'FILES_FETCHED', 'FILES_NOT_FETCHED'));
+    fetchRequest('api/files/pagination', 'GET')
+        .then(response => dispatchFromFetch(response, dispatch, 'FILES_COUNT_FETCHED', 'FILES_NOT_FETCHED'));
   }
 }
+
 
 export function uploadFile(uploadType, data) {
 
   return (dispatch) => {
     dispatch({
-      type: "UPLOAD_FILE_REQUEST"
+      type: 'UPLOAD_FILE_REQUEST'
     });
-      if (uploadType === 'UPLOAD_FILES') {
-        $.ajax({
-          type: 'POST',
-          url: 'api/files',
-          data: data,
-          contentType: false,
-          processData: false,
-        }).done(function (resData) {
-          var $modal = $('#upload');
-          $modal.modal('hide');
-          dispatch({
-            type: 'UPLOAD_FILE_SUCCESS',
-            payload: JSON.parse(resData)
-          })
-        }).fail(function (resData) {
-          dispatch({
-            type: 'UPLOAD_FILE_FAIL',
-            payload: JSON.parse(resData.responseText)
-          })
-        });
-      }
-      if (uploadType === 'UPLOAD_FROM_LINK') {
-        $.ajax({
-          type: 'POST',
-          url: 'api/files',
-          data: JSON.stringify(data),
-          contentType: 'application/json'
-        }).done(function (resData) {
-          var $modal = $('#upload');
-          $modal.modal('hide');
-          dispatch({
-            type: 'UPLOAD_FILE_SUCCESS',
-            payload: JSON.parse(resData)
-          })
-        }).fail(function (resData) {
-          dispatch({
-            type: 'UPLOAD_FILE_FAIL',
-            payload: JSON.parse(resData.responseText)
-          })
-        });
 
+    if (uploadType === 'UPLOAD_FILES') {
+        fetch('api/files', {
+          method: 'POST',
+          credentials: 'include',
+          body: data
+        })
+        .then(response => {
+          dispatchFromFetch(response, dispatch, 'UPLOAD_FILE_SUCCESS', 'UPLOAD_FILE_FAIL');
+          $('#upload').modal('hide');
+        });
+    }
+    if (uploadType === 'UPLOAD_FROM_LINK') {
+      fetchRequest('api/files', 'POST', JSON.stringify(data))
+          .then(response => {
+            dispatchFromFetch(response, dispatch, 'UPLOAD_FILE_SUCCESS', 'UPLOAD_FILE_FAIL');
+            $('#upload').modal('hide');
+          });
       }
   }
 }
+
 export function deleteFile(data) {
   return (dispatch) => {
     dispatch({
-      type: "DELETE_FILE_REQUEST"
+      type: 'DELETE_FILE_REQUEST'
     });
-      $.ajax({
-        type: 'DELETE',
-        url: 'api/files',
-        data: JSON.stringify(data),
-        contentType: 'application/json'
-      }).done(function (resData) {
-        var $modal = $('#deleteModal');
-        $modal.modal('hide');
-        dispatch({
-          type: 'DELETE_FILE_SUCCESS',
-          payload: data.path
-        })
-      }).fail(function (resData) {
-        dispatch({
-          type: 'DELETE_FILE_FAIL',
-          payload: JSON.parse(resData.responseText)
-        })
-      });
-    }
+    fetchRequest('api/files', 'DELETE', JSON.stringify(data))
+        .then(response => {
+          $('#deleteModal').modal('hide');
+          dispatchFromFetch(response, dispatch, 'DELETE_FILE_SUCCESS', 'DELETE_FILE_FAIL', data.path)
+        });
+  }
 }
