@@ -51,15 +51,6 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "window.jQuery": "jquery"
-        }),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.CommonsChunkPlugin({
-            children: true,
-            async: true,
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: false,
-            mangle: false
         })
     ],
 

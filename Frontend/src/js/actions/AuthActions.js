@@ -1,7 +1,6 @@
 /**
  * Created by nikolaev on 29.08.16.
  */
-import $ from "jquery";
 export function authAction(type, data) {
     switch (type) {
         case 'AUTH_CHECK': {
@@ -9,19 +8,18 @@ export function authAction(type, data) {
                 dispatch({
                     type: 'AUTH_CHECK_REQUEST'
                 });
-                $.ajax({
-                    type: 'GET',
-                    url: 'api/auth',
-                    contentType: 'application/json'
-                }).done(function (resData) {
-                    dispatch({
-                        type: 'AUTH_CHECK_FINISHED',
-                        payload: JSON.parse(resData)
-                    })
-                }).error(function (err) {
-                    dispatch({
-                        type: 'AUTH_CHECK_FINISHED',
-                        payload: ''
+                fetch('api/auth',{
+                    method: 'GET',
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(json => {
+                dispatch({
+                    type: 'AUTH_CHECK_FINISHED',
+                    payload: json
                     })
                 });
             }
@@ -31,22 +29,32 @@ export function authAction(type, data) {
                 dispatch({
                     type: 'REGISTER_REQUEST'
                 });
-                $.ajax({
-                    type: 'PUT',
-                    url: 'api/auth',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json'
-                }).done(function (resData) {
-                    dispatch({
-                        type: 'REGISTER_SUCCESS',
-                        payload: JSON.parse(resData)
+                fetch('api/auth',{
+                    method: 'PUT',
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(data),
+                })
+                .then(response => {
+                    let json = response.json();
+                    if (!response.ok) {
+                        json.then(err => {
+                            dispatch({
+                                type: 'REGISTER_FAIL',
+                                payload: err
+                            });
+                        });
+                        return
+                    }
+                    json.then(data => {
+                        dispatch({
+                            type: 'REGISTER_SUCCESS',
+                            payload: data
+                        })
                     })
-                }).fail(function (resData) {
-                    dispatch({
-                        type: 'REGISTER_FAIL',
-                        payload: JSON.parse(resData.responseText)
-                    })
-                });
+                })
             }
         }
         case 'LOGIN': {

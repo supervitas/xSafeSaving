@@ -69,7 +69,7 @@ var Image = React.createClass({
    render: function () {
        return(
            <div className="column center aligned">
-               <img className="ui fluid image" src={this.props.src}></img>
+               <img className="ui fluid image" src={this.props.src}/>
                <MediaInfo name={this.props.name} src={this.props.src} />
            </div>
        )
@@ -80,7 +80,7 @@ var Video = React.createClass({
     render: function () {
         return(
             <div className="column center aligned">
-                <video className="ui fluid image"  preload="metadata"  controls src={this.props.src}></video>
+                <video className="ui fluid image"  preload="metadata"  controls src={this.props.src}/>
                 <MediaInfo name={this.props.name} src={this.props.src} />
             </div>
         )
@@ -92,7 +92,7 @@ var MediaObject = React.createClass({
        return(
        <div className="column center aligned">
            <div className="ui">
-            <img className="file-image" src='/upload/rsz_file.png'></img>
+            <img className="file-image" src='/upload/rsz_file.png'/>
             <MediaInfo name={this.props.name} src={this.props.src}/>
            </div>
        </div>
