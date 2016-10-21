@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
 	cache: true,
-	entry: ['./src/js/index.js', 'webpack/hot/only-dev-server'],
+	entry: ['./src/js/index.js'],
 	output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'bundle.js',
@@ -45,7 +45,6 @@ module.exports = {
 
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
 		new webpack.ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",

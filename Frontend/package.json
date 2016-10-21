@@ -35,5 +35,6 @@
     "semantic-ui": "^2.2.2",
     "url-loader": "^0.5.7",
     "webpack-uglify-js-plugin": "^1.1.9"
-  }
+  },
+  "scripts": {"build": "webpack  --config ./webpack.prod.config.js"}
 }
