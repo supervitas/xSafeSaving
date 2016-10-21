@@ -27,8 +27,7 @@ var App = React.createClass({
             handleLoginClick={ () => $('#login').modal({blurring: false})
             .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
-            handleUploadClick={ () => $('#upload').modal({blurring: false})
-            .modal({onHidden: function () { } }).modal('show') }
+            handleUploadClick={ () => $('#upload').modal({blurring: false}).modal('show') }
 
               authActions={authAction}
               user={user.login}

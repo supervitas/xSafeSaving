@@ -48,14 +48,14 @@ var AuthModal = React.createClass({
     addError: function (err) {
         let that = this;
         let $formError = $('.ui.error.message');
-        let $form = $('#' + that.props.modalId).find(".ui.form");
+        let $form = $('#' + that.props.modalId).find('.ui.form');
         $form.addClass('error');
         $formError.html(err);
     },
     render: function () {
         let that = this;
         let $modal = $('#' + that.props.modalId);
-        let $form = $modal.find(".ui.form");
+        let $form = $modal.find('.ui.form');
         this.checkProps();
 
         this.props.error ? this.addError(this.props.error.status): $form.removeClass('error');
@@ -66,38 +66,38 @@ var AuthModal = React.createClass({
             this.state.password = '';
         }
         return (
-            <div className="ui small modal" id={this.props.modalId}>
-                <div className="header">{this.props.headerName}</div>
-                <div className="content">
-                        <form className="ui form">
-                            <div className="field">
-                                <div className="ui left icon input">
+            <div className='ui small modal' id={this.props.modalId}>
+                <div className='header'>{this.props.headerName}</div>
+                <div className='content'>
+                        <form className='ui form'>
+                            <div className='field'>
+                                <div className='ui left icon input'>
                                     <input
-                                        type="text"
-                                        placeholder="Username"
-                                        name="username"
+                                        type='text'
+                                        placeholder='Username'
+                                        name='username'
                                         value={this.state.username}
                                         onChange={this.handleUsernameChange}
                                     />
-                                    <i className="user icon"></i>
+                                    <i className='user icon'></i>
                                 </div>
                             </div>
-                            <div className="field">
-                                <div className="ui left icon input">
+                            <div className='field'>
+                                <div className='ui left icon input'>
                                     <input
-                                        type="password"
-                                        name="password"
-                                        placeholder="Password"
+                                        type='password'
+                                        name='password'
+                                        placeholder='Password'
                                         value={this.state.password }
                                         onChange={this.handlePasswordChange}
                                     />
-                                    <i className="lock icon"></i>
+                                    <i className='lock icon'></i>
                                 </div>
                             </div>
-                            <div className="ui error message"></div>
-                            <div className="actions">
-                                <div className="ui primary submit button">Submit</div>
-                                <div className="ui cancel button">Cancel</div>
+                            <div className='ui error message'></div>
+                            <div className='actions'>
+                                <div className='ui primary submit button'>Submit</div>
+                                <div className='ui cancel button'>Cancel</div>
                             </div>
                         </form>
                 </div>
