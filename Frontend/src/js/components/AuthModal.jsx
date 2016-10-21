@@ -1,7 +1,7 @@
 import React from "react";
 
 var AuthModal = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {username: '', password: ''};
     },
     handleUsernameChange: function(e) {
@@ -48,7 +48,7 @@ var AuthModal = React.createClass({
     addError: function (err) {
         let that = this;
         let $formError = $('.ui.error.message');
-        let $form = $('#'+that.props.modalId).find(".ui.form");
+        let $form = $('#' + that.props.modalId).find(".ui.form");
         $form.addClass('error');
         $formError.html(err);
     },

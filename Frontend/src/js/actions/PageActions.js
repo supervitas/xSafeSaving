@@ -18,7 +18,6 @@ export function getFiles(data) {
   }
 }
 
-
 export function uploadFile(uploadType, data) {
 
   return (dispatch) => {
@@ -48,7 +47,7 @@ export function uploadFile(uploadType, data) {
 }
 
 export function deleteFile(data) {
-  return (dispatch) => {
+    return (dispatch) => {
     dispatch({
       type: 'DELETE_FILE_REQUEST'
     });
@@ -57,5 +56,5 @@ export function deleteFile(data) {
           $('#deleteModal').modal('hide');
           dispatchFromFetch(response, dispatch, 'DELETE_FILE_SUCCESS', 'DELETE_FILE_FAIL', data.path)
         });
-  }
+    }
 }

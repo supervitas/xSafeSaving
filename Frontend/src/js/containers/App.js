@@ -12,7 +12,7 @@ import * as authActions from "../actions/AuthActions";
 var App = React.createClass({
   componentWillMount: function () {
     let  { authAction }  = this.props.authActions;
-    authAction("AUTH_CHECK")
+    authAction('AUTH_CHECK')
   },
   render() {
     const { user, files } = this.props;
@@ -21,37 +21,37 @@ var App = React.createClass({
 
     return <div>
       <Header
-            handleRegisterClick={ () => $('#register').modal({blurring: true})
+            handleRegisterClick={ () => $('#register').modal({blurring: false})
             .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
-            handleLoginClick={ () => $('#login').modal({blurring: true})
+            handleLoginClick={ () => $('#login').modal({blurring: false})
             .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
-            handleUploadClick={ () => $('#upload').modal({blurring: true})
+            handleUploadClick={ () => $('#upload').modal({blurring: false})
             .modal({onHidden: function () { } }).modal('show') }
 
               authActions={authAction}
               user={user.login}
               />
 
-      <AuthModal headerName={"New User"}
-                 modalId={"register"}
+      <AuthModal headerName={'New User'}
+                 modalId={'register'}
                  authAction={authAction}
                  fetching={user.fetching}
                  error={user.error}
-                 action={"REGISTER"}
+                 action={'REGISTER'}
                  user={user.login}/>
 
-      <AuthModal headerName={"Sign-in"}
-                 modalId={"login"}
+      <AuthModal headerName={'Sign-in'}
+                 modalId={'login'}
                  authAction={authAction}
-                 action={"LOGIN"}
+                 action={'LOGIN'}
                  fetching={user.fetching}
                  error={user.error}
                  user={user.login}/>
 
-      <UploadModal headerName={"Upload Files"}
-                   modalId={"upload"}
+      <UploadModal headerName={'Upload Files'}
+                   modalId={'upload'}
                    error={files.error}
                    fetching={files.fetching}
                    uploadFile={uploadFile} />
