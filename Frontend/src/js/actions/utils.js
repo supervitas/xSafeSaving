@@ -1,6 +1,7 @@
 /**
  * Created by nikolaev on 20.10.16.
  */
+import "./fetch";
 export function dispatchFromFetch(response, dispatch, succ, err, customPayload) {
 	let json = response.json();
 	if (!response.ok) {
@@ -30,3 +31,4 @@ export function fetchRequest(url, type, data) {
 		body: data
 	})
 }
+
