@@ -20,8 +20,7 @@ var App = React.createClass({
     const  { authAction }  = this.props.authActions;
 
     return <div>
-      <Header
-            handleRegisterClick={ () => $('#register').modal({blurring: false})
+      <Header handleRegisterClick={ () => $('#register').modal({blurring: false})
             .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
 
             handleLoginClick={ () => $('#login').modal({blurring: false})
@@ -29,9 +28,8 @@ var App = React.createClass({
 
             handleUploadClick={ () => $('#upload').modal({blurring: false}).modal('show') }
 
-              authActions={authAction}
-              user={user.login}
-              />
+            authActions={authAction}
+            user={user.login}/>
 
       <AuthModal headerName={'New User'}
                  modalId={'register'}

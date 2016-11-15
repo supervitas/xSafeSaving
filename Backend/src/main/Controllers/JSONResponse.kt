@@ -9,16 +9,18 @@ import com.google.gson.JsonObject
 object JSONResponse {
 
     fun badJson(): String {
-        val gson = Gson()
-        val json = JsonObject()
-        json.addProperty("message", "Bad JSON")
-        return gson.toJson(json)
+        val json = makeCustomJsonResponse("message", "Bad JSON")
+        return json
     }
 
-    fun authNeed(): String {
+    fun authNeeded(): String {
+        val json = makeCustomJsonResponse("status", "You need auth to do this")
+        return json
+    }
+    fun makeCustomJsonResponse(keyMessage: String, message: String ): String {
         val gson = Gson()
         val json = JsonObject()
-        json.addProperty("status", "You need auth to do this")
+        json.addProperty(keyMessage, message)
         return gson.toJson(json)
     }
 

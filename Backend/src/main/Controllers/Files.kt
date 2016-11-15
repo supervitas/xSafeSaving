@@ -44,16 +44,13 @@ fun getUserFiles(req: Request, res: Response): String {
 }
 
 fun getPagination(req: Request, res: Response): String {
-    val gson = Gson()
     val obj: String
     res.status(200)
-
-    val skip = req.queryParams("skip")
 
     val username : String? = req.session().attribute("user")
     if (username == null) {
         res.status(401)
-        obj = JSONResponse.authNeed()
+        obj = JSONResponse.authNeeded()
         return obj
     }
 
@@ -70,11 +67,9 @@ fun deleteFile(req: Request, res: Response): String {
     val username : String? = req.session().attribute("user")
     val list: Map<String, String>
 
-    var json = JsonObject()
     if (username == null) {
         res.status(401)
-
-        obj = JSONResponse.authNeed()
+        obj = JSONResponse.authNeeded()
         return obj
     }
     try {
@@ -86,16 +81,14 @@ fun deleteFile(req: Request, res: Response): String {
     }
     val path : String? = list["path"]
     if (path != null) {
-        val result = deleteFile(username, path)
+        deleteFile(username, path)
         res.status(200)
-        json.addProperty("message", "OK")
-        obj = gson.toJson(json)
+        obj = JSONResponse.makeCustomJsonResponse("message", "OK")
         return obj
     }
 
     res.status(403)
-    json.addProperty("message", "Some Error")
-    obj = gson.toJson(json)
+    obj = JSONResponse.makeCustomJsonResponse("message", "Some Error")
     return obj
 }
 
@@ -108,12 +101,9 @@ fun uploadUserFiles(req: Request, res: Response): String {
     val username : String? = req.session().attribute("user")
     val list: Map<String, String>
 
-    var json = {}
-    obj = gson.toJson(json)
-
     if (username == null) {
         res.status(401)
-        obj = JSONResponse.authNeed()
+        obj = JSONResponse.authNeeded()
         return obj
     }
     if (req.contentType() == "application/json") {
@@ -135,9 +125,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
                 downloadURL = URL(url)
             } catch (e: MalformedURLException) {
                 res.status(400)
-                val json = JsonObject()
-                json.addProperty("message", "Invalid URL")
-                obj = gson.toJson(json)
+                obj = JSONResponse.makeCustomJsonResponse("message", "Invalid URL")
                 return obj
             }
             try {
@@ -146,16 +134,12 @@ fun uploadUserFiles(req: Request, res: Response): String {
                 contentType = conn.contentType
                 conn.inputStream.close()
                 if (size / (1024 * 1024) > 70) {
-                    val json = JsonObject()
-                    json.addProperty("message", "File to big")
-                    obj = gson.toJson(json)
+                    obj = JSONResponse.makeCustomJsonResponse("message", "File to big")
                     return obj
                 }
             } catch (e: java.io.FileNotFoundException){
                 res.status(400)
-                val json = JsonObject()
-                json.addProperty("message", "File from that url not found")
-                obj = gson.toJson(json)
+                obj = JSONResponse.makeCustomJsonResponse("message", "File from that url not found")
                 return obj
             }
             val pathString = getDateAndCreateFolder(username)
@@ -180,9 +164,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
             return obj
         } else {
             res.status(403)
-            val json = JsonObject()
-            json.addProperty("message", "Invalid URL")
-            obj = gson.toJson(json)
+            obj = JSONResponse.makeCustomJsonResponse("message", "Invalid URL")
             return obj
         }
 
@@ -199,18 +181,20 @@ fun uploadUserFiles(req: Request, res: Response): String {
         req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
                 multipartConfigElement)
 
-
         val parts = req.raw().parts
-
         val pathString = getDateAndCreateFolder(username)
 
         for (part in parts) {
+            var filename: String = ""
             part.inputStream.use({ `in` ->
-                Files.copy(`in`, Paths.get(pathString + part.submittedFileName),
-                        StandardCopyOption.REPLACE_EXISTING)
+                    filename = part.submittedFileName.replace("/", "")
+                    Files.copy(`in`, Paths.get(pathString + filename),
+                            StandardCopyOption.REPLACE_EXISTING)
+
             })
-            createFile(username, pathString + part.submittedFileName, part.submittedFileName,
+            createFile(username, pathString + part.submittedFileName, filename,
                     part.contentType)
+
             val innerObject = JsonObject()
             innerObject.addProperty("path", pathString + part.submittedFileName)
             innerObject.addProperty("content-type", part.contentType)
