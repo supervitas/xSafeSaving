@@ -3,9 +3,11 @@ package DB
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.mongodb.client.MongoCursor
 import com.mongodb.client.model.Filters
 import org.bson.Document
 import java.io.File
+import java.util.*
 
 /**
  * Created by nikolaev on 29.01.17.
@@ -32,21 +34,37 @@ fun deleteFile(username: String, path: String) {
     }
 }
 
-fun getUserFiles(username: String, skip: Int ): String {
+fun getUserFiles(username: String, skip: Int, tag: String? ): String {
     val gson = Gson()
     val jsonArray = JsonArray()
 
     val collection = Database.db.getCollection("files")
-    val natural = "${'$'}natural"
-    val getUserFilesCursor = collection.find(Filters.eq("username", username))
-            .sort(Document("$natural", -1)).skip(skip).limit(20).iterator()
-    try {
+    val getUserFilesCursor: MongoCursor<Document>
+    if (tag != null) {
+        getUserFilesCursor = collection.find(Filters.and(
+                Filters.eq("username", username), Filters.eq("tags", tag))
+        ).skip(skip).limit(20).iterator()
+    } else {
+        getUserFilesCursor = collection.find(Filters.eq("username", username))
+                .sort(Document("\$natural", -1)).skip(skip).limit(20).iterator()
+    }
+    getUserFilesCursor.use { getUserFilesCursor ->
         while (getUserFilesCursor.hasNext()) {
             val innerObject = JsonObject()
             val next = getUserFilesCursor.next()
+
             val path = next["path"].toString()
             val name = next["filename"].toString()
             val contentType = next["content-type"].toString()
+            var tags = next["tags"]
+            if (tags != null) {
+                tags = tags as ArrayList<String>
+                val tagsArray = JsonArray()
+                for (tag in tags) {
+                    tagsArray.add(tag)
+                }
+                innerObject.add("tags", tagsArray)
+            }
 
             innerObject.addProperty("path", path)
             innerObject.addProperty("content-type",contentType)
@@ -54,8 +72,6 @@ fun getUserFiles(username: String, skip: Int ): String {
 
             jsonArray.add(innerObject)
         }
-    } finally {
-        getUserFilesCursor.close()
     }
     return gson.toJson(jsonArray)
 }

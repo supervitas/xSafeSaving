@@ -36,7 +36,7 @@ h1,h2,h3 {
 }
 .delete_file {
   position: relative;
-  left: 10px;
+  left: 5px;
 }
 .file__path{
   display: none;

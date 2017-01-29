@@ -16,7 +16,7 @@ const App = React.createClass({
   },
   render() {
     const { user, files } = this.props;
-    const { getFiles, uploadFile, deleteFile } = this.props.pageActions;
+    const { getFiles, uploadFile, deleteFile, addTag, deleteTag } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
 
     return <div>
@@ -59,7 +59,10 @@ const App = React.createClass({
               getFiles={getFiles}
               user={user.login}
               deleteFile={deleteFile}
+              addTag={addTag}
+              deleteTag={deleteTag}
               filesCount={files.filesCount}/>
+
     </div>
   }
 });

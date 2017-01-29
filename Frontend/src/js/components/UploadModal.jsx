@@ -26,7 +26,7 @@ var UploadModal = React.createClass({
                     that.addError('Enter valid file, or URL')
                 } else {
                     if (fields.media != '') {
-                        var data = new FormData();
+                        const data = new FormData();
                         $.each($('#media')[0].files, function (i, file) {
                             data.append('file-' + i, file);
                         });
@@ -69,7 +69,7 @@ var UploadModal = React.createClass({
                                     type='file'
                                     name='media'
                                     multiple/>
-                                <i className='file icon'></i>
+                                <i className='file icon'/>
                             </div>
                         </div>
                         <div className='ui horizontal divider'>

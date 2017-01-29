@@ -6,6 +6,8 @@ export const Layout = React.createClass({
 		let layout = <NotAuthedLayout/>;
 		if (this.props.user) {
 			layout = <AuthedLayout
+				addTag={this.props.addTag}
+				deleteTag={this.props.deleteTag}
                 files={this.props.files}
                 getFiles={this.props.getFiles}
                 deleteFile={this.props.deleteFile}
@@ -39,12 +41,14 @@ const AuthedLayout = React.createClass({
 		this.props.getFiles({skip: 0})
 	},
 	getInitialState () {
-		return {deletedFileName: '', deletedFilePath: ''};
+		return {deletedFileName: '', deletedFilePath: '', tagFilePath: ''};
 	},
 	changeDeletedFileNameOrPath (name, path) {
 		this.setState({deletedFileName: name, deletedFilePath: path});
 	},
-
+	changeTagFilePath (path) {
+		this.setState({tagFilePath: path})
+	},
 	render () {
 		const content = this.props.files.map((result, number) => {
 			const contentType = result['content-type'];
@@ -52,15 +56,21 @@ const AuthedLayout = React.createClass({
 			switch (type) {
 				case 'image': {
 					return (<Image changeDeleteFile={this.changeDeletedFileNameOrPath}
-                                   key={number} name={result.filename} src={result.path}/>);
+					               changeTagPath={this.changeTagFilePath}
+					               onTagClicked={this.props.getFiles}
+                                   key={number} name={result.filename} src={result.path} tags={result.tags}/>);
 				}
 				case 'video': {
 					return (<Video changeDeleteFile={this.changeDeletedFileNameOrPath}
-                                   key={number} name={result.filename} src={result.path}/>);
+					               onTagClicked={this.props.getFiles}
+					               changeTagPath={this.changeTagFilePath}
+                                   key={number} name={result.filename} src={result.path} tags={result.tags}/>);
 				}
 				default: {
 					return (<MediaObject changeDeleteFile={this.changeDeletedFileNameOrPath}
-                                         key={number} name={result.filename} src={result.path}/>);
+					                     changeTagPath={this.changeTagFilePath}
+					                     onTagClicked={this.props.getFiles}
+                                         key={number} name={result.filename} src={result.path} tags={result.tags}/>);
 				}
 			}
 		});
@@ -74,42 +84,44 @@ const AuthedLayout = React.createClass({
                                                   getFiles={this.props.getFiles}/> : false}
                 <DeleteModal deleteFile={this.props.deleteFile}
                              deletedFile={this.state.deletedFileName} deletedFilePath={this.state.deletedFilePath}/>
-	            <TagModal/>
+	            <TagModal filePath={this.state.tagFilePath} addTag={this.props.addTag} deleteTag={this.props.deleteTag}/>
             </div>
 		)
 	}
 });
 
 const Image = React.createClass({
-	render: function () {
+	render () {
 		return (
             <div className='column center aligned'>
                 <img className='ui fluid image' src={this.props.src}/>
-                <MediaInfo changeDeleteFile={this.props.changeDeleteFile} name={this.props.name} src={this.props.src}/>
+                <MediaInfo onTagClicked={this.props.onTagClicked} changeTagPath={this.props.changeTagPath} changeDeleteFile={this.props.changeDeleteFile} name={this.props.name}
+                           src={this.props.src} tags={this.props.tags}/>
             </div>
 		)
 	}
 });
 
 const Video = React.createClass({
-	render: function () {
+	render () {
 		return (
             <div className='column center aligned'>
                 <video className='ui fluid image' preload='metadata' controls src={this.props.src}/>
-                <MediaInfo changeDeleteFile={this.props.changeDeleteFile} name={this.props.name} src={this.props.src}/>
+                <MediaInfo onTagClicked={this.props.onTagClicked} changeTagPath={this.props.changeTagPath} changeDeleteFile={this.props.changeDeleteFile} name={this.props.name} src={this.props.src}
+                           tags={this.props.tags} />
             </div>
 		)
 	}
 });
 
 const MediaObject = React.createClass({
-	render: function () {
+	render () {
 		return (
             <div className='column center aligned'>
                 <div className='ui'>
                     <img className='file-image' src='/upload/rsz_file.png'/>
-                    <MediaInfo changeDeleteFile={this.props.changeDeleteFile} name={this.props.name}
-                               src={this.props.src}/>
+                    <MediaInfo onTagClicked={this.props.onTagClicked} changeTagPath={this.props.changeTagPath} changeDeleteFile={this.props.changeDeleteFile} name={this.props.name}
+                               src={this.props.src} tags={this.props.tags}/>
                 </div>
             </div>
 		)
@@ -118,6 +130,11 @@ const MediaObject = React.createClass({
 
 const MediaInfo = React.createClass({
 	render () {
+		let tags;
+		if (this.props.tags) {
+			tags = <Tags onTagClicked={this.props.onTagClicked} tags={this.props.tags}/>;
+		}
+
 		return (
             <div className='media-info'>
 	            <a href={this.props.src}>
@@ -131,18 +148,37 @@ const MediaInfo = React.createClass({
 	            </i>
 
 	            <div className='media-tags-container'>
-		            <div className='tags'>
-		                Tags: <button>123</button>
-		            </div>
+		            {tags}
 		            <div className="add-tag">
-			            <button className="ui primary basic button small" onClick={() => {
-				            this.props.changeDeleteFile(this.props.name);
+			            <button className="ui primary positive basic button small" onClick={() => {
+				            this.props.changeTagPath(this.props.src);
 				            $('#tagModal').modal('show')
 			            }}>Add Tag</button>
 		            </div>
 	            </div>
             </div>
 		)
+	}
+});
+
+const Tags = React.createClass({
+	render(){
+		const tags = [];
+		this.props.tags.map((item, index) => {
+			tags.push(<Tag onTagClicked={this.props.onTagClicked} tag={item} key={index}/>);
+		});
+		return (
+			<div className='tags'>
+				Tags: {tags}
+			</div>
+		)
+	}
+});
+
+const Tag = React.createClass({
+	render() {
+		return <button onClick={() => this.props.onTagClicked({tag: this.props.tag, skip: 0})}
+		               className="ui secondary basic tiny button">{this.props.tag}</button>
 	}
 });
 
@@ -208,6 +244,12 @@ const DeleteModal = React.createClass({
 });
 
 const TagModal = React.createClass({
+	getInitialState() {
+		return {tag: ''}
+	},
+	handleTagChange: function(e) {
+		this.setState({tag: e.target.value.substr(0, 12)});
+	},
 	render () {
 		return (
 			<div className='ui small modal' id='tagModal'>
@@ -216,18 +258,17 @@ const TagModal = React.createClass({
 					Modify Tags
 				</div>
 				<div className='image content'>
-
-					<div className='description'>
-						<p className='delete_fileName'>Delete {this.props.deletedFile} ?</p>
+					<div className="ui input">
+						<input onChange={this.handleTagChange} value={this.state.tag} type="text" placeholder="New Tag"/>
 					</div>
 				</div>
 				<div className='actions'>
 					<div className='two fluid ui inverted buttons'>
 						<button className='ui cancel button'>Cancel</button>
-						<div className='or'></div>
-						<button className='ui negative button' onClick={() => {
-							this.props.deleteFile({path: this.props.deletedFilePath})
-						}}>Delete</button>
+						<div className='or'/>
+						<button className='ui positive primary button' onClick={() => {
+							this.props.addTag({path: this.props.filePath, tag: this.state.tag})
+						}}>Add Tag</button>
 					</div>
 				</div>
 			</div>

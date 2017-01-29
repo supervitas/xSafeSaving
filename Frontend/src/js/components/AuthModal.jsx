@@ -1,6 +1,6 @@
 import React from "react";
 
-var AuthModal = React.createClass({
+const AuthModal = React.createClass({
     getInitialState: function () {
         return {username: '', password: ''};
     },

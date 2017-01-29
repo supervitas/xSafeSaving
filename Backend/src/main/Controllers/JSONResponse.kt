@@ -17,6 +17,7 @@ object JSONResponse {
         val json = makeCustomJsonResponse("status", "You need auth to do this")
         return json
     }
+
     fun makeCustomJsonResponse(keyMessage: String, message: String ): String {
         val gson = Gson()
         val json = JsonObject()

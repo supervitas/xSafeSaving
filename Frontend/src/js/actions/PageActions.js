@@ -54,7 +54,32 @@ export function deleteFile(data) {
     fetchRequest('api/files', 'DELETE', JSON.stringify(data))
         .then(response => {
           $('#deleteModal').modal('hide');
-          dispatchFromFetch(response, dispatch, 'DELETE_FILE_SUCCESS', 'DELETE_FILE_FAIL', data.path)
+          dispatchFromFetch(response, dispatch, 'DELETE_FILE_SUCCESS', 'DELETE_FILE_FAIL', data.path);
         });
     }
+}
+
+export function addTag(data) {
+    return (dispatch) => {
+        dispatch({
+            type: 'ADD_TAG_REQUEST'
+        });
+        fetchRequest('api/files/tags', 'POST', JSON.stringify(data))
+            .then(response => {
+	            dispatchFromFetch(response, dispatch, 'ADD_TAG_SUCCESS', 'ADD_TAG_FAIL', {path:data.path, tag:data.tag});
+            })
+    }
+}
+
+export function deleteTag(data) {
+	return (dispatch) => {
+		dispatch({
+			type: 'DELETE_TAG_REQUEST'
+		});
+		fetchRequest('api/files/tags', 'DELETE', JSON.stringify(data))
+			.then(response => {
+				dispatchFromFetch(response, dispatch, 'DELETE_TAG_SUCCESS', 'DELETE_TAG_FAIL', data.path); //todo
+			})
+	}
+
 }

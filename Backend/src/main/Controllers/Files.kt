@@ -31,6 +31,7 @@ fun getUserFiles(req: Request, res: Response): String {
     res.status(200)
 
     val skip = req.queryParams("skip")
+    val tag = req.queryParams("tag")
 
     val username : String? = req.session().attribute("user")
     if (username == null) {
@@ -38,7 +39,7 @@ fun getUserFiles(req: Request, res: Response): String {
         obj = JSONResponse.badJson()
         return obj
     }
-    val result = getUserFiles(username, skip.toInt())
+    val result = getUserFiles(username, skip.toInt(), tag)
 
     return result
 }
@@ -210,7 +211,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
 fun getDateAndCreateFolder(username:String):String {
     val date: Date = Date()
     val cal = Calendar.getInstance()
-    cal.setTime(date)
+    cal.time = date
     val year = cal.get(Calendar.YEAR)
     val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
     val day = cal.get(Calendar.DAY_OF_MONTH)

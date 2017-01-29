@@ -33,7 +33,15 @@ export default function userFiles(state = initialState, action) {
             return { ...state, error: action.payload.message, fetching: false };
 
         case 'DELETE_FILE_SUCCESS':
-            return { ...state, files: state.files.filter(function(el){return el.path !== action.payload;}) };
+            return { ...state, files: state.files.filter((el) => {return el.path !== action.payload}) };
+
+        case 'ADD_TAG_SUCCESS':
+            return { ...state, files: state.files.map((item) => {
+                if (item.path === action.payload.path) {
+                    item.tags !== undefined ? item.tags.push(action.payload.tag) : item['tags'] = action.payload.tag
+                }
+                return item
+            })};
 
         default:
             return state;

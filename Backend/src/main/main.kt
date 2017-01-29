@@ -3,12 +3,14 @@
  */
 
 import Controllers.*
+import DB.addTagToFile
+import DB.deleteTagFromFile
 import  spark.Spark.*
 import java.io.File
 
-public class Main {
+class Main {
     companion object {
-        @JvmStatic public fun main(args: Array<String>) {
+        @JvmStatic fun main(args: Array<String>) {
             port(8081)
 
 
@@ -22,8 +24,11 @@ public class Main {
 
             get("api/files", ::getUserFiles)
             post("api/files", ::uploadUserFiles)
-//            post("api/files/tags")::
             delete("api/files", ::deleteFile)
+
+            post("api/files/tags") { req, res -> manageTagsForFile(req, res, ::addTagToFile) }
+            delete("api/files/tags") { req, res -> manageTagsForFile(req, res, ::deleteTagFromFile) }
+
 
             get("api/files/pagination", ::getPagination)
 
