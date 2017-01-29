@@ -1,7 +1,7 @@
 package Controllers
 
-import DB.Database.loginUser
-import DB.Database.registerUser
+import DB.loginUser
+import DB.registerUser
 import com.github.salomonbrys.kotson.fromJson
 import com.github.salomonbrys.kotson.jsonObject
 import com.google.gson.Gson

@@ -151,7 +151,6 @@ coverage
 build/Release
 
 # Dependency directories
-node_modules
 jspm_packages
 
 # Optional npm cache directory
@@ -220,3 +219,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 >>>>>>> a0724e78bdc75a1ac8cc1da79a07bc4f4cf9f132
+

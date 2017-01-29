@@ -79,7 +79,7 @@ var AuthModal = React.createClass({
                                         value={this.state.username}
                                         onChange={this.handleUsernameChange}
                                     />
-                                    <i className='user icon'></i>
+                                    <i className='user icon'/>
                                 </div>
                             </div>
                             <div className='field'>
@@ -91,7 +91,7 @@ var AuthModal = React.createClass({
                                         value={this.state.password }
                                         onChange={this.handlePasswordChange}
                                     />
-                                    <i className='lock icon'></i>
+                                    <i className='lock icon'/>
                                 </div>
                             </div>
                             <div className='ui error message'></div>

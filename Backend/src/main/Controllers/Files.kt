@@ -3,10 +3,10 @@ package Controllers
 /**
  * Created by nikolaev on 03.09.16.
  */
-import DB.Database.createFile
-import DB.Database.deleteFile
-import DB.Database.getCountOfFiles
-import DB.Database.getUserFiles
+import DB.createFile
+import DB.deleteFile
+import DB.getCountOfFiles
+import DB.getUserFiles
 import com.github.salomonbrys.kotson.fromJson
 import com.github.salomonbrys.kotson.jsonObject
 import com.google.gson.Gson
@@ -91,7 +91,6 @@ fun deleteFile(req: Request, res: Response): String {
     obj = JSONResponse.makeCustomJsonResponse("message", "Some Error")
     return obj
 }
-
 
 fun uploadUserFiles(req: Request, res: Response): String {
     var obj: String

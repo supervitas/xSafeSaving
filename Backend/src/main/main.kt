@@ -22,6 +22,7 @@ public class Main {
 
             get("api/files", ::getUserFiles)
             post("api/files", ::uploadUserFiles)
+//            post("api/files/tags")::
             delete("api/files", ::deleteFile)
 
             get("api/files/pagination", ::getPagination)

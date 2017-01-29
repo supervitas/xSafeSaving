@@ -7,7 +7,7 @@ import App from "./containers/App";
 import configureStore from "./store/configureStore";
 import "../../assets/semantic.min";
 import "../../assets/semantic.min.css";
-import "../../assets/build.css"; //fetch polyfill
+import "../../assets/build.css";
 const store = configureStore();
 
 ReactDOM.render(

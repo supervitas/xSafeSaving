@@ -1,19 +1,19 @@
 import React from "react";
 var Header = React.createClass({
     render: function () {
-        var Header;
+        let Header;
         this.props.user ?
            Header = <LogedHeader authActions={this.props.authActions}
                                  user={this.props.user}
                                  uploadFile={this.props.handleUploadClick}/>
             :
             Header = <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
-                                     handleLoginClick={this.props.handleLoginClick}/>
+                                     handleLoginClick={this.props.handleLoginClick}/>;
 
         return( Header )
     },
 });
-var LogedOutHeader = React.createClass({
+const LogedOutHeader = React.createClass({
     render: function () {
         return (
             <div className='ui secondary borderless menu'>
@@ -21,7 +21,7 @@ var LogedOutHeader = React.createClass({
                     <i className='blue cloud icon'/>xSafeSaving</a>
                 <div className='right menu'>
                     <a className='item' onClick={this.props.handleRegisterClick}>
-                        <i className='add user icon'/>Sign-up</a>
+                        <i className='add user icon'/>Register</a>
                     <a className='item' onClick={this.props.handleLoginClick}>
                         <i className='sign in icon '/>Sign-in</a>
                 </div>
@@ -29,7 +29,7 @@ var LogedOutHeader = React.createClass({
         )
     }
 });
-var LogedHeader = React.createClass({
+const LogedHeader = React.createClass({
     componentDidMount: function () {
         $('.ui.dropdown.item').dropdown();
     },

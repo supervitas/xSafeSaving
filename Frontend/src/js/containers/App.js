@@ -9,7 +9,7 @@ import * as pageActions from "../actions/PageActions";
 import * as authActions from "../actions/AuthActions";
 
 
-var App = React.createClass({
+const App = React.createClass({
   componentWillMount: function () {
     let  { authAction }  = this.props.authActions;
     authAction('AUTH_CHECK')

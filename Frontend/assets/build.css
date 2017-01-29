@@ -16,10 +16,19 @@ h1,h2,h3 {
   font-family: Helvetica, sans-serif;
 }
 .media-info {
-  margin-top: 10px;
+  margin-top: 5px;
+}
+.media-tags-container {
+  margin-right: 20px;
+}
+.add-tag{
+  margin-top: 5px;
 }
 .file-image {
   width: 60%;
+}
+.tags{
+  margin-top: 5px;
 }
 .ui.pagination.menu {
   margin-top: 20px;
