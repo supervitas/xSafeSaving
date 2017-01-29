@@ -43,7 +43,7 @@ fun getUserFiles(username: String, skip: Int, tag: String? ): String {
     if (tag != null) {
         getUserFilesCursor = collection.find(Filters.and(
                 Filters.eq("username", username), Filters.eq("tags", tag))
-        ).skip(skip).limit(20).iterator()
+        ).sort(Document("\$natural", -1)).skip(skip).limit(20).iterator()
     } else {
         getUserFilesCursor = collection.find(Filters.eq("username", username))
                 .sort(Document("\$natural", -1)).skip(skip).limit(20).iterator()

@@ -49,28 +49,30 @@ const AuthedLayout = React.createClass({
 	changeTagFilePath (path) {
 		this.setState({tagFilePath: path})
 	},
+	loadFilesByTag(obj){
+		this.props.getFiles(obj)
+	},
+	getChildContext() {
+		return {
+			changeDeletedFileNameOrPath: this.changeDeletedFileNameOrPath,
+			changeTagFilePath: this.changeTagFilePath,
+			loadFilesByTag: this.loadFilesByTag
+		};
+	},
 	render () {
 		const content = this.props.files.map((result, number) => {
 			const contentType = result['content-type'];
 			const type = contentType.substring(0, contentType.lastIndexOf('/'));
 			switch (type) {
 				case 'image': {
-					return (<Image changeDeleteFile={this.changeDeletedFileNameOrPath}
-					               changeTagPath={this.changeTagFilePath}
-					               onTagClicked={this.props.getFiles}
-                                   key={number} name={result.filename} src={result.path} tags={result.tags}/>);
+					return (<Image key={number} name={result.filename} src={result.path} tags={result.tags}/>);
 				}
 				case 'video': {
-					return (<Video changeDeleteFile={this.changeDeletedFileNameOrPath}
-					               onTagClicked={this.props.getFiles}
-					               changeTagPath={this.changeTagFilePath}
-                                   key={number} name={result.filename} src={result.path} tags={result.tags}/>);
+					return (<Video key={number} name={result.filename}
+                                   src={result.path} tags={result.tags}/>);
 				}
 				default: {
-					return (<MediaObject changeDeleteFile={this.changeDeletedFileNameOrPath}
-					                     changeTagPath={this.changeTagFilePath}
-					                     onTagClicked={this.props.getFiles}
-                                         key={number} name={result.filename} src={result.path} tags={result.tags}/>);
+					return (<MediaObject key={number} name={result.filename} src={result.path} tags={result.tags}/>);
 				}
 			}
 		});
@@ -89,13 +91,17 @@ const AuthedLayout = React.createClass({
 		)
 	}
 });
-
+AuthedLayout.childContextTypes = {
+	changeDeletedFileNameOrPath: React.PropTypes.func,
+	changeTagFilePath: React.PropTypes.func,
+	loadFilesByTag: React.PropTypes.func
+};
 const Image = React.createClass({
 	render () {
 		return (
             <div className='column center aligned'>
                 <img className='ui fluid image' src={this.props.src}/>
-                <MediaInfo onTagClicked={this.props.onTagClicked} changeTagPath={this.props.changeTagPath} changeDeleteFile={this.props.changeDeleteFile} name={this.props.name}
+                <MediaInfo name={this.props.name}
                            src={this.props.src} tags={this.props.tags}/>
             </div>
 		)
@@ -107,7 +113,7 @@ const Video = React.createClass({
 		return (
             <div className='column center aligned'>
                 <video className='ui fluid image' preload='metadata' controls src={this.props.src}/>
-                <MediaInfo onTagClicked={this.props.onTagClicked} changeTagPath={this.props.changeTagPath} changeDeleteFile={this.props.changeDeleteFile} name={this.props.name} src={this.props.src}
+                <MediaInfo name={this.props.name} src={this.props.src}
                            tags={this.props.tags} />
             </div>
 		)
@@ -120,7 +126,7 @@ const MediaObject = React.createClass({
             <div className='column center aligned'>
                 <div className='ui'>
                     <img className='file-image' src='/upload/rsz_file.png'/>
-                    <MediaInfo onTagClicked={this.props.onTagClicked} changeTagPath={this.props.changeTagPath} changeDeleteFile={this.props.changeDeleteFile} name={this.props.name}
+                    <MediaInfo name={this.props.name}
                                src={this.props.src} tags={this.props.tags}/>
                 </div>
             </div>
@@ -132,7 +138,7 @@ const MediaInfo = React.createClass({
 	render () {
 		let tags;
 		if (this.props.tags) {
-			tags = <Tags onTagClicked={this.props.onTagClicked} tags={this.props.tags}/>;
+			tags = <Tags onTagClicked={this.context.loadFilesByTag} tags={this.props.tags}/>;
 		}
 
 		return (
@@ -142,7 +148,7 @@ const MediaInfo = React.createClass({
 	            </a>
 	            <i className='remove link icon delete_file'
 	               onClick={() => {
-		               this.props.changeDeleteFile(this.props.name, this.props.src);
+		               this.context.changeDeletedFileNameOrPath(this.props.name, this.props.src);
 		               $('#deleteModal').modal('show')
 	               }}>
 	            </i>
@@ -151,7 +157,7 @@ const MediaInfo = React.createClass({
 		            {tags}
 		            <div className="add-tag">
 			            <button className="ui primary positive basic button small" onClick={() => {
-				            this.props.changeTagPath(this.props.src);
+				            this.context.changeTagFilePath(this.props.src);
 				            $('#tagModal').modal('show')
 			            }}>Add Tag</button>
 		            </div>
@@ -160,7 +166,11 @@ const MediaInfo = React.createClass({
 		)
 	}
 });
-
+MediaInfo.contextTypes = {
+	changeDeletedFileNameOrPath: React.PropTypes.func,
+	changeTagFilePath: React.PropTypes.func,
+	loadFilesByTag: React.PropTypes.func
+};
 const Tags = React.createClass({
 	render(){
 		const tags = [];
