@@ -1,6 +1,6 @@
 import React from "react";
 
-var UploadModal = React.createClass({
+const UploadModal = React.createClass({
     getInitialState: function() {
         return {url: ''};
     },

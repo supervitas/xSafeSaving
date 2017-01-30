@@ -1,13 +1,11 @@
 import React from "react";
-var Header = React.createClass({
+const Header = React.createClass({
     render: function () {
-        let Header;
-        this.props.user ?
-           Header = <LogedHeader authActions={this.props.authActions}
+	    let Header = this.props.user ? <LogedHeader authActions={this.props.authActions}
                                  user={this.props.user}
                                  uploadFile={this.props.handleUploadClick}/>
             :
-            Header = <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
+            <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
                                      handleLoginClick={this.props.handleLoginClick}/>;
 
         return( Header )

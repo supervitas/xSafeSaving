@@ -96,13 +96,13 @@ AuthedLayout.childContextTypes = {
 	changeTagFilePath: React.PropTypes.func,
 	loadFilesByTag: React.PropTypes.func
 };
+
 const Image = React.createClass({
 	render () {
 		return (
             <div className='column center aligned'>
                 <img className='ui fluid image' src={this.props.src}/>
-                <MediaInfo name={this.props.name}
-                           src={this.props.src} tags={this.props.tags}/>
+                <MediaInfo name={this.props.name} src={this.props.src} tags={this.props.tags}/>
             </div>
 		)
 	}
@@ -113,8 +113,7 @@ const Video = React.createClass({
 		return (
             <div className='column center aligned'>
                 <video className='ui fluid image' preload='metadata' controls src={this.props.src}/>
-                <MediaInfo name={this.props.name} src={this.props.src}
-                           tags={this.props.tags} />
+                <MediaInfo name={this.props.name} src={this.props.src} tags={this.props.tags} />
             </div>
 		)
 	}
@@ -126,8 +125,7 @@ const MediaObject = React.createClass({
             <div className='column center aligned'>
                 <div className='ui'>
                     <img className='file-image' src='/upload/rsz_file.png'/>
-                    <MediaInfo name={this.props.name}
-                               src={this.props.src} tags={this.props.tags}/>
+                    <MediaInfo name={this.props.name} src={this.props.src} tags={this.props.tags}/>
                 </div>
             </div>
 		)
@@ -171,6 +169,7 @@ MediaInfo.contextTypes = {
 	changeTagFilePath: React.PropTypes.func,
 	loadFilesByTag: React.PropTypes.func
 };
+
 const Tags = React.createClass({
 	render(){
 		const tags = [];
