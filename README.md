@@ -1,8 +1,13 @@
 # xSafeSaving
 
-Cloud for saving files
+<div align="center">
+    <img width="200" height="200"
+      src="https://github.com/VitalyNikolaev/xSafeSaving/raw/master/Frontend/assets/favicon.png">
+  <h1>Cloud for saving files</h1>
+</div>
 
-![alt tag](https://github.com/VitalyNikolaev/xSafeSaving/raw/master/Frontend/assets/favicon.png)
+
+
 
 Frontend(React + Redux): 
 
