@@ -76,11 +76,15 @@ fun getUserFiles(username: String, skip: Int, tag: String? ): String {
     return gson.toJson(jsonArray)
 }
 
-fun getCountOfFiles(username: String) : String {
+fun getCountOfFiles(username: String, tag: String?) : String {
     val gson = Gson()
     val jsonObject = JsonObject()
     val collection = Database.db.getCollection("files")
-    val getCount = collection.find(Filters.eq("username", username)).count()
+    var query = Filters.eq("username", username)
+    if (tag != null) {
+        query = Filters.and(Filters.eq("username", username), Filters.eq("tags", tag))
+    }
+    val getCount = collection.find(query).count()
     jsonObject.addProperty("count", getCount)
     return gson.toJson(jsonObject)
 }

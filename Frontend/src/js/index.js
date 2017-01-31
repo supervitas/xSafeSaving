@@ -14,6 +14,8 @@ ReactDOM.render(
     <Provider store={ store }>
         <Router history={ browserHistory }>
             <Route path='/' component={ App }>
+                <Route path="page/:page" component={ App }/>
+                <Route path="tag/:tag" component={ App }/>
             </Route>
         </Router>
     </Provider>,

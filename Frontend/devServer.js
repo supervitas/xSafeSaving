@@ -1,15 +1,17 @@
 /**
  * Created by nikolaev on 03.08.16.
  */
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const config = require('./webpack.config');
 
 new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
     hot: true,
     quiet: false,
-    historyApiFallback: true,
+	historyApiFallback: {
+		index: '/'
+	},
     proxy: {
         '/api/*': {
             target: 'http://localhost:8081',

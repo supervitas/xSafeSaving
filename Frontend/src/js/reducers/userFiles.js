@@ -5,14 +5,16 @@ const initialState = {
     files: [],
     fetching: false,
     error: '',
+    currentTag: '',
     filesCount: 0,
 };
 
 export default function userFiles(state = initialState, action) {
 
     switch (action.type) {
-        case 'GET_FILES_REQUEST':
-           return {...state, fetching: true, error: ''};
+        case 'GET_FILES_REQUEST': {
+	        return {...state, fetching: true, error: '', currentTag: action.payload};
+        }
 
         case 'FILES_FETCHED':
             return { ...state, files: action.payload, fetching: false, error: '' };
@@ -38,7 +40,7 @@ export default function userFiles(state = initialState, action) {
         case 'ADD_TAG_SUCCESS':
             return { ...state, files: state.files.map((item) => {
                 if (item.path === action.payload.path) {
-                    item.tags !== undefined ? item.tags.push(action.payload.tag) : item['tags'] = action.payload.tag
+                    item.tags !== undefined ? item.tags.push(action.payload.tag) : item['tags'] = [action.payload.tag]
                 }
                 return item
             })};

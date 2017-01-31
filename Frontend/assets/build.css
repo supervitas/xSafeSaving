@@ -41,3 +41,6 @@ h1,h2,h3 {
 .file__path{
   display: none;
 }
+.search_bar{
+  margin-top: 5px;
+}

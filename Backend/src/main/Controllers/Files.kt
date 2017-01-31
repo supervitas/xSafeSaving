@@ -49,13 +49,14 @@ fun getPagination(req: Request, res: Response): String {
     res.status(200)
 
     val username : String? = req.session().attribute("user")
+    val tag = req.queryParams("tag")
     if (username == null) {
         res.status(401)
         obj = JSONResponse.authNeeded()
         return obj
     }
 
-    val result = getCountOfFiles(username)
+    val result = getCountOfFiles(username, tag)
 
     return result
 }

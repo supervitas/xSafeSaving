@@ -28,6 +28,8 @@ const App = React.createClass({
 
             handleUploadClick={ () => $('#upload').modal({blurring: false}).modal('show') }
 
+            tag={files.currentTag}
+            getFiles={getFiles}
             authActions={authAction}
             user={user.login}/>
 

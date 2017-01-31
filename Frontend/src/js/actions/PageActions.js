@@ -3,7 +3,8 @@ export function getFiles(data) {
 
   return (dispatch) => {
     dispatch({
-      type: 'GET_FILES_REQUEST'
+        type: 'GET_FILES_REQUEST',
+        payload: data.tag || ''
     });
 
     let params = Object.keys(data)
@@ -13,7 +14,7 @@ export function getFiles(data) {
 
     fetchRequest('api/files?' + params, 'GET')
         .then(response => dispatchFromFetch(response, dispatch, 'FILES_FETCHED', 'FILES_NOT_FETCHED'));
-    fetchRequest('api/files/pagination', 'GET')
+    fetchRequest('api/files/pagination?' + params, 'GET')
         .then(response => dispatchFromFetch(response, dispatch, 'FILES_COUNT_FETCHED', 'FILES_NOT_FETCHED'));
   }
 }
@@ -36,6 +37,7 @@ export function uploadFile(uploadType, data) {
           $('#upload').modal('hide');
         });
     }
+
     if (uploadType === 'UPLOAD_FROM_LINK') {
       fetchRequest('api/files', 'POST', JSON.stringify(data))
           .then(response => {

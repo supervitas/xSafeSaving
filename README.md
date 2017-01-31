@@ -7,8 +7,6 @@
 </div>
 
 
-
-
 Frontend(React + Redux): 
 
  1. For develop: node devServer
