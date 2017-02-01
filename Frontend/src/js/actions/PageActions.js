@@ -75,9 +75,6 @@ export function addTag(data) {
 
 export function deleteTag(data) {
 	return (dispatch) => {
-		dispatch({
-			type: 'DELETE_TAG_REQUEST'
-		});
 		fetchRequest('api/files/tags', 'DELETE', JSON.stringify(data))
 			.then(response => {
 				dispatchFromFetch(response, dispatch, 'DELETE_TAG_SUCCESS', 'DELETE_TAG_FAIL', {path:data.path, tag: data.tag});

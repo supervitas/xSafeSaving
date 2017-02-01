@@ -49,6 +49,14 @@ const AuthedLayout = React.createClass({
 	changeTagFile (path, currentTags, fileName) {
 		this.setState({tagFilePath: path, currentTags: currentTags, tagFileName: fileName})
 	},
+	removeLocalTagsForFile(tag) {
+		this.setState({currentTags: this.state.currentTags.filter((el) => {
+			return el !== tag
+		})});
+	},
+	addLocalTagForFile(tag) {
+		this.state.currentTags.push(tag)
+	},
 	loadFilesByTag(obj){
 		this.props.getFiles(obj)
 	},
@@ -89,6 +97,8 @@ const AuthedLayout = React.createClass({
 	            <TagModal filePath={this.state.tagFilePath} tagFileName={this.state.tagFileName}
 	                      addTag={this.props.addTag}
 	                      tagsArr={this.state.currentTags}
+	                      changeLocalTagsArrParrent={this.removeLocalTagsForFile}
+	                      addLocalTagForFile={this.addLocalTagForFile}
 	                      deleteTag={this.props.deleteTag}/>
             </div>
 		)
@@ -136,20 +146,6 @@ const MediaObject = React.createClass({
 });
 
 const MediaInfo = React.createClass({
-	getInitialState(){
-		return {wasRenderedFirstTime: false}
-	},
-	componentWillUpdate(nextProps, nextState) {
-		// if(this.state.wasRenderedFirstTime) {
-		// 	const tagsArr = [];
-		// 	nextProps.tags.map((item) => {
-		// 		tagsArr.push(item);
-		// 	});
-		// 	this.context.changeTagFile(nextProps.src, tagsArr, nextProps.name);
-		// 	this.setState({wasRenderedFirstTime: false})
-		// }
-
-	},
 	render () {
 		let tags;
 		const tagsArr = [];
@@ -177,7 +173,9 @@ const MediaInfo = React.createClass({
 		            <div className="add-tag">
 			            <button className="ui primary positive basic button small" onClick={() => {
 				            this.context.changeTagFile(this.props.src, tagsArr, this.props.name);
-				            $('#tagModal').modal('show')
+				            $('#tagModal').modal({ onApprove() {
+					            return false; // for not closing modal on tags
+				            }}).modal('show')
 			            }}>Manage Tags</button>
 		            </div>
 	            </div>
@@ -284,23 +282,19 @@ const DeleteModal = React.createClass({
 
 const TagModal = React.createClass({
 	getInitialState() {
-		return {tag: '', tagsArr: []}
+		return {tag: ''}
 	},
 	handleTagChange(e) {
 		this.setState({tag: e.target.value.substr(0, 12)});
 	},
 	handleTagDelete(tag) {
+		this.props.changeLocalTagsArrParrent(tag);
 		this.props.deleteTag({tag: tag, path: this.props.filePath})
 	},
-	componentWillReceiveProps(props) {
-		console.log(props);
-		// this.setState({tag: '', tagsArr: []})
+	componentWillReceiveProps() {
+		this.setState({tag: ''})
 	},
 	render () {
-		const tagsArr = [];
-		this.props.tagsArr.map((item, index) => {
-			tagsArr.push(<ModalTag deleteTag={this.handleTagDelete} tag={item} key={index}/>);
-		});
 		return (
 			<div className='ui small modal' id='tagModal'>
 				<i className='close icon'/>
@@ -309,10 +303,13 @@ const TagModal = React.createClass({
 				</div>
 
 				<div className="description tags_modal_container">
-					{tagsArr}
+					{this.props.tagsArr.map((item, index) => {
+							return <ModalTag deleteTag={this.handleTagDelete} tag={item} key={index}/>
+						})
+					}
 				</div>
 				<div className='content new_tag_input_container'>
-					<div className="ui input">
+					<div className="ui focus input" >
 						<input onChange={this.handleTagChange} value={this.state.tag} type="text" placeholder="New Tag"/>
 					</div>
 				</div>
@@ -321,6 +318,7 @@ const TagModal = React.createClass({
 						<button className='ui cancel button'>Cancel</button>
 						<div className='or'/>
 						<button className='ui positive primary button' onClick={() => {
+							this.props.addLocalTagForFile(this.state.tag);
 							this.props.addTag({path: this.props.filePath, tag: this.state.tag})
 						}}>Add Tag</button>
 					</div>
