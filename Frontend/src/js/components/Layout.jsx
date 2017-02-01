@@ -41,13 +41,13 @@ const AuthedLayout = React.createClass({
 		this.props.getFiles({skip: 0})
 	},
 	getInitialState () {
-		return {deletedFileName: '', deletedFilePath: '', tagFilePath: ''};
+		return {deletedFileName: '', deletedFilePath: '', tagFilePath: '', currentTags: [], tagFileName: ''};
 	},
 	changeDeletedFileNameOrPath (name, path) {
 		this.setState({deletedFileName: name, deletedFilePath: path});
 	},
-	changeTagFilePath (path) {
-		this.setState({tagFilePath: path})
+	changeTagFile (path, currentTags, fileName) {
+		this.setState({tagFilePath: path, currentTags: currentTags, tagFileName: fileName})
 	},
 	loadFilesByTag(obj){
 		this.props.getFiles(obj)
@@ -55,7 +55,7 @@ const AuthedLayout = React.createClass({
 	getChildContext() {
 		return {
 			changeDeletedFileNameOrPath: this.changeDeletedFileNameOrPath,
-			changeTagFilePath: this.changeTagFilePath,
+			changeTagFile: this.changeTagFile,
 			loadFilesByTag: this.loadFilesByTag
 		};
 	},
@@ -86,14 +86,17 @@ const AuthedLayout = React.createClass({
                                                   getFiles={this.props.getFiles}/> : false}
                 <DeleteModal deleteFile={this.props.deleteFile}
                              deletedFile={this.state.deletedFileName} deletedFilePath={this.state.deletedFilePath}/>
-	            <TagModal filePath={this.state.tagFilePath} addTag={this.props.addTag} deleteTag={this.props.deleteTag}/>
+	            <TagModal filePath={this.state.tagFilePath} tagFileName={this.state.tagFileName}
+	                      addTag={this.props.addTag}
+	                      tagsArr={this.state.currentTags}
+	                      deleteTag={this.props.deleteTag}/>
             </div>
 		)
 	}
 });
 AuthedLayout.childContextTypes = {
 	changeDeletedFileNameOrPath: React.PropTypes.func,
-	changeTagFilePath: React.PropTypes.func,
+	changeTagFile: React.PropTypes.func,
 	loadFilesByTag: React.PropTypes.func
 };
 
@@ -133,9 +136,27 @@ const MediaObject = React.createClass({
 });
 
 const MediaInfo = React.createClass({
+	getInitialState(){
+		return {wasRenderedFirstTime: false}
+	},
+	componentWillUpdate(nextProps, nextState) {
+		// if(this.state.wasRenderedFirstTime) {
+		// 	const tagsArr = [];
+		// 	nextProps.tags.map((item) => {
+		// 		tagsArr.push(item);
+		// 	});
+		// 	this.context.changeTagFile(nextProps.src, tagsArr, nextProps.name);
+		// 	this.setState({wasRenderedFirstTime: false})
+		// }
+
+	},
 	render () {
 		let tags;
-		if (this.props.tags) {
+		const tagsArr = [];
+		if (this.props.tags && this.props.tags.length > 0) {
+			this.props.tags.map((item) => {
+				tagsArr.push(item);
+			});
 			tags = <Tags onTagClicked={this.context.loadFilesByTag} tags={this.props.tags}/>;
 		}
 
@@ -155,9 +176,9 @@ const MediaInfo = React.createClass({
 		            {tags}
 		            <div className="add-tag">
 			            <button className="ui primary positive basic button small" onClick={() => {
-				            this.context.changeTagFilePath(this.props.src);
+				            this.context.changeTagFile(this.props.src, tagsArr, this.props.name);
 				            $('#tagModal').modal('show')
-			            }}>Add Tag</button>
+			            }}>Manage Tags</button>
 		            </div>
 	            </div>
             </div>
@@ -166,19 +187,19 @@ const MediaInfo = React.createClass({
 });
 MediaInfo.contextTypes = {
 	changeDeletedFileNameOrPath: React.PropTypes.func,
-	changeTagFilePath: React.PropTypes.func,
+	changeTagFile: React.PropTypes.func,
 	loadFilesByTag: React.PropTypes.func
 };
 
 const Tags = React.createClass({
-	render(){
-		const tags = [];
+	render() {
+		const tagsArr = [];
 		this.props.tags.map((item, index) => {
-			tags.push(<Tag onTagClicked={this.props.onTagClicked} tag={item} key={index}/>);
+			tagsArr.push(<Tag onTagClicked={this.props.onTagClicked} tag={item} key={index}/>);
 		});
 		return (
 			<div className='tags'>
-				Tags: {tags}
+				Tags: {tagsArr}
 			</div>
 		)
 	}
@@ -188,6 +209,15 @@ const Tag = React.createClass({
 	render() {
 		return <button onClick={() => this.props.onTagClicked({tag: this.props.tag, skip: 0})}
 		               className="ui secondary basic tiny button">{this.props.tag}</button>
+	}
+});
+
+const ModalTag = React.createClass({
+	render() {
+		return (
+			<button onClick={() => this.props.deleteTag(this.props.tag)}
+		               className="ui secondary basic negative button">{this.props.tag}</button>
+		)
 	}
 });
 
@@ -234,7 +264,7 @@ const DeleteModal = React.createClass({
                         <i className='file icon'/>
                     </div>
 
-                    <div className='description'>
+                    <div className='description '>
                         <p className='delete_fileName'>Delete {this.props.deletedFile} ?</p>
                     </div>
                 </div>
@@ -254,19 +284,34 @@ const DeleteModal = React.createClass({
 
 const TagModal = React.createClass({
 	getInitialState() {
-		return {tag: ''}
+		return {tag: '', tagsArr: []}
 	},
-	handleTagChange: function(e) {
+	handleTagChange(e) {
 		this.setState({tag: e.target.value.substr(0, 12)});
 	},
+	handleTagDelete(tag) {
+		this.props.deleteTag({tag: tag, path: this.props.filePath})
+	},
+	componentWillReceiveProps(props) {
+		console.log(props);
+		// this.setState({tag: '', tagsArr: []})
+	},
 	render () {
+		const tagsArr = [];
+		this.props.tagsArr.map((item, index) => {
+			tagsArr.push(<ModalTag deleteTag={this.handleTagDelete} tag={item} key={index}/>);
+		});
 		return (
 			<div className='ui small modal' id='tagModal'>
 				<i className='close icon'/>
 				<div className='header'>
-					Modify Tags
+					Manage Tags for {this.props.tagFileName}
 				</div>
-				<div className='image content'>
+
+				<div className="description tags_modal_container">
+					{tagsArr}
+				</div>
+				<div className='content new_tag_input_container'>
 					<div className="ui input">
 						<input onChange={this.handleTagChange} value={this.state.tag} type="text" placeholder="New Tag"/>
 					</div>
@@ -284,5 +329,6 @@ const TagModal = React.createClass({
 		)
 	}
 });
+
 
 export default Layout

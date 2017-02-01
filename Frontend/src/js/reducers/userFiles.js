@@ -44,7 +44,13 @@ export default function userFiles(state = initialState, action) {
                 }
                 return item
             })};
-
+        case 'DELETE_TAG_SUCCESS':
+	        return { ...state, files: state.files.map((item) => {
+		        if (item.path === action.payload.path) {
+			         item.tags.splice(item.tags.indexOf(action.payload.tag), 1)
+		        }
+		        return item
+	        })};
         default:
             return state;
     }

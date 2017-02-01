@@ -37,7 +37,7 @@ const LogedHeader = React.createClass({
         $('.ui.dropdown.item').dropdown();
     },
     getInitialState(){
-      return {tagField: ''}
+      return {tagField: this.props.tag}
     },
     logout () {
       this.props.authActions('LOGOUT')
@@ -52,7 +52,10 @@ const LogedHeader = React.createClass({
     getAllFiles(){
 	    this.props.getFiles({skip: 0});
     },
-    render: function () {
+	componentWillReceiveProps(props) {
+		this.setState({tagField: props.tag})
+    },
+    render() {
         return (
             <div className='ui secondary borderless menu'>
                 <a className='item' onClick={this.getAllFiles}>
@@ -63,7 +66,7 @@ const LogedHeader = React.createClass({
                         <div className="ui icon input">
                             <form onSubmit={this.searchTag}>
                                 <input onChange={this.onTagFormChange} className="prompt" type="text"
-                                       value={this.props.tag}
+                                       value={this.state.tagField}
                                        placeholder="Search files by tags..."/>
                             </form>
                             <i className="search icon"/>

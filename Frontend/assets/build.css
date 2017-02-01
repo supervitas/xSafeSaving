@@ -44,3 +44,10 @@ h1,h2,h3 {
 .search_bar{
   margin-top: 5px;
 }
+.tags_modal_container{
+  margin-top: 10px;
+  text-align: center;
+}
+.new_tag_input_container{
+  text-align: center;
+}

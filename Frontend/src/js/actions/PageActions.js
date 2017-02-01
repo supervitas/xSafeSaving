@@ -80,7 +80,7 @@ export function deleteTag(data) {
 		});
 		fetchRequest('api/files/tags', 'DELETE', JSON.stringify(data))
 			.then(response => {
-				dispatchFromFetch(response, dispatch, 'DELETE_TAG_SUCCESS', 'DELETE_TAG_FAIL', data.path); //todo
+				dispatchFromFetch(response, dispatch, 'DELETE_TAG_SUCCESS', 'DELETE_TAG_FAIL', {path:data.path, tag: data.tag});
 			})
 	}
 
