@@ -11,7 +11,7 @@ fun addTagToFile(username: String, path: String, tag: String): Boolean {
 
     val fileFromDB = collection.findOneAndUpdate(
             Filters.and(Filters.eq("username", username), Filters.eq("path", path)),
-            Document("\$push", Document("tags", tag)))
+            Document("\$addToSet", Document("tags", tag)))
     if (fileFromDB != null) {
         return true
     }

@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router";
 
 const Header = React.createClass({
     render: function () {
@@ -19,8 +18,8 @@ const LogedOutHeader = React.createClass({
     render: function () {
         return (
             <div className='ui secondary borderless menu'>
-                    <Link to={"/"}>
-                    <i className='blue cloud icon'/>xSafeSaving</Link>
+                <a className='item'>
+                    <i className='blue cloud icon'/> xSafeSaving</a>
 
                 <div className='right menu'>
                     <a className='item' onClick={this.props.handleRegisterClick}>

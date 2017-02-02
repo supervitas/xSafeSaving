@@ -10,7 +10,7 @@
 Frontend(React + Redux): 
 
  1. For develop: node devServer
- 2. For prod: webpack with webpack.prod.config.js
+ 2. For prod: webpack  --config ./webpack.prod.config.js   
  
 Backend(Kotlin + Spark):
 

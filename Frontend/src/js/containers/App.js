@@ -63,6 +63,7 @@ const App = React.createClass({
               deleteFile={deleteFile}
               addTag={addTag}
               deleteTag={deleteTag}
+              popularTags={files.popularTags}
               filesCount={files.filesCount}/>
 
     </div>

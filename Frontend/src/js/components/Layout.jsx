@@ -11,6 +11,7 @@ export const Layout = React.createClass({
                 files={this.props.files}
                 getFiles={this.props.getFiles}
                 deleteFile={this.props.deleteFile}
+                popularTags={this.props.popularTags}
                 filesCount={this.props.filesCount}/>
 		}
 		return (
@@ -55,9 +56,11 @@ const AuthedLayout = React.createClass({
 		})});
 	},
 	addLocalTagForFile(tag) {
-		this.state.currentTags.push(tag)
+		if(this.state.currentTags.indexOf(tag) === -1) {
+			this.state.currentTags.push(tag)
+		}
 	},
-	loadFilesByTag(obj){
+	loadFilesByTag(obj) {
 		this.props.getFiles(obj)
 	},
 	getChildContext() {
@@ -99,6 +102,7 @@ const AuthedLayout = React.createClass({
 	                      tagsArr={this.state.currentTags}
 	                      changeLocalTagsArrParrent={this.removeLocalTagsForFile}
 	                      addLocalTagForFile={this.addLocalTagForFile}
+	                      popularTags={this.props.popularTags}
 	                      deleteTag={this.props.deleteTag}/>
             </div>
 		)
@@ -219,6 +223,15 @@ const ModalTag = React.createClass({
 	}
 });
 
+const PopularTag = React.createClass({
+	render() {
+		return (
+			<button onClick={() => this.props.addTag(this.props.tag)}
+			        className="ui primary basic orange  button">{this.props.tag}</button>
+		)
+	}
+});
+
 const Pagination = React.createClass({
 	getInitialState () {
 		return {currentPage: 1}
@@ -280,6 +293,23 @@ const DeleteModal = React.createClass({
 	}
 });
 
+const PopularTags = React.createClass({
+	handleAddTag(tag){
+		this.props.addLocalTag(tag);
+		this.props.addTag({tag: tag, path: this.props.filePath})
+	},
+	render() {
+		const tags = this.props.popularTags.map((tag, index) => {
+			{return <PopularTag addTag={this.handleAddTag} tag={tag} key={index}/>}
+		});
+		return(
+			<div className="popular_tags_text">
+				Popular Tags: {tags}
+			</div>
+		)
+	}
+});
+
 const TagModal = React.createClass({
 	getInitialState() {
 		return {tag: ''}
@@ -295,6 +325,13 @@ const TagModal = React.createClass({
 		this.setState({tag: ''})
 	},
 	render () {
+		let popularTags;
+		if (this.props.popularTags.length > 0) {
+			popularTags = <PopularTags
+				filePath={this.props.filePath}
+				addLocalTag={this.props.addLocalTagForFile}
+				addTag={this.props.addTag} popularTags={this.props.popularTags}/>
+		}
 		return (
 			<div className='ui small modal' id='tagModal'>
 				<i className='close icon'/>
@@ -303,12 +340,16 @@ const TagModal = React.createClass({
 				</div>
 
 				<div className="description tags_modal_container">
+					<div className="current_tags_text">
+						Current Tags:
+					</div>
 					{this.props.tagsArr.map((item, index) => {
 							return <ModalTag deleteTag={this.handleTagDelete} tag={item} key={index}/>
 						})
 					}
 				</div>
 				<div className='content new_tag_input_container'>
+					{popularTags}
 					<div className="ui focus input" >
 						<input onChange={this.handleTagChange} value={this.state.tag} type="text" placeholder="New Tag"/>
 					</div>

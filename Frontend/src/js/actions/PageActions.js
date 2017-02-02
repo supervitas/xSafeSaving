@@ -63,9 +63,6 @@ export function deleteFile(data) {
 
 export function addTag(data) {
     return (dispatch) => {
-        dispatch({
-            type: 'ADD_TAG_REQUEST'
-        });
         fetchRequest('api/files/tags', 'POST', JSON.stringify(data))
             .then(response => {
 	            dispatchFromFetch(response, dispatch, 'ADD_TAG_SUCCESS', 'ADD_TAG_FAIL', {path:data.path, tag:data.tag});

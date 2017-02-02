@@ -49,5 +49,12 @@ h1,h2,h3 {
   text-align: center;
 }
 .new_tag_input_container{
-  text-align: center;
+
+}
+.current_tags_text {
+  display: inline;
+  margin-right: 5px;
+}
+.popular_tags_text {
+  margin-bottom: 40px;
 }
