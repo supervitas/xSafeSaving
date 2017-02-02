@@ -12,6 +12,6 @@ Frontend(React + Redux):
  1. For develop: node devServer
  2. For prod: webpack  --config ./webpack.prod.config.js   
  
-Backend(Kotlin + Spark):
+Backend(Kotlin + Spark + mongoDB):
 
 1. Run gradle run to start server
