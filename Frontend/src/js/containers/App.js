@@ -62,6 +62,7 @@ const App = React.createClass({
               user={user.login}
               deleteFile={deleteFile}
               addTag={addTag}
+              tag={files.currentTag}
               deleteTag={deleteTag}
               popularTags={files.popularTags}
               filesCount={files.filesCount}/>

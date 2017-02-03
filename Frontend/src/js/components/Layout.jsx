@@ -12,6 +12,7 @@ export const Layout = React.createClass({
                 getFiles={this.props.getFiles}
                 deleteFile={this.props.deleteFile}
                 popularTags={this.props.popularTags}
+				tag={this.props.tag}
                 filesCount={this.props.filesCount}/>
 		}
 		return (
@@ -42,7 +43,9 @@ const AuthedLayout = React.createClass({
 		this.props.getFiles({skip: 0})
 	},
 	getInitialState () {
-		return {deletedFileName: '', deletedFilePath: '', tagFilePath: '', currentTags: [], tagFileName: ''};
+		return {deletedFileName: '', deletedFilePath: '', 
+		tagFilePath: '', currentTags: [], tagFileName: '',
+		currentPage: 1};
 	},
 	changeDeletedFileNameOrPath (name, path) {
 		this.setState({deletedFileName: name, deletedFilePath: path});
@@ -62,6 +65,10 @@ const AuthedLayout = React.createClass({
 	},
 	loadFilesByTag(obj) {
 		this.props.getFiles(obj)
+		this.changeCurrentPage(1) // go to first page
+	},
+	changeCurrentPage(page){
+		this.setState({currentPage: page})
 	},
 	getChildContext() {
 		return {
@@ -93,10 +100,18 @@ const AuthedLayout = React.createClass({
                 <div className='ui two column doubling stackable grid container'>
 					{content}
                 </div>
-				{content.length > 0 ? <Pagination filesCount={this.props.filesCount}
-                                                  getFiles={this.props.getFiles}/> : false}
+
+				{content.length > 0 ? 
+				<Pagination filesCount={this.props.filesCount}
+										tag={this.props.tag}
+										currentPage={this.state.currentPage}
+										changeCurrentPage={this.changeCurrentPage}
+										getFiles={this.props.getFiles}/> 
+										: false}
+
                 <DeleteModal deleteFile={this.props.deleteFile}
                              deletedFile={this.state.deletedFileName} deletedFilePath={this.state.deletedFilePath}/>
+
 	            <TagModal filePath={this.state.tagFilePath} tagFileName={this.state.tagFileName}
 	                      addTag={this.props.addTag}
 	                      tagsArr={this.state.currentTags}
@@ -233,20 +248,21 @@ const PopularTag = React.createClass({
 });
 
 const Pagination = React.createClass({
-	getInitialState () {
-		return {currentPage: 1}
-	},
 	getNewFiles(pageNumber) {
-		this.setState({currentPage: pageNumber + 1});
-		this.props.getFiles({skip: pageNumber * 20});
+		this.props.changeCurrentPage(this.props.currentPage + 1);
+		const obj = {skip: pageNumber * 20};
+		if (this.props.tag !== '') {
+			obj['tag'] = this.props.tag
+		}
+		this.props.getFiles(obj);
 		$('html, body').animate({scrollTop: 0}, 'slow');
 	},
 	render () {
-		const pageCount = Math.floor(this.props.filesCount / 20) + 1;
+		const pageCount = Math.ceil(this.props.filesCount / 20);
 		const arr = [];
 		const that = this;
 		for (let i = 0; i < pageCount; i++) {
-			arr.push({page: i + 1, isActive: i + 1 === that.state.currentPage})
+			arr.push({page: i + 1, isActive: i + 1 === that.props.currentPage})
 		}
 		return (
             <div className='ui center aligned container'>
@@ -309,7 +325,15 @@ const PopularTags = React.createClass({
 		)
 	}
 });
-
+const CurrentTagsText =  React.createClass({
+	render(){
+		return (
+			<div className="current_tags_text">
+						Current Tags:
+					</div>
+		)
+	}
+})
 const TagModal = React.createClass({
 	getInitialState() {
 		return {tag: ''}
@@ -326,6 +350,10 @@ const TagModal = React.createClass({
 	},
 	render () {
 		let popularTags;
+		let currentTags;
+		if (this.props.tagsArr.length > 0) {
+			currentTags = <CurrentTagsText/>
+		}
 		if (this.props.popularTags.length > 0) {
 			popularTags = <PopularTags
 				filePath={this.props.filePath}
@@ -340,9 +368,7 @@ const TagModal = React.createClass({
 				</div>
 
 				<div className="description tags_modal_container">
-					<div className="current_tags_text">
-						Current Tags:
-					</div>
+					{currentTags}
 					{this.props.tagsArr.map((item, index) => {
 							return <ModalTag deleteTag={this.handleTagDelete} tag={item} key={index}/>
 						})
