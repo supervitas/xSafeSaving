@@ -249,7 +249,7 @@ const PopularTag = React.createClass({
 
 const Pagination = React.createClass({
 	getNewFiles(pageNumber) {
-		this.props.changeCurrentPage(this.props.currentPage + 1);
+		this.props.changeCurrentPage(pageNumber + 1);
 		const obj = {skip: pageNumber * 20};
 		if (this.props.tag !== '') {
 			obj['tag'] = this.props.tag
