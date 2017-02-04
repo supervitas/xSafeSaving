@@ -11,10 +11,10 @@ export const Layout = React.createClass({
                 files={this.props.files}
                 getFiles={this.props.getFiles}
                 deleteFile={this.props.deleteFile}
-				changePage={this.props.changePage}
-				page={this.props.currentPage}
                 popularTags={this.props.popularTags}
 				tag={this.props.tag}
+				changeCurrentPage={this.props.changeCurrentPage}
+              	currentPage={this.props.currentPage}
                 filesCount={this.props.filesCount}/>
 		}
 		return (
@@ -46,7 +46,7 @@ const AuthedLayout = React.createClass({
 	},
 	getInitialState () {
 		return {deletedFileName: '', deletedFilePath: '', 
-		tagFilePath: '', currentTags: [], tagFileName: ''};
+		tagFilePath: '', currentTags: [], tagFileName: '',};
 	},
 	changeDeletedFileNameOrPath (name, path) {
 		this.setState({deletedFileName: name, deletedFilePath: path});
@@ -66,7 +66,10 @@ const AuthedLayout = React.createClass({
 	},
 	loadFilesByTag(obj) {
 		this.props.getFiles(obj)
-		this.props.changePage(0) // go to first page
+		this.changeCurrentPage(1) // go to first page
+	},
+	changeCurrentPage(page){
+		this.props.changeCurrentPage(page)
 	},
 	getChildContext() {
 		return {
@@ -102,8 +105,8 @@ const AuthedLayout = React.createClass({
 				{content.length > 0 ? 
 				<Pagination filesCount={this.props.filesCount}
 										tag={this.props.tag}
-										changePage={this.props.changePage}
-										page={this.props.page}
+										changeCurrentPage={this.changeCurrentPage}
+              							currentPage={this.props.currentPage}
 										getFiles={this.props.getFiles}/> 
 										: false}
 
@@ -247,7 +250,7 @@ const PopularTag = React.createClass({
 
 const Pagination = React.createClass({
 	getNewFiles(pageNumber) {
-		this.props.changePage(pageNumber);
+		this.props.changeCurrentPage(pageNumber + 1);
 		const obj = {skip: pageNumber * 20};
 		if (this.props.tag !== '') {
 			obj['tag'] = this.props.tag
@@ -256,12 +259,12 @@ const Pagination = React.createClass({
 		$('html, body').animate({scrollTop: 0}, 'slow');
 	},
 	render () {
+		console.log(123)
 		const pageCount = Math.ceil(this.props.filesCount / 20);
 		const arr = [];
 		const that = this;
-		console.log(this.props.page)
 		for (let i = 0; i < pageCount; i++) {
-			arr.push({page: i + 1, isActive: i === that.props.page})
+			arr.push({page: i + 1, isActive: i + 1 === that.props.currentPage})
 		}
 		return (
             <div className='ui center aligned container'>

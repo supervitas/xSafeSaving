@@ -2,10 +2,12 @@ import React from "react";
 
 const Header = React.createClass({
     render: function () {
-	    let Header = this.props.user ? <LogedHeader authActions={this.props.authActions}
+	    let Header = this.props.user ? 
+            <LogedHeader authActions={this.props.authActions}
                                  user={this.props.user}
                                  tag={this.props.tag}
                                  getFiles={this.props.getFiles}
+                                 changePage={this.props.changePage}
                                  uploadFile={this.props.handleUploadClick}/>
             :
             <LogedOutHeader handleRegisterClick={this.props.handleRegisterClick}
@@ -46,7 +48,12 @@ const LogedHeader = React.createClass({
     },
     searchTag(e) {
         e.preventDefault();
-        this.state.tagField.length > 0 ? this.props.getFiles({skip: 0, tag: this.state.tagField}) : this.getAllFiles();
+        if(this.state.tagField.length > 0){
+            this.props.getFiles({skip: 0, tag: this.state.tagField})
+        } else {
+            this.getAllFiles();
+        }
+        this.props.changePage(0) // when searching tag got to first page
     },
     getAllFiles(){
 	    this.props.getFiles({skip: 0});

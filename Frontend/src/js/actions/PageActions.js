@@ -77,5 +77,13 @@ export function deleteTag(data) {
 				dispatchFromFetch(response, dispatch, 'DELETE_TAG_SUCCESS', 'DELETE_TAG_FAIL', {path:data.path, tag: data.tag});
 			})
 	}
+}
 
+export function changePage(page){
+      return (dispatch) => {
+            dispatch({
+                type: 'PAGE_CHANGED',
+                payload: {page: page}
+        });
+      }
 }

@@ -16,9 +16,8 @@ const App = React.createClass({
   },
   render() {
     const { user, files } = this.props;
-    const { getFiles, uploadFile, deleteFile, addTag, deleteTag } = this.props.pageActions;
+    const { getFiles, uploadFile, deleteFile, addTag, deleteTag, changePage } = this.props.pageActions;
     const  { authAction }  = this.props.authActions;
-
     return <div>
       <Header handleRegisterClick={ () => $('#register').modal({blurring: false})
             .modal({onHidden: function () {authAction('REMOVE_ERROR')}}).modal('show') }
@@ -30,6 +29,7 @@ const App = React.createClass({
 
             tag={files.currentTag}
             getFiles={getFiles}
+            changePage={changePage}
             authActions={authAction}
             user={user.login}/>
 
@@ -60,6 +60,8 @@ const App = React.createClass({
               error={files.error}
               getFiles={getFiles}
               user={user.login}
+              changePage={changePage}
+              currentPage={files.page}
               deleteFile={deleteFile}
               addTag={addTag}
               tag={files.currentTag}

@@ -7,7 +7,8 @@ const initialState = {
     error: '',
     currentTag: '',
     filesCount: 0,
-	popularTags: []
+	popularTags: [],
+    page: 0
 };
 const getMostPopularTags = (files) => {
     const tags = {};
@@ -79,6 +80,8 @@ export default function userFiles(state = initialState, action) {
 	        }), popularTags: getMostPopularTags(state.files)};
         default:
             return state;
+        case 'PAGE_CHANGED':
+            return {...state, page: action.payload.page}
     }
 
 }
