@@ -31,7 +31,7 @@ const NotAuthedLayout = React.createClass({
             <div className='container not-authed_layout'>
                 <div className='ui text container'>
                     <h1 className='ui header'>
-                        xSafeSaving
+                        SafeSaving
                     </h1>
                     <h2>Save your files and access them anywhere, anytime.</h2>
                 </div>
@@ -65,8 +65,8 @@ const AuthedLayout = React.createClass({
 		}
 	},
 	loadFilesByTag(obj) {
-		this.props.getFiles(obj)
-		this.changeCurrentPage(1) // go to first page
+		this.props.getFiles(obj);
+		this.changeCurrentPage(1); // go to first page
 	},
 	changeCurrentPage(page){
 		this.props.changeCurrentPage(page)

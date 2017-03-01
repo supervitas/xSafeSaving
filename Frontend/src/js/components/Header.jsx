@@ -21,7 +21,7 @@ const LogedOutHeader = React.createClass({
         return (
             <div className='ui secondary borderless menu'>
                 <a className='item'>
-                    <i className='blue cloud icon'/> xSafeSaving</a>
+                    <i className='blue cloud icon'/> SafeSaving</a>
 
                 <div className='right menu'>
                     <a className='item' onClick={this.props.handleRegisterClick}>
@@ -53,7 +53,7 @@ const LogedHeader = React.createClass({
         } else {
             this.getAllFiles();
         }
-        this.props.changePage(0) // when searching tag got to first page
+        this.props.changePage(0); // when searching tag got to first page
     },
     getAllFiles(){
 	    this.props.getFiles({skip: 0});
@@ -65,7 +65,7 @@ const LogedHeader = React.createClass({
         return (
             <div className='ui secondary borderless menu'>
                 <a className='item' onClick={this.getAllFiles}>
-                    <i className='blue cloud icon'/> xSafeSaving</a>
+                    <i className='blue cloud icon'/>SafeSaving</a>
 
                 <div className='right menu'>
                     <div className="ui category search_bar search">

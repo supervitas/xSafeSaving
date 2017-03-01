@@ -1,21 +1,28 @@
 server {
-	listen   80;
+
+	listen   443 ssl http2;
 	access_log off;
 	client_max_body_size 200m;
-	server_name xsafesaving.tk;
+	server_name www.safesaving.tk safesaving.tk;
+	ssl_certificate /etc/letsencrypt/live/safesaving.tk/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/safesaving.tk/privkey.pem;
+	ssl on;
+	ssl_prefer_server_ciphers on;
+	ssl_ciphers EECDH+CHACHA20:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+	add_header Strict-Transport-Security "max-age=15768000" always;
 
 
 	location ^~ /upload  {
-		alias /Users/nikolaev/Projects/Web/xSafeSaving/upload;
+		alias /var/www/xsafesaving/upload;
 	}
 
-	location ~* \.(js|jpg|png|css|ttf|gif)$ {
-		root /Users/nikolaev/Projects/Web/xSafeSaving/Frontend;
+	location ~* \.(ico|js|jpg|png|css|ttf|gif)$ {
+		root /var/www/xsafesaving/Frontend;
 	}
 	location / {
-		root   /Users/nikolaev/Projects/Web/xSafeSaving/Frontend;
+		root   /var/www/xsafesaving/Frontend;
 		index  index.html;
-		try_files $uri $uri/ /index.html;
+
 	}
 
 	location /api {
@@ -26,7 +33,14 @@ server {
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header X-Scheme $scheme;
 		proxy_connect_timeout 10;
-		proxy_read_timeout 10;
+		proxy_send_timeout 150;
+		proxy_read_timeout 150;
 	}
 
+}
+
+server {
+	listen 80;
+	server_name www.safesaving.tk safesaving.tk;
+	return 301 https://$host$request_uri;
 }

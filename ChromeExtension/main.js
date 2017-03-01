@@ -1,7 +1,7 @@
 'use strict';
 function uploadData(info) {
 	const src = info['srcUrl'] || info['linkUrl'];
-	fetch('http://xsafesaving.tk/api/files', {
+	fetch('https://safesaving.tk/api/files', {
 		method: 'POST',
 		body: JSON.stringify({url:src}),
 		headers: {
@@ -10,7 +10,6 @@ function uploadData(info) {
 		credentials: 'include'
 	}).then(function (response) {
 		showNotification('Upload Complete');
-		console.log(response);
 	});
 }
 function showNotification(text) {

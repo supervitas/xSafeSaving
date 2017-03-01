@@ -31,7 +31,7 @@ const NotAuthedLayout = React.createClass({
             <div className='container not-authed_layout'>
                 <div className='ui text container'>
                     <h1 className='ui header'>
-                        xSafeSaving
+                        SafeSaving
                     </h1>
                     <h2>Save your files and access them anywhere, anytime.</h2>
                 </div>
@@ -65,8 +65,8 @@ const AuthedLayout = React.createClass({
 		}
 	},
 	loadFilesByTag(obj) {
-		this.props.getFiles(obj)
-		this.props.changePage(0) // go to first page
+		this.props.getFiles(obj);
+		this.props.changePage(0); // go to first page
 	},
 	getChildContext() {
 		return {
@@ -259,7 +259,6 @@ const Pagination = React.createClass({
 		const pageCount = Math.ceil(this.props.filesCount / 20);
 		const arr = [];
 		const that = this;
-		console.log(this.props.page)
 		for (let i = 0; i < pageCount; i++) {
 			arr.push({page: i + 1, isActive: i === that.props.page})
 		}
