@@ -15,7 +15,7 @@ function uploadData(info) {
 function showNotification(text) {
 	chrome.notifications.create({
 		type: "basic",
-		title: "xSafeSaving",
+		title: "SafeSaving",
 		message: text,
 		iconUrl: "icon.png"
 	}, function () {});
