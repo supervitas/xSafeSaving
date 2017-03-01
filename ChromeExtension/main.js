@@ -21,16 +21,18 @@ function showNotification(text) {
 	}, function () {});
 }
 
-var contexts = ['link', 'image', 'video', 'audio'];
-for (var i = 0; i < contexts.length; i++) {
-	var context = contexts[i];
-	var title = 'Upload ';
+const contexts = ['link', 'image', 'video', 'audio'];
+for (let i = 0; i < contexts.length; i++) {
+	const context = contexts[i];
+	let title = 'Upload ';
 	if (context == 'link') {
 		title += 'from ';
 	}
 	title += context;
-	var id = chrome.contextMenus.create({'title': title, 'contexts':[context],
-		'onclick': uploadData});
+	const id = chrome.contextMenus.create({
+        'title': title, 'contexts': [context],
+        'onclick': uploadData
+    });
 }
 
 
