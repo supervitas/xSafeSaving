@@ -1,7 +1,7 @@
 'use strict';
 function uploadData(info) {
 	const src = info['srcUrl'] || info['linkUrl'];
-	fetch('https://safesaving.tk/api/files', {
+	fetch('https://xsafesaving.tk/api/files', {
 		method: 'POST',
 		body: JSON.stringify({url:src}),
 		headers: {
@@ -15,7 +15,7 @@ function uploadData(info) {
 function showNotification(text) {
 	chrome.notifications.create({
 		type: "basic",
-		title: "SafeSaving",
+		title: "xSafeSaving",
 		message: text,
 		iconUrl: "icon.png"
 	}, function () {});

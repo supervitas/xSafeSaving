@@ -40,12 +40,12 @@ fun getUserFiles(username: String, skip: Int, tag: String? ): String {
 
     val collection = Database.db.getCollection("files")
     val getUserFilesCursor: MongoCursor<Document>
-    if (tag != null) {
-        getUserFilesCursor = collection.find(Filters.and(
+    getUserFilesCursor = if (tag != null) {
+        collection.find(Filters.and(
                 Filters.eq("username", username), Filters.eq("tags", tag))
         ).sort(Document("\$natural", -1)).skip(skip).limit(20).iterator()
     } else {
-        getUserFilesCursor = collection.find(Filters.eq("username", username))
+        collection.find(Filters.eq("username", username))
                 .sort(Document("\$natural", -1)).skip(skip).limit(20).iterator()
     }
     getUserFilesCursor.use { getUserFilesCursor ->

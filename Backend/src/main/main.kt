@@ -1,7 +1,6 @@
 /**
  * Created by nikolaev on 17.08.16.
  */
-
 import Controllers.*
 import DB.addTagToFile
 import DB.deleteTagFromFile
@@ -12,8 +11,6 @@ class Main {
     companion object {
         @JvmStatic fun main(args: Array<String>) {
             port(8081)
-
-
             val uploadDir = File("upload")
             uploadDir.mkdir()
 

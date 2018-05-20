@@ -24,7 +24,7 @@ fun manageTagsForFile(req: Request, res: Response,
         return obj
     }
     try {
-        list = gson.fromJson<Map<String, String>>(req.body())
+        list = gson.fromJson(req.body())
     } catch (e: com.google.gson.JsonSyntaxException) {
         res.status(400)
         obj = JSONResponse.badJson()

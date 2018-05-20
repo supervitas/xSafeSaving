@@ -12,12 +12,12 @@ import org.bson.Document
 fun registerUser(username: String, password: String): String {
     val collection = db.getCollection("users")
     val getUser = collection.find(eq("username", username)).first()
-    if (getUser != null) {
-        return "User already exists"
+    return if (getUser != null) {
+        "User already exists"
     } else {
         val doc = Document("username", username).append("password", password)
         collection.insertOne(doc)
-        return "OK"
+        "OK"
     }
 }
 

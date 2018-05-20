@@ -12,10 +12,8 @@ fun addTagToFile(username: String, path: String, tag: String): Boolean {
     val fileFromDB = collection.findOneAndUpdate(
             Filters.and(Filters.eq("username", username), Filters.eq("path", path)),
             Document("\$addToSet", Document("tags", tag)))
-    if (fileFromDB != null) {
-        return true
-    }
-    return false
+
+    return fileFromDB != null
 }
 
 fun deleteTagFromFile(username: String, path: String, tag: String): Boolean {
@@ -24,8 +22,6 @@ fun deleteTagFromFile(username: String, path: String, tag: String): Boolean {
     val fileFromDB = collection.findOneAndUpdate(
             Filters.and(Filters.eq("username", username), Filters.eq("path", path)),
             Document("\$pop", Document("tags", tag)))
-    if (fileFromDB != null) {
-        return true
-    }
-    return false
+
+    return fileFromDB != null
 }

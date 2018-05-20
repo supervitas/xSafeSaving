@@ -16,6 +16,7 @@ import spark.Request
 import spark.Response
 import java.io.File
 import java.io.FileOutputStream
+import java.net.InetAddress
 import java.net.MalformedURLException
 import java.net.URL
 import java.nio.channels.Channels
@@ -24,6 +25,7 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.util.*
 import javax.servlet.MultipartConfigElement
+
 
 fun getUserFiles(req: Request, res: Response): String {
 
@@ -75,7 +77,7 @@ fun deleteFile(req: Request, res: Response): String {
         return obj
     }
     try {
-        list = gson.fromJson<Map<String, String>>(req.body())
+        list = gson.fromJson(req.body())
     } catch (e: com.google.gson.JsonSyntaxException) {
         res.status(400)
         obj = JSONResponse.badJson()
@@ -109,15 +111,16 @@ fun uploadUserFiles(req: Request, res: Response): String {
     }
     if (req.contentType() == "application/json") {
         try {
-            list = gson.fromJson<Map<String, String>>( req.body() )
+            list = gson.fromJson( req.body() )
         } catch (e: com.google.gson.JsonSyntaxException) {
             res.status(400)
             obj = JSONResponse.badJson()
             return obj
         }
 
+
         val url : String? = list["url"]
-        if (url != null && !url.toLowerCase().contains("file://") ) {
+        if (url != null && InetAddress.getByName(URL(url).host).hostAddress != InetAddress.getLocalHost().hostAddress) {
 
             val size: Long
             val contentType: String
@@ -186,7 +189,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
         val pathString = getDateAndCreateFolder(username)
 
         for (part in parts) {
-            var filename: String = ""
+            var filename = ""
             part.inputStream.use({ `in` ->
                     filename = part.submittedFileName.replace("/", "")
                     Files.copy(`in`, Paths.get(pathString + filename),
@@ -210,7 +213,7 @@ fun uploadUserFiles(req: Request, res: Response): String {
 }
 
 fun getDateAndCreateFolder(username:String):String {
-    val date: Date = Date()
+    val date = Date()
     val cal = Calendar.getInstance()
     cal.time = date
     val year = cal.get(Calendar.YEAR)

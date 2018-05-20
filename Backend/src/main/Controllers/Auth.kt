@@ -35,30 +35,30 @@ fun AuthUser(req: Request, res: Response): JsonObject {
              in "PUT" -> {
                 val result = registerUser(username, password)
 
-                if (result == "OK") {
-                    req.session().attribute("user", username)
-                    obj = jsonObject(
-                            "status" to result,
-                            "username" to username
-                    )
-                } else {
-                    res.status(403)
-                    obj = jsonObject(
-                            "status" to result
-                    )
-                }
+                 obj = if (result == "OK") {
+                     req.session().attribute("user", username)
+                     jsonObject(
+                             "status" to result,
+                             "username" to username
+                     )
+                 } else {
+                     res.status(403)
+                     jsonObject(
+                             "status" to result
+                     )
+                 }
             }
             in "POST" -> {
                 val result = loginUser(username, password)
-                if (result == "OK") {
+                obj = if (result == "OK") {
                     req.session().attribute("user", username)
-                    obj = jsonObject(
+                    jsonObject(
                             "status" to result,
                             "username" to username
                     )
                 } else {
                     res.status(403)
-                    obj = jsonObject(
+                    jsonObject(
                             "status" to result
                     )
                 }
@@ -74,11 +74,10 @@ fun AuthUser(req: Request, res: Response): JsonObject {
     return obj
 }
 fun logout(req: Request, res: Response): JsonObject {
-    val obj: JsonObject
-    res.status(200)
-    obj = jsonObject (
+    val obj: JsonObject = jsonObject (
             "status" to "OK"
     )
+    res.status(200)
     req.session().removeAttribute("user")
     return obj
 }
